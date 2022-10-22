@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native"
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from './CarouselCardItem'
 import { data } from './data'
 
-const CarouselCards = () => {
+const CarouselCards = (loading: any) => {
 
   const isCarousel = React.useRef(null)
   const [index, setIndex] = React.useState(0)
@@ -39,6 +39,9 @@ const CarouselCards = () => {
           inactiveDotScale={0.6}
           tappableDots={true}
         />
+      </View>
+      <View style={styles.mainContainer}>
+        {loading === true && <ActivityIndicator color={"#fff"} />}
 
       </View>
     </View>
@@ -49,9 +52,18 @@ const CarouselCards = () => {
 export default CarouselCards
 
 const styles = StyleSheet.create({
+  ActivityIndicator: {
+    color: "#fff",
+  },
+  mainContainer: {
+    position: "absolute",
+    backgroundColor: "red ",
+    top: 20,
+    right: 100,
+  },
   pagination: {
     position: "relative",
-    top: -95,
+    top: -55,
     left: 0,
     right: 0,
     bottom: 0,

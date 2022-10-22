@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet,   SafeAreaView,   TouchableOpacity, Alert, Platform } from 'react-native';
-import HeaderThree from '../components/HeaderThree';
+import { StyleSheet,   TouchableOpacity, Alert, Platform } from 'react-native'; 
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ButtonToggleGroup from 'react-native-button-toggle-group';
@@ -24,8 +23,8 @@ const PersonalInformation = () => {
   const image = <Ionicons style={styles.userIcon} name="ios-checkmark-circle" size={130} />
 
   return (
-    <SafeAreaView style={styles.PersonalInformationContainer}>
-      <HeaderThree Titles={'BIO DATA'} navigate={'Accounts'} />
+    <View style={styles.PersonalInformationContainer} lightColor="#fff" darkColor="#000">
+
       <View style={styles.InformationIconContainer}>
         <Text>
           <Feather style={styles.userIcon1} name="user" size={70} />
@@ -227,7 +226,7 @@ const PersonalInformation = () => {
       </View>
 
 
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -348,6 +347,7 @@ const styles = StyleSheet.create({
   },
 
   InformationIconContainer: {
+
     width: 150,
     height: 140,
     backgroundColor: '#F2F8FF',
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 30,
     borderRadius: 100,
 
   },

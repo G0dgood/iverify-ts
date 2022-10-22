@@ -1,20 +1,14 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, SafeAreaView, Text, Platform } from 'react-native';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import Zocial from 'react-native-vector-icons/Zocial';
-import { FontAwesome, Zocial, Ionicons, AntDesign } from '@expo/vector-icons';  
+import { StyleSheet, Platform } from 'react-native';
+import { FontAwesome, Zocial, Ionicons } from '@expo/vector-icons';
+import { Text, View, } from '../components/Themed';
 
-
-const AboutUs = ({ navigation }:any) => {
+const AboutUs = () => {
 
 
   return (
-    <SafeAreaView style={styles.infoContainer}>
-      <StatusBar style="auto" />
-      <AntDesign style={styles.arrowleft} name="arrowleft" size={25} onPress={() => navigation.navigate('Accounts')} />
-      <Text style={styles.companyinfo}> COMPANY INFO </Text>
+    <View style={styles.infoContainer}  >
+      <Text style={styles.companyinfo} > COMPANY INFO </Text>
       <Text style={styles.AboutUsText}>About us</Text>
       <Text style={styles.AboutUsSubText}>We are focused on solving and digitizing Nigeria’s biggest identity challenges, through Company, Certificate, Employee, Tenant and Property Verification for individuals and businesses.
       </Text>
@@ -48,11 +42,9 @@ const AboutUs = ({ navigation }:any) => {
         <View style={styles.address}>
           <Text style={styles.address}>info@iverify.ng</Text>
           <Text style={styles.address}>support@iverify.ng</Text>
-
         </View>
       </View>
-
-    </SafeAreaView>
+    </View>
   )
 };
 
@@ -64,6 +56,7 @@ const styles = StyleSheet.create({
 
   infoContainer: {
     paddingTop: Platform.OS === 'android' ? 30 : 0,
+    flex: 1
   },
 
   address1: {
@@ -102,12 +95,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  arrowleft: {
-    marginTop: 20,
-    marginLeft: 20,
-  },
+
 
   companyinfo: {
+    marginTop: 30,
     textAlign: 'center',
     fontWeight: 'bold',
     fontFamily: 'Poppins_600SemiBold',

@@ -2,10 +2,10 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import CarouselCards from '../components/CarouselCards'
 
-const Banner = () => {
+const Banner = (loading: any) => {
     return (
         <View style={styles.container}>
-            <CarouselCards />
+            <CarouselCards loading={loading} />
         </View>
     );
 }

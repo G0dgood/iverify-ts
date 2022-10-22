@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export const SLIDER_WIDTH = Dimensions.get('window').width + 130
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7)
 
-const CarouselCardItem = ({ item, index }:any) => {
+const CarouselCardItem = ({ item, index }: any) => {
 
     return (
         <View style={styles.container} key={index}>
@@ -23,7 +23,7 @@ const CarouselCardItem = ({ item, index }:any) => {
 const styles = StyleSheet.create({
 
     number: {
-        fontSize: 25,
+        fontSize: 20,
     },
 
     container: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         transform: [{ rotate: ' -20deg' }],
     },
     header: {
-        fontSize: 24,
+        fontSize: 20,
         textAlign: 'center',
         position: 'absolute',
         top: 20, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center',

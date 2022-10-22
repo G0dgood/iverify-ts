@@ -11,61 +11,29 @@ import {
   ActivityIndicator,
   Platform,
 } from "react-native";
-
+import * as Haptics from 'expo-haptics';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
 import { auth } from "../screens/firebase/config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login } from "../features/authSlice";
+import { useAppDispatch } from "../hooks/useStore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
+  const [success, setsuccess] = useState(false);
 
-
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  
 
-  // const isproject = {
-  //   user: user,
-  //   itemId: itemId
-  // }
-
-
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   dispatch(projectByID(isproject))
-  // }, [itemId])
-  // https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCd5MoFmmxSE-FKM_UlEdxc0ajJUPbqRa8
-
-  // useEffect(() => {
-  //   const unsubscribe = auth?.onAuthStateChanged((user: any) => {
-  //     if (user) {
-  //       // @ts-ignore
-  //       navigation?.replace("Home");
-  //     }
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
-
-  // const handleLogin = () => {
-  //   auth
-  //     .signInWithEmailAndPassword(email, password)
-  //     .then((userCredentials: { user: any; }) => {
-  //       const user = userCredentials?.user;
-  //       console.log("Logged in with:", user?.email);
-  //       setisLoading(false);
-  //     })
-  //     .catch((error: { message: any; }) => alert(error?.message));
-  // };
-
-
-
-  const loginHandler = () => {
+  const loginHandler = async () => {
     setisLoading(true)
     const apiKey = "AIzaSyCd5MoFmmxSE-FKM_UlEdxc0ajJUPbqRa8";
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
-      apiKey;
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
     fetch(url, {
       method: "POST",
       body: JSON.stringify({
@@ -84,11 +52,19 @@ const Login = () => {
     })
       // @ts-ignore
       .then(res => res.json())
-      .then(parsedRes => {
+      .then(async parsedRes => { 
         setisLoading(false)
+        setsuccess(true)
         console.log('parsedRes', parsedRes);
+        if (parsedRes.idToken) {
+          await AsyncStorage.setItem('user', JSON.stringify(parsedRes));
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+          // @ts-ignore
+          dispatch(login(), Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy))
+        }
         if (!parsedRes.idToken) {
           alert(parsedRes.error.message);
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         } else {
           setisLoading(false)
           // @ts-ignore
@@ -96,6 +72,7 @@ const Login = () => {
         }
       });
   };
+
 
 
   const [passwordShown, setPasswordShown] = useState(true);
@@ -307,3 +284,4 @@ const styles = StyleSheet.create({
     height: "50%",
   },
 });
+

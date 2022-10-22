@@ -2,27 +2,132 @@ import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
-  ScrollView, 
+  ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { Text, View, } from '../components/Themed';
+import axios from "axios";
+import { Text, View } from "../components/Themed";
 import { useNavigation } from "@react-navigation/native";
 import { Badge } from "react-native-elements";
-import Header from "../components/Header";
-import BannerSlider from "./BannerSlider"; 
-// import { useAppSelector, useAppDispatch } from '../../hooks/useStore';
-import {MaterialIcons,AntDesign,Entypo,FontAwesome5,Ionicons} from "@expo/vector-icons"; 
- 
-
+import BannerSlider from "./BannerSlider";
+import { useAppSelector, useAppDispatch } from "../../iverify/hooks/useStore";
+import {
+  MaterialIcons,
+  AntDesign,
+  Entypo,
+  FontAwesome5,
+  Ionicons,
+} from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { allassignedrequest } from "../features/verifySlice";
+import * as Haptics from "expo-haptics";
+import Skeleton from "../components/LoaderSkeleton";
+import { setUserInfo } from "../features/authSlice";
 const Home = () => {
-	// const { user } = useAppSelector((state: { auth: any; }) => state.auth)
+  const { user, isSuccess } = useAppSelector((state) => state.auth);
+  const {
+    data: datav,
+    isSuccess: success,
+    isLoading,
+  } = useAppSelector((state) => state.verify);
+
+  React.useEffect(() => {
+    userInfo();
+  }, [isSuccess]);
+
+  const userInfo = async () => {
+    try {
+      const info = await AsyncStorage.getItem("user");
+
+      dispatch(setUserInfo(JSON.parse(info)));
+    } catch (e) {
+      console.log(`isLoggedIn in error ${e}`);
+    }
+  };
+  const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
+  const [data, setdata] = useState([]);
+  const [isError, setisError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [greet, setGreet] = useState("");
+  const [messages, setMessages] = useState("");
+
+  useEffect(() => {
+    dispatch(allassignedrequest(user));
+  }, [user]);
+
+  const baseUrl = "https://api-test.iverify.ng";
+
+  useEffect(() => {
+    if (isError === true) {
+      Alert.alert("Hello!", messages, [{ text: "OK" }]);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
+    setTimeout(() => {
+      setisError(false);
+    }, 2000);
+    setTimeout(() => {
+      setMessages("");
+    }, 5000);
+  }, []);
 
   useEffect(() => {
     getHour();
-  }, []);
+  }, [isSuccess]);
+
+  // ojinnnakapascal+2@gmail.com
+
+  // React.useEffect(() => {
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${user?.idToken}`,
+  //     },
+  //   };
+
+  //   setLoading(true);
+  //   const { data } = axios
+  //     .get(
+  //       `https://api-test.iverify.ng/api/admin/requests?page=1&limit=20`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       setdata(res?.data);
+  //       console.log("requests", res.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setMessages(err?.message);
+  //       setLoading(false);
+  //       setisError(true);
+  //     });
+  // }, [user?.idToken]);
+
+  // @ts-ignore
+  const COMPLETED = data?.data?.filter((obj) => {
+    return obj?.status === "COMPLETED";
+  });
+  // @ts-ignore
+  const ONGOING = data?.data?.filter((obj) => {
+    return obj?.status === "ONGOING_VERIFICATION";
+  });
+  // @ts-ignore
+  const CANCELLED = data?.data?.filter((obj) => {
+    return obj?.status === "CANCELLED";
+  });
+  // @ts-ignore
+  const REJECTED = data?.data?.filter((obj) => {
+    return obj?.status === "REJECTED";
+  });
+  // @ts-ignore
+  const pending3 = data?.data?.filter((obj) => {
+    return obj?.status !== "COMPLETED";
+  });
+
+  console.log("COMPLETED", user?.idToken);
 
   const getHour = () => {
     const date = new Date();
@@ -33,22 +138,76 @@ const Home = () => {
     else if (hour >= 17 && hour <= 24) setGreet("GOOD EVENING");
   };
 
+  // @ts-ignore
+  const info = datav?.data?.filter((obj) => {
+    return obj?.status === "COMPLETED";
+  });
+  // @ts-ignore
+  const Schedule = Object.getOwnPropertyNames("status")?.length;
+
+  // obj?.status !== "COMPLETED";
+  console.log(Object[info]?.length);
+  console.log("Schedule", datav?.data);
+
+  const Card = ({ value }) => {
+    return (
+      <View style={styles.LatestView}>
+        <View
+          style={
+            value?.service?.category === "EMPLOYEE"
+              ? styles.viewIcon
+              : value?.service?.category === "TENANT"
+              ? styles.viewIcon2
+              : styles.viewIcon3
+          }>
+          <Text>
+            {value?.service?.category === "EMPLOYEE" ? (
+              <AntDesign style={styles.idcard} name="idcard" size={12} />
+            ) : value?.service?.category === "TENANT" ? (
+              <Entypo style={styles.idcard2} name="location" size={12} />
+            ) : (
+              value?.service?.category === "CERTIFICATE" && (
+                <Ionicons style={styles.idcard3} name="business" size={12} />
+              )
+            )}
+          </Text>
+        </View>
+        <View style={styles.UpNamedownName}>
+          <Text style={styles.UpName}>
+            {value?.requester?.user?.firstName}{" "}
+            {value?.requester?.user?.lastName}
+          </Text>
+
+          <Text style={styles.downName}>{value?.service?.description} </Text>
+        </View>
+        <View>
+          <Text style={styles.LatestName}>
+            <MaterialIcons
+              style={styles.arrowrightName}
+              name="keyboard-arrow-right"
+              size={20}
+            />
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView style={styles.mainContainer}>
+    <View style={styles.mainContainer}>
       <View style={styles.mainScroll}>
         <View>
-          <Header />
           <Text style={styles.morning}>{greet}</Text>
-          <Text style={styles.UserName}>Kelechi Adekunle</Text>
+          <Text style={styles.UserName}>{user?.displayName}</Text>
         </View>
 
-        <BannerSlider />
+        <BannerSlider loading={loading} />
       </View>
       <TouchableOpacity
         style={styles.Badge}
         onPress={() => navigation.navigate("Schedule")}>
         <Text style={styles.schedule}>New verification schedule </Text>
-        <Badge value="2" status="warning" />
+        <Badge value={Schedule?.data?.lenght} status="warning" />
       </TouchableOpacity>
       <View style={styles.verifications}>
         <Text style={styles.schedule1}>Latest verifications</Text>
@@ -69,139 +228,32 @@ const Home = () => {
       </View>
       {/* Address Section */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon}>
-            <Text>
-              <AntDesign style={styles.idcard} name="idcard" size={12} />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Desmond Kelvin</Text>
-            <Text style={styles.downName}>
-              Employee verification (2days ago)
-            </Text>
-          </View>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
           <View>
-            <Text style={styles.LatestName}>
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
+            {datav?.data?.map((item, index) => {
+              return (
+                // @ts-ignore
+                <TouchableOpacity
+                  style={styles.cardView}
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate("Modal", {
+                      screen: "ModalScreen",
+                      image: item.image,
+                    })
+                  }>
+                  <Card key={index} value={item} />
+                </TouchableOpacity>
+              );
+            })}
+            
           </View>
-        </View>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon2}>
-            <Text>
-              <Entypo style={styles.idcard2} name="location" size={12} />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Fegor Bola</Text>
-            <Text style={styles.downName}>Tenant verification (2days ago)</Text>
-          </View>
-          <View>
-            <Text style={styles.LatestName}> 
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
-          </View>
-        </View>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon3}>
-            <Text>
-              <Ionicons style={styles.idcard3} name="business" size={12} />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Blessing King</Text>
-            <Text style={styles.downName}>PWA verification (2days ago)</Text>
-          </View>
-          <View>
-            <Text style={styles.LatestName}>
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
-          </View>
-        </View>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon2}>
-            <Text>
-              <Entypo style={styles.idcard2} name="location" size={12} />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Kenneth Jennifer</Text>
-            <Text style={styles.downName}>Tenant verification (2days ago)</Text>
-          </View>
-          <View>
-            <Text style={styles.LatestName}>
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
-          </View>
-        </View>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon}>
-            <Text>
-              <AntDesign style={styles.idcard} name="idcard" size={12} />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Grace Adora</Text>
-            <Text style={styles.downName}>
-              Employee verification (3days ago)
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.LatestName}>
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
-          </View>
-        </View>
-        <View style={styles.LatestView}>
-          <View style={styles.viewIcon4}>
-            <Text>
-              <FontAwesome5
-                style={styles.idcard4}
-                name="people-arrows"
-                size={12}
-              />
-            </Text>
-          </View>
-          <View style={styles.UpNamedownName}>
-            <Text style={styles.UpName}>Bukola Adenike</Text>
-            <Text style={styles.downName}>
-              Guarantor verification (3days ago)
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.LatestName}>
-              <MaterialIcons
-                style={styles.arrowrightName}
-                name="keyboard-arrow-right"
-                size={20}
-              />
-            </Text>
-          </View>
-        </View>
+        )}
       </ScrollView>
       {/* <Footer /> */}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -323,6 +375,7 @@ const styles = StyleSheet.create({
   Badge: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     padding: 15,
     marginTop: 5,
     backgroundColor: "#FEEAEA",
@@ -355,6 +408,6 @@ const styles = StyleSheet.create({
 
   mainScroll: {
     padding: 10,
-    maxHeight: 270,
+    maxHeight: 230,
   },
 });

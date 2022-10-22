@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,7 +14,7 @@ const Header = () => {
             <MaterialIcons name="notifications-on" size={30} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.profileImage} onPress={() => navigation.navigate('Accounts')}>
-            <ImageBackground style={styles.imageHeader} source={require('../assets/images/john.png')} />
+            <Image style={styles.imageHeader} source={require('../assets/images/john.png')} />
         </TouchableOpacity>
     </View>
 };

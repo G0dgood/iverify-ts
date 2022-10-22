@@ -25,8 +25,13 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from '@expo-google-fonts/poppins';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppStack from './AppStack';
+import { useAppDispatch, useAppSelector } from '../hooks/useStore';
+import { setUserInfo } from '../features/authSlice';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-
+  const { user, isSuccess } = useAppSelector((state) => state.auth)
+  const dispatch = useAppDispatch();
   let [fontsLoaded] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,
@@ -48,6 +53,22 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     Poppins_900Black_Italic,
   });
 
+  React.useEffect(() => {
+    userInfo();
+  }, [isSuccess]);
+
+
+  const userInfo = async () => {
+    try {
+      const info: any = await AsyncStorage.getItem('user')
+
+      dispatch(setUserInfo(JSON.parse(info)))
+    }
+    catch (e) {
+      console.log(`isLoggedIn in error ${e}`)
+    }
+  }
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -56,7 +77,11 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       <NavigationContainer
         linking={LinkingConfiguration}
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AuthStack />
+        {!user ?
+          <AuthStack />
+          :
+          <AppStack />
+        }
       </NavigationContainer>
     );
   }

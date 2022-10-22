@@ -39,8 +39,7 @@ const Notification = () => {
   generateBoxShadowStyle(-3, 1, '#171717', 0.2, 4, 4, '#171717');
 
   return (
-    <SafeAreaView style={styles.NotificationContainer} >
-      <HeaderTwo Titles={'NOTIFICATION'} navigates={'Home'} />
+    <View style={styles.NotificationContainer} >
       <ScrollView style={styles.ScrollView}>
         {/* @ts-ignore */}
         <View style={[styles.NotifyHead, styles.boxShadow]} >
@@ -132,7 +131,7 @@ const Notification = () => {
 
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
 
   );
 };

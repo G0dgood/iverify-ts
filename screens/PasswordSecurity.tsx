@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,  SafeAreaView,  TextInput, TouchableOpacity, Dimensions, ScrollView, Platform } from 'react-native';
+import { StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Dimensions, ScrollView, Platform } from 'react-native';
 import HeaderThree from '../components/HeaderThree';
 import Feather from 'react-native-vector-icons/Feather';
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -26,10 +26,9 @@ const PasswordSecurity = () => {
 
 
   return (
-    <SafeAreaView style={styles.PasswordSecurityContainer}>
+    <View style={styles.PasswordSecurityContainer}>
       <ScrollView>
         <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false}>
-          <HeaderThree Titles={'SECURITY'} navigate={'Accounts'} />
           <View style={styles.PasswordSecurityIconContainer}>
             <Text style={styles.PasswordSecurityIcon}>
               <Feather name="lock" size={60} />
@@ -51,7 +50,7 @@ const PasswordSecurity = () => {
             <AwesomeAlert
               show={showAlert1}
               showProgress={false}
-            // @ts-ignore  
+              // @ts-ignore  
               title={image}
               titleStyle={styles.titleStyle}
               contentContainerStyle={styles.container}
@@ -76,7 +75,7 @@ const PasswordSecurity = () => {
           </View>
         </KeyboardAwareScrollView>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

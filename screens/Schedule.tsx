@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import HeaderTwo from "../components/HeaderTwo";
 import {
   StyleSheet,
-  
-  SafeAreaView,
- 
   ScrollView,
   TouchableOpacity,
   Platform,
@@ -17,6 +13,9 @@ import { Dimensions } from "react-native";
 export const WIDTH2 = Dimensions.get("window").width - 40;
 export const arrow2 = Dimensions.get("window").width - 125;
 import Modal from "react-native-modal";
+import { useAppSelector } from "../hooks/useStore";
+import { useRoute } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 export const SLIDER_WIDTH = Dimensions.get("window").width - 80;
 export const SLIDER_WIDTH2 = Dimensions.get("window").width - 250;
 export const button = Dimensions.get("window").width - 300;
@@ -24,49 +23,86 @@ export const Height1 = Dimensions.get("window").height - 470;
 export const Height2 = Dimensions.get("window").height - 330;
 
 const Schedule = ({ navigation }: any) => {
+  const route = useRoute();
+  // @ts-ignore
+  // const { id } = route.params;
+
+  const {
+    data,
+    isSuccess,
+    isLoading,
+  } = useAppSelector((state) => state.verify);
+
+
+
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-  const toggleModalClose = () => {
-    setModalVisible(isModalVisible);
-  };
+  // const toggleModal = () => {
+  //   setModalVisible(!isModalVisible);
+  // };
+  // const toggleModalClose = () => {
+  //   setModalVisible(isModalVisible);
+  // };
+  const handlesDetailsPage = () => {
+    navigation.navigate("DetailsPage")
+  }
+  // , { id }
+  // @ts-ignore
+  const Schedule = data?.data?.filter((obj) => {
+    return obj?.status !== "COMPLETED";
+  })
+  console.log('Schedule', Schedule?.requestId)
 
-  // onPress = { toggleModalClose }
   return (
-    <SafeAreaView style={styles.ScheduleContainer}>
-      {/* <HeaderTwo Titles={"SCHEDULES"} navigates={"Home"} /> */}
-      <ScrollView style={styles.ScheduleScrollView}>
-        <TouchableOpacity style={styles.ScheduleView} onPress={toggleModal}>
-          <View style={styles.ScheduleNameUp}>
-            <Text style={styles.ScheduleTextAlign}>
-              <AntDesign style={styles.idcard} name="idcard" size={10} />
-            </Text>
-          </View>
-          <View style={styles.ScheduleNameContainer}>
-            <View>
-              <Text style={styles.ScheduleNameTop}>
-                Desmond Kelvin
-                <Text style={styles.ScheduleNameTop2}> ₦2,500</Text>
-              </Text>
-              <Text style={styles.ScheduleNameBottom}>
-                Employee verification (2hrs ago)
-              </Text>
-            </View>
-            <View style={styles.ScheduleNameArrow}>
-              <Text>
-                <MaterialIcons
-                  style={styles.ScheduleArrowright}
-                  name="keyboard-arrow-right"
-                  size={25}
-                />
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+    <View style={styles.ScheduleContainer} lightColor="#fff" darkColor="#000">
 
-        <TouchableOpacity style={styles.ScheduleView}>
+      <ScrollView style={styles.ScheduleScrollView}>
+        {/* @ts-ignore */}
+        {Schedule?.map((item: any, index: any) => {
+          return (
+            <TouchableOpacity style={styles.ScheduleView} onPress={() => navigation.navigate("DetailsPage")}>
+              <View style={item?.service?.category === "EMPLOYEE"
+                ? styles.viewIcon
+                : item?.service?.category === "TENANT"
+                  ? styles.viewIcon2
+                  : styles.viewIcon3}>
+                <Text style={styles.ScheduleTextAlign}>
+                  {item?.service?.category === "EMPLOYEE" ? (
+                    <AntDesign style={styles.idcard} name="idcard" size={12} />
+                  ) : item?.service?.category === "TENANT" ? (
+                    <Entypo style={styles.idcard2} name="location" size={12} />
+                  ) : (
+                    item?.service?.category === "CERTIFICATE" && (
+                      <Ionicons style={styles.idcard3} name="business" size={12} />
+                    )
+                  )}
+                </Text>
+              </View>
+              <View style={styles.ScheduleNameContainer}>
+                <View>
+                  <Text style={styles.ScheduleNameTop}>
+                    {item?.requester?.user?.firstName}{"  "}
+                    {item?.requester?.user?.lastName}{"  "}
+                    <Text style={styles.ScheduleNameTop2}>₦{item?.payment?.amount}</Text>
+                  </Text>
+                  <Text style={styles.ScheduleNameBottom}>
+                    {item?.service?.description}
+                  </Text>
+                </View>
+                <View style={styles.ScheduleNameArrow}>
+                  <Text>
+                    <MaterialIcons
+                      style={styles.ScheduleArrowright}
+                      name="keyboard-arrow-right"
+                      size={25}
+                    />
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )
+        })}
+        {/* <TouchableOpacity style={styles.ScheduleView}>
           <View style={styles.ScheduleNameUp2}>
             <Text style={styles.ScheduleTextAlign2}>
               <Entypo name="location" size={10} />
@@ -92,7 +128,7 @@ const Schedule = ({ navigation }: any) => {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View style={styles.centeredView}>
           <Modal
@@ -160,7 +196,7 @@ const Schedule = ({ navigation }: any) => {
                         <Text  >Amount:</Text>
                       </View>
                       <View>
-                        <Text  >₦2,500</Text>
+                        <Text >₦2,500</Text>
                       </View>
                     </View>
                   </View>
@@ -184,13 +220,23 @@ const Schedule = ({ navigation }: any) => {
           </Modal>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default Schedule;
 
 const styles = StyleSheet.create({
+
+  idcard2: {
+    color: "#51A3FF",
+  },
+  idcard3: {
+    color: "#FD937C",
+  },
+  idcard4: {
+    color: "#D777FB",
+  },
   ScheduleModalButtonText: {
     color: "#fff",
     fontFamily: "Poppins_600SemiBold",
@@ -369,24 +415,47 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
-  ScheduleNameUp2: {
-    height: 30,
-    width: 30,
-    backgroundColor: "#D9E8FD",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-  },
-  ScheduleNameUp: {
-    height: 30,
-    width: 30,
+  viewIcon: {
     backgroundColor: "#D9FDFB",
+    height: 30,
+    width: 30,
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
     margin: 10,
   },
+
+  viewIcon2: {
+    backgroundColor: "#D9E8FD",
+    height: 30,
+    width: 30,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 10,
+  },
+
+  viewIcon3: {
+    backgroundColor: "#FEEAEA",
+    height: 30,
+    width: 30,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 10,
+  },
+
+  viewIcon4: {
+    backgroundColor: "#F1D9FD",
+    height: 30,
+    width: 30,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 10,
+  },
+
+
 
   ScheduleNameContainer: {
     flexDirection: "row",

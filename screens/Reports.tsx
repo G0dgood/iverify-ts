@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
- 
   SafeAreaView,
   TextInput,
   ScrollView,
@@ -10,8 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { Text, View, } from '../components/Themed';
-import { Dimensions } from "react-native";
-import HeaderTwo from "../components/HeaderTwo";
+import { Dimensions } from "react-native"; 
 import ButtonToggleGroup from "react-native-button-toggle-group";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -37,8 +35,8 @@ const Reports = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.ReportsContainer}>
-      {/* <HeaderTwo Titles={"REPORTS"} navigates={"Home"} /> */}
+    <View style={styles.ReportsContainer} lightColor="#fff" darkColor="#000">
+      
       <View>
         <View style={styles.ButtonToggle}>
           {/* @ts-ignore */}
@@ -734,7 +732,7 @@ const Reports = ({ navigation }: any) => {
           </View>
         </Modal>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -999,8 +997,9 @@ const styles = StyleSheet.create({
   },
 
   ReportsContainer: {
-    // flex: 1,
+    flex: 1,
     height: "100%",
+    paddingTop: 30,
     // backgroundColor: "#fff",
   },
 });

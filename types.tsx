@@ -33,6 +33,7 @@ export type RootStackParamList = {
   Verification: undefined;
   ReportStatus: undefined;
   Schedule: undefined;
+  HomeD: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

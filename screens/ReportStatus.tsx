@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView,  StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import HeaderTwo from '../components/HeaderTwo';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Appbar, DarkTheme, DefaultTheme, Provider, Surface, ThemeProvider, }
@@ -54,8 +54,7 @@ const ReportStatus = () => {
  ];
 
  return (
-  <SafeAreaView style={styles.ReportStatusContainer}>
-   <HeaderTwo Titles={'Report Status'} navigates={'Reports'} />
+  <View style={styles.ReportStatusContainer}>
    <View style={styles.ReportStatus}>
     <Text style={styles.ReportStatusText}>STATUS:</Text>
     <Text style={styles.ReportStatusText2}>Pending</Text>
@@ -217,7 +216,7 @@ const ReportStatus = () => {
      </View>
     </KeyboardAwareScrollView>
    </ScrollView>
-  </SafeAreaView>
+  </View>
  );
 };
 
@@ -273,6 +272,7 @@ const styles = StyleSheet.create({
  },
 
  ReportStatusContainer: {
+  paddingTop: 30,
   // backgroundColor: '#fff',
   flex: 1,
 

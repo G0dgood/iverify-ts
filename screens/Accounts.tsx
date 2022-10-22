@@ -10,11 +10,21 @@ import { Text, View, } from '../components/Themed';
 import { Avatar } from "react-native-elements";
 import HeaderThree from "../components/HeaderThree";
 import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
+import { logoutUser } from "../features/authSlice";
+import { useAppSelector, useAppDispatch } from '../hooks/useStore';
+import * as Haptics from 'expo-haptics';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const WIDTH3 = Dimensions.get("window").width - 40;
 export const arrow3 = Dimensions.get("window").width - 120;
 // import { auth } from "../firebase/config";
 
 const Accounts = ({ navigation }: any) => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+
+  console.log('user', user)
+  // ojinnnakapascal + 2@gmail.com
+
   // const handleSignOut = () => {
   //   auth
   //     .signOut()
@@ -22,11 +32,33 @@ const Accounts = ({ navigation }: any) => {
   //       navigation.replace("Login");
   //     })
   //     .catch((error) => alert(error.message));
+
   // };
 
+  // const logoutUser = () => {
+  //   AsyncStorage.removeItem('user')
+  // }
+
+  // React.useEffect(() => {
+  //  setLoading(true);
+  //  axios
+  //   .get(baseUrl + `/projects/${itemId}`, config)
+  //   .then((res) => {
+  //    setProjectDetails(res.data);
+  //    setViews(res?.data);
+  //    setLoading(false);
+  //   })
+  //   .catch((err) => {
+  //    console.log(err);
+  //    setMessages(err?.message);
+  //    setLoading(false);
+  //    setError(true);
+  //   });
+  //  return () => {
+  //  };
+  // }, []);
   return (
-    <SafeAreaView style={styles.AccountsContainer}>
-      <HeaderThree Titles={"MY ACCOUNT"} navigate={"Home"} />
+    <View style={styles.AccountsContainer}>
       <View style={styles.Avater}>
         <View style={styles.AvaterImage}>
           {/* @ts-ignore */}
@@ -37,20 +69,20 @@ const Accounts = ({ navigation }: any) => {
             title="Profile"
             containerStyle={{ backgroundColor: "grey" }}>
             <View style={styles.AvaterAccessoryIcon}>
-              <Text>
-                <Ionicons name="camera-outline" size={22} />
-              </Text>
+
+              <Ionicons name="camera-outline" size={22} />
+
             </View>
           </Avatar>
         </View>
       </View>
 
       <View style={styles.AvaterID}>
-        <Text style={styles.AvaterIDText}>AGENT ID: IVA1197</Text>
+        <Text style={styles.AvaterIDText}>{user?.email} </Text>
       </View>
 
       <View style={styles.AvaterID2}>
-        <Text style={styles.AvaterIDText2}>Kelechi Adekunle</Text>
+        <Text style={styles.AvaterIDText2}>{user?.displayName} </Text>
       </View>
 
       <TouchableOpacity
@@ -125,10 +157,11 @@ const Accounts = ({ navigation }: any) => {
         </View>
       </TouchableOpacity>
       {/* onPress={handleSignOut} */}
-      <TouchableOpacity style={styles.AvaterIDInfo2} >
+      {/* @ts-ignore */}
+      <TouchableOpacity style={styles.AvaterIDInfo2} onPress={() => dispatch(logoutUser(), Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy))}>
         <Text style={styles.logoutText}>Sign Out</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -207,6 +240,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Poppins_400Regular",
     color: "#007AFF",
+    width: "100%"
   },
   AvaterIDText2: {
     textAlign: "center",
@@ -216,11 +250,12 @@ const styles = StyleSheet.create({
   },
 
   AvaterID: {
-    width: 130,
     height: 18,
     backgroundColor: "#D9E8FD",
     alignSelf: "center",
     marginTop: 15,
+    borderRadius: 10,
+    paddingHorizontal:4
   },
   AvaterID2: {
     alignSelf: "center",
@@ -234,7 +269,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: -8,
     bottom: 20,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet,   SafeAreaView, TouchableOpacity,   Dimensions, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, TextInput, ScrollView } from 'react-native';
 import HeaderTwo from '../components/HeaderTwo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNPickerSelect from 'react-native-picker-select';
@@ -40,10 +40,10 @@ const Support = () => {
 
 
   return (
-    <SafeAreaView style={styles.SupportContainer}  >
+    <View style={styles.SupportContainer}  >
       <ScrollView>
         <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false}>
-          <HeaderTwo Titles={'SUPPORT'} navigates={'Accounts'} />
+
 
           <View style={styles.SupportImageContainer}>
             <Text>
@@ -120,7 +120,7 @@ const Support = () => {
           }} />
       </View>
 
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -274,8 +274,8 @@ const styles = StyleSheet.create({
 
   },
 
-  SupportContainer: {
-    // backgroundColor: '#fff',
+  SupportContainer: { 
+    paddingTop:30,
     flex: 1,
   }
 
