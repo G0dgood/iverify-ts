@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { Text, View, } from '../components/Themed';
-import { Dimensions } from "react-native"; 
+import { Dimensions } from "react-native";
 import ButtonToggleGroup from "react-native-button-toggle-group";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -21,8 +21,12 @@ export const SLIDER_WIDTH = Dimensions.get("window").width - 80;
 export const WIDTH = Dimensions.get("window").width - 40;
 export const arrow = Dimensions.get("window").width - 125;
 import Checkbox from "expo-checkbox";
+import { useAppSelector } from "../hooks/useStore";
 
 const Reports = ({ navigation }: any) => {
+
+  const { data, isSuccess, isLoading, } = useAppSelector((state) => state.verify);
+
   const [value, setValue] = React.useState("Employee");
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -34,9 +38,18 @@ const Reports = ({ navigation }: any) => {
     setModalVisible(!isModalVisible);
   };
 
+  // @ts-ignore
+  const info = data?.data?.filter((obj) => {
+    return obj?.service?.category === "EMPLOYEE";
+  });
+
+  console.log('info', info[0]?.createdAt)
+
+
+
   return (
     <View style={styles.ReportsContainer} lightColor="#fff" darkColor="#000">
-      
+
       <View>
         <View style={styles.ButtonToggle}>
           {/* @ts-ignore */}
@@ -46,7 +59,7 @@ const Reports = ({ navigation }: any) => {
             // inactiveBackgroundColor={'#aaa'}
             style={styles.Toggle}
             inactiveTextColor={"#BEC3D5"}
-            values={["Employee", "Guarantor", "PWA", "Tenant"]}
+            values={["Employee", "Certificate", "Tenant"]}
             value={value}
             onSelect={(val) => setValue(val)}
           />
@@ -70,152 +83,51 @@ const Reports = ({ navigation }: any) => {
           {/* <!-- Table starts here --> */}
           {value === "Employee" && (
             <View>
-              <TouchableOpacity
-                style={styles.FiterView}
-                onPress={() => navigation.navigate("ReportStatus")}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Chioma Gregg</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
+              {info === undefined ?
+                <View style={styles.mainEmoji}>
+                  <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+                </View> :
+                info?.data?.map((item: any, index: any) => {
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.FiterView}
+                    onPress={() => navigation.navigate("ReportStatus")}>
+                    <View style={styles.FiterNameUp}>
+                      <Text >
+                        <AntDesign
+                          style={styles.EmployeeIcon}
+                          name="idcard"
+                          size={10}
+                        />
+                      </Text>
+                    </View>
+                    <View style={styles.FiterNameContainer}>
+                      <View>
+                        <Text style={styles.FiterNameTop}>
+                          {item?.requester?.user?.firstName}{" "}
+                          {item?.requester?.user?.lastName}
+                        </Text>
+                        <Text style={styles.FiterNameBottom}>
+                          Employee verification (2hrs ago)
+                        </Text>
+                      </View>
+                      <View style={styles.FiterNameArrow}>
+                        <Text>
+                          <MaterialIcons
+                            style={styles.FiterArrowright}
+                            name="keyboard-arrow-right"
+                            size={25}
+                          />
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                })
+              }
 
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Desmond Kelvin</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
 
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Esosah Rume</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
 
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Zita Ikenna</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
 
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Henry James</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
             </View>
           )}
           {value === "Guarantor" && (
@@ -739,6 +651,14 @@ const Reports = ({ navigation }: any) => {
 export default Reports;
 
 const styles = StyleSheet.create({
+
+  mainEmoji: {
+    margin: 100,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
   Toggle: {
     // shadowOffset: 'red'
   },

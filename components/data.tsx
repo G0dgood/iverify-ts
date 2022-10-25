@@ -7,13 +7,13 @@ export const data = [
     //     cent: '.00'
     // },
     {
-        title: 'Pending Verifications',
-        body: '10',
+        title: 'Total Verifications',
+        body: '75',
 
     },
     {
-        title: 'Total Verifications',
-        body: '75',
+        title: 'Pending Verifications',
+        body: '10',
 
     },
     {

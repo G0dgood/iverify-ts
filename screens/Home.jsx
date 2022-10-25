@@ -127,8 +127,6 @@ const Home = () => {
     return obj?.status !== "COMPLETED";
   });
 
-  console.log("COMPLETED", user?.idToken);
-
   const getHour = () => {
     const date = new Date();
     const hour = date.getHours();
@@ -147,7 +145,7 @@ const Home = () => {
 
   // obj?.status !== "COMPLETED";
   console.log(Object[info]?.length);
-  console.log("Schedule", datav?.data);
+  console.log("Schedule", datav);
 
   const Card = ({ value }) => {
     return (
@@ -232,23 +230,28 @@ const Home = () => {
           <Skeleton />
         ) : (
           <View>
-            {datav?.data?.map((item, index) => {
-              return (
-                // @ts-ignore
-                <TouchableOpacity
-                  style={styles.cardView}
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate("Modal", {
-                      screen: "ModalScreen",
-                      image: item.image,
-                    })
-                  }>
-                  <Card key={index} value={item} />
-                </TouchableOpacity>
-              );
-            })}
-            
+            {datav === null ? (
+              <View style={styles.mainEmoji}>
+                <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+              </View>
+            ) : (
+              datav?.data?.map((item, index) => {
+                return (
+                  // @ts-ignore
+                  <TouchableOpacity
+                    style={styles.cardView}
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate("Modal", {
+                        screen: "ModalScreen",
+                        image: item?.image,
+                      })
+                    }>
+                    <Card key={index} value={item} />
+                  </TouchableOpacity>
+                );
+              })
+            )}
           </View>
         )}
       </ScrollView>
@@ -260,6 +263,13 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  mainEmoji: {
+    margin: 100,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
   schedule1: {
     fontSize: 15,
     fontFamily: "Poppins_400Regular",

@@ -15,14 +15,13 @@ import { useAppSelector, useAppDispatch } from '../hooks/useStore';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const WIDTH3 = Dimensions.get("window").width - 40;
-export const arrow3 = Dimensions.get("window").width - 120;
-// import { auth } from "../firebase/config";
+export const arrow3 = Dimensions.get("window").width - 120; 
 
 const Accounts = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  console.log('user', user)
+  
   // ojinnnakapascal + 2@gmail.com
 
   // const handleSignOut = () => {
@@ -39,24 +38,7 @@ const Accounts = ({ navigation }: any) => {
   //   AsyncStorage.removeItem('user')
   // }
 
-  // React.useEffect(() => {
-  //  setLoading(true);
-  //  axios
-  //   .get(baseUrl + `/projects/${itemId}`, config)
-  //   .then((res) => {
-  //    setProjectDetails(res.data);
-  //    setViews(res?.data);
-  //    setLoading(false);
-  //   })
-  //   .catch((err) => {
-  //    console.log(err);
-  //    setMessages(err?.message);
-  //    setLoading(false);
-  //    setError(true);
-  //   });
-  //  return () => {
-  //  };
-  // }, []);
+ 
   return (
     <View style={styles.AccountsContainer}>
       <View style={styles.Avater}>
@@ -78,10 +60,12 @@ const Accounts = ({ navigation }: any) => {
       </View>
 
       <View style={styles.AvaterID}>
+         {/* @ts-ignore */}
         <Text style={styles.AvaterIDText}>{user?.email} </Text>
       </View>
 
       <View style={styles.AvaterID2}>
+        {/* @ts-ignore */}
         <Text style={styles.AvaterIDText2}>{user?.displayName} </Text>
       </View>
 
