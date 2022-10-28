@@ -40,12 +40,15 @@ const DetailsPage = () => {
 				setLoading(false);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log('err', err);
 				setMessages(err?.message);
 				setLoading(false);
 				setisError(true);
 			});
 	}, [user?.idToken]);
+
+	const [datax, setdatax] = useState<any>([]);
+
 
 
 
@@ -63,7 +66,15 @@ const DetailsPage = () => {
 	}, []);
 
 	console.log('Details', data)
-
+	useEffect(() => {
+		if (data) {
+			try {
+				setdatax(data?.employees);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	}, [data]);
 
 	return (
 		<View style={styles.container}>
@@ -71,10 +82,14 @@ const DetailsPage = () => {
 			<View style={styles.pdetailsContainer} lightColor="#eee" darkColor="rgba(255,255,255,0.1)">
 
 				<View style={styles.generaldetailsContainer}>
+
 					<View style={styles.generaldetail}  >
-						<View>
-							<Text style={styles.pldetailsTitle}>{data?.employees[0]?.fullName}</Text>
-						</View>
+						{datax?.map((item: any, index: any) => (
+							<View key={index}>
+								<Text style={styles.pldetailsTitle}>{item?.fullName}</Text>
+							</View>
+						))}
+
 
 						{/* <View style={styles.pldetailsTitleSub}>
 							<View>
@@ -99,44 +114,65 @@ const DetailsPage = () => {
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >DETAILS</Text>
 						</View>
-
-						<View style={styles.PersonalInformationView}>
-							<View style={{ borderRadius: 5 }}>
-								<View style={styles.modalTextInput}>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>ID:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												{data?.employees[0]?.id}
-											</Text>
-										</View>
-									</View>
-
-									<View>
+						{datax?.map((item: any, index: any) => (
+							<View style={styles.PersonalInformationView} key={index}>
+								<View style={{ borderRadius: 5 }}>
+									<View style={styles.modalTextInput}>
 										<View style={styles.modalTextInputCOl}>
 											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Service:</Text>
+												<Text style={styles.infoInputColor}>ID:</Text>
 											</View>
 											<View>
 												<Text style={styles.infoInputColor}>
-													gggg
+													{item?.id}
+												</Text>
+											</View>
+										</View>
+
+										<View>
+											<View style={styles.modalTextInputCOl}>
+												<View style={styles.modalTextInputMargin}>
+													<Text style={styles.infoInputColor}>Service:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														gggg
+													</Text>
+												</View>
+											</View>
+											<View style={styles.modalTextInputCOl}>
+												<View><Text style={styles.infoInputColor}>Fee:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														gggg
+													</Text>
+												</View>
+											</View>
+											<View style={styles.modalTextInputCOl}>
+												<View>
+													<Text style={styles.infoInputColor}>Payment Reference:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														ffff
+													</Text>
+												</View>
+											</View>
+										</View>
+
+										<View style={styles.modalTextInputCOl}>
+											<View>
+												<Text style={styles.infoInputColor}>Status:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													{item?.status}
 												</Text>
 											</View>
 										</View>
 										<View style={styles.modalTextInputCOl}>
-											<View><Text style={styles.infoInputColor}>Fee:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>Payment Reference:</Text>
+											<View><Text style={styles.infoInputColor}>Created:</Text>
 											</View>
 											<View>
 												<Text style={styles.infoInputColor}>
@@ -145,214 +181,196 @@ const DetailsPage = () => {
 											</View>
 										</View>
 									</View>
-
-									<View style={styles.modalTextInputCOl}>
-										<View>
-											<Text style={styles.infoInputColor}>Status:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												{data?.employees[0]?.status}
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View><Text style={styles.infoInputColor}>Created:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ffff
-											</Text>
-										</View>
-									</View>
+								</View>
+								<View style={styles.buttom}   >
 								</View>
 							</View>
-							<View style={styles.buttom}   >
-							</View>
-						</View>
+						))}
 
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >REQUEST DETAILS</Text>
 						</View>
-						<View style={styles.PersonalInformationView}>
-							<View>
-								<View style={styles.modalTextInput}>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Status:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												{data?.employees[0]?.status}
-											</Text>
-										</View>
-									</View>
-
-									<View>
+						{datax?.map((item: any, index: any) => (
+							<View style={styles.PersonalInformationView} key={index}>
+								<View>
+									<View style={styles.modalTextInput}>
 										<View style={styles.modalTextInputCOl}>
 											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>BIODATA:</Text>
+												<Text style={styles.infoInputColor}>Status:</Text>
 											</View>
-											{/* <View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													{item?.status}
+												</Text>
+											</View>
+										</View>
+
+										<View>
+											<View style={styles.modalTextInputCOl}>
+												<View style={styles.modalTextInputMargin}>
+													<Text style={styles.infoInputColor}>BIODATA:</Text>
+												</View>
+												{/* <View>
 												<Text style={styles.infoInputColor}>
 													ffff
 												</Text>
 											</View> */}
+											</View>
+											<View style={styles.modalTextInputCOl}>
+												<View><Text style={styles.infoInputColor}>Full Name:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														{item?.fullName}
+													</Text>
+												</View>
+											</View>
+											<View style={styles.modalTextInputCOl}>
+												<View>
+													<Text style={styles.infoInputColor}>Phone No.:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														{item?.phoneNo === null ? "N/A" : item?.phoneNo}
+													</Text>
+												</View>
+											</View>
 										</View>
+
+
 										<View style={styles.modalTextInputCOl}>
-											<View><Text style={styles.infoInputColor}>Full Name:</Text>
+											<View>
+												<Text style={styles.infoInputColor}>National Identity Number (NIN):</Text>
 											</View>
 											<View>
 												<Text style={styles.infoInputColor}>
-													{data?.employees[0]?.fullName}
+													gggg
 												</Text>
 											</View>
 										</View>
 										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>Phone No.:</Text>
+											<View><Text style={styles.infoInputColor}>ADDRESS:</Text>
+											</View>
+											{/* <View>
+											<Text style={styles.infoInputColor}>
+												gggg
+											</Text>
+										</View> */}
+										</View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>ADDRESS:</Text>
 											</View>
 											<View>
 												<Text style={styles.infoInputColor}>
-													{data?.employees[0]?.phoneNo === null ? "N/A" : data?.employees[0]?.phoneNo}
+													ggg
 												</Text>
 											</View>
 										</View>
-									</View>
-
-
-									<View style={styles.modalTextInputCOl}>
-										<View>
-											<Text style={styles.infoInputColor}>National Identity Number (NIN):</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View><Text style={styles.infoInputColor}>ADDRESS:</Text>
-										</View>
-										{/* <View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View> */}
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>ADDRESS:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>WORK HISTORY</Text>
-										</View>
-										{/* <View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>WORK HISTORY</Text>
+											</View>
+											{/* <View>
 											<Text style={styles.infoInputColor}>
 												ggg
 											</Text>
 										</View> */}
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Residential address:</Text>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Residential address:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													ggg
+												</Text>
+											</View>
 										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>WORK HISTORY:</Text>
-										</View>
-										{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Previous Work Name:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Previous Work Address:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												{data?.employees[0]?.previousWorkName === null ? 'N/A' : data?.employees[0]?.previousWorkName}
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>GUARANTOR - 1:</Text>
-										</View>
-										{/* <View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>WORK HISTORY:</Text>
+											</View>
+											{/* <View>
 											<Text style={styles.infoInputColor}>
 												ggg
 											</Text>
 										</View> */}
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Full Name:</Text>
 										</View>
-										<View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Previous Work Name:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													ggg
+												</Text>
+											</View>
+										</View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Previous Work Address:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													{item?.previousWorkName === null ? 'N/A' : item?.previousWorkName}
+												</Text>
+											</View>
+										</View>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>GUARANTOR - 1:</Text>
+											</View>
+											{/* <View>
 											<Text style={styles.infoInputColor}>
 												ggg
 											</Text>
+										</View> */}
 										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Full Name:</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Full Name:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													ggg
+												</Text>
+											</View>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Full Name:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													ggg
+												</Text>
+											</View>
 										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Residential Address:</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Residential Address:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													ggg
+												</Text>
+											</View>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Date of birth:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												{data?.employees[0]?.dob === null ? 'N/A' : data?.employees[0]?.dob}
-											</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Date of birth:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													{item?.dob === null ? 'N/A' : item?.dob}
+												</Text>
+											</View>
 										</View>
 									</View>
 								</View>
 							</View>
-						</View>
+						))}
 						<View style={styles.buttom}   >
 						</View>
 
@@ -360,16 +378,16 @@ const DetailsPage = () => {
 							<Text style={styles.containerTitle} >
 								Requester</Text>
 						</View>
-
-						<View style={styles.PersonalInformationView}>
-							<View style={{ borderRadius: 5 }}>
-								<View style={styles.modalTextInput}>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
+						{datax?.map((item: any, index: any) => (
+							<View style={styles.PersonalInformationView} key={index}>
+								<View style={{ borderRadius: 5 }}>
+									<View style={styles.modalTextInput}>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
+											</View>
 										</View>
-									</View>
-									{/* <View style={styles.modalTextInputCOl}>
+										{/* <View style={styles.modalTextInputCOl}>
 										<View style={styles.modalTextInputMargin}>
 											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
 										</View>
@@ -380,94 +398,94 @@ const DetailsPage = () => {
 										</View>
 									</View> */}
 
-									<View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>First Name:</Text>
+										<View>
+											<View style={styles.modalTextInputCOl}>
+												<View style={styles.modalTextInputMargin}>
+													<Text style={styles.infoInputColor}>First Name:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														gggg
+													</Text>
+												</View>
 											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
+											<View style={styles.modalTextInputCOl}>
+												<View><Text style={styles.infoInputColor}>Last Name:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														gggg
+													</Text>
+												</View>
+											</View>
+											<View style={styles.modalTextInputCOl}>
+												<View>
+													<Text style={styles.infoInputColor}>Email:</Text>
+												</View>
+												<View>
+													<Text style={styles.infoInputColor}>
+														ffff
+													</Text>
+												</View>
 											</View>
 										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View><Text style={styles.infoInputColor}>Last Name:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>Email:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ffff
-												</Text>
-											</View>
-										</View>
-									</View>
 
-									<View style={styles.modalTextInputCOl}>
-										<View>
-											<Text style={styles.infoInputColor}>Date Joined:</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View>
+												<Text style={styles.infoInputColor}>Date Joined:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													fff
+												</Text>
+											</View>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												fff
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View>
-											<Text style={styles.infoInputColor}>WORKSPACE INFORMATION:</Text>
-										</View>
-										{/* <View>
+										<View style={styles.modalTextInputCOl}>
+											<View>
+												<Text style={styles.infoInputColor}>WORKSPACE INFORMATION:</Text>
+											</View>
+											{/* <View>
 											<Text style={styles.infoInputColor}>
 												ffff
 											</Text>
 										</View> */}
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Name:</Text>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Name:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													gggg
+												</Text>
+											</View>
 										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Domain:</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Domain:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													gggg
+												</Text>
+											</View>
 										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View>
-									</View>
-									<View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>Type:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
+										<View style={styles.modalTextInputCOl}>
+											<View style={styles.modalTextInputMargin}>
+												<Text style={styles.infoInputColor}>Type:</Text>
+											</View>
+											<View>
+												<Text style={styles.infoInputColor}>
+													gggg
+												</Text>
+											</View>
 										</View>
 									</View>
 								</View>
+								<View style={styles.buttom}   >
+								</View>
 							</View>
-							<View style={styles.buttom}   >
-							</View>
-						</View>
-
+						))}
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >
 								PAYMENT</Text>

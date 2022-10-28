@@ -58,6 +58,16 @@ const Home = () => {
     dispatch(allassignedrequest(user));
   }, [user]);
 
+  useEffect(() => {
+    if (datav) {
+      try {
+        setdata(datav);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [datav]);
+
   const baseUrl = "https://api-test.iverify.ng";
 
   useEffect(() => {
@@ -106,27 +116,31 @@ const Home = () => {
   //     });
   // }, [user?.idToken]);
 
-  // @ts-ignore
+  // // @ts-ignore
   const COMPLETED = data?.data?.filter((obj) => {
     return obj?.status === "COMPLETED";
   });
-  // @ts-ignore
+  // // @ts-ignore
   const ONGOING = data?.data?.filter((obj) => {
     return obj?.status === "ONGOING_VERIFICATION";
   });
-  // @ts-ignore
+  // // @ts-ignore
   const CANCELLED = data?.data?.filter((obj) => {
     return obj?.status === "CANCELLED";
   });
-  // @ts-ignore
+  // // @ts-ignore
   const REJECTED = data?.data?.filter((obj) => {
     return obj?.status === "REJECTED";
   });
-  // @ts-ignore
-  const pending3 = data?.data?.filter((obj) => {
+  // // @ts-ignore
+  const pending = data?.data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   });
 
+  const Schedule = data?.data?.filter((obj) => {
+    return obj?.status !== "COMPLETED";
+  });
+  // console.log("pending", pending?.length);
   const getHour = () => {
     const date = new Date();
     const hour = date.getHours();
@@ -137,15 +151,9 @@ const Home = () => {
   };
 
   // @ts-ignore
-  const info = datav?.data?.filter((obj) => {
-    return obj?.status === "COMPLETED";
-  });
-  // @ts-ignore
-  const Schedule = Object.getOwnPropertyNames("status")?.length;
-
-  // obj?.status !== "COMPLETED";
-  console.log(Object[info]?.length);
-  console.log("Schedule", datav);
+  // const info = datav?.data?.filter((obj) => {
+  //   return obj?.status === "COMPLETED";
+  // });
 
   const Card = ({ value }) => {
     return (
@@ -190,7 +198,7 @@ const Home = () => {
       </View>
     );
   };
-
+  // #F2F1F6
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainScroll}>
@@ -199,13 +207,21 @@ const Home = () => {
           <Text style={styles.UserName}>{user?.displayName}</Text>
         </View>
 
-        <BannerSlider loading={loading} />
+        <BannerSlider
+          loading={loading}
+          count={datav?.count}
+          completed={COMPLETED?.length}
+          ongoing={ONGOING?.length}
+          canclled={CANCELLED?.length}
+          rejected={REJECTED?.length}
+          pending={pending?.length}
+        />
       </View>
       <TouchableOpacity
         style={styles.Badge}
         onPress={() => navigation.navigate("Schedule")}>
         <Text style={styles.schedule}>New verification schedule </Text>
-        <Badge value={Schedule?.data?.lenght} status="warning" />
+        <Badge value={!Schedule ? 0 : Schedule?.length} status="warning" />
       </TouchableOpacity>
       <View style={styles.verifications}>
         <Text style={styles.schedule1}>Latest verifications</Text>
@@ -239,11 +255,9 @@ const Home = () => {
                 return (
                   // @ts-ignore
                   <TouchableOpacity
-                    style={styles.cardView}
                     key={index}
                     onPress={() =>
-                      navigation.navigate("Modal", {
-                        screen: "ModalScreen",
+                      navigation.navigate("Reports", {
                         image: item?.image,
                       })
                     }>
@@ -273,6 +287,7 @@ const styles = StyleSheet.create({
   schedule1: {
     fontSize: 15,
     fontFamily: "Poppins_400Regular",
+    color: "#000",
   },
 
   // ViewLast: {

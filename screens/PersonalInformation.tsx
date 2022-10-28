@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,   TouchableOpacity, Alert, Platform } from 'react-native'; 
+import { StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ButtonToggleGroup from 'react-native-button-toggle-group';

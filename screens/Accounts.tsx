@@ -1,283 +1,214 @@
-import React from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Dimensions,
-  Platform,
-} from "react-native";
+import React from 'react';
+import { StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
 import { Text, View, } from '../components/Themed';
-import { Avatar } from "react-native-elements";
-import HeaderThree from "../components/HeaderThree";
-import { MaterialIcons, Feather, Ionicons } from "@expo/vector-icons";
-import { logoutUser } from "../features/authSlice";
+import { Entypo } from '@expo/vector-icons';
 import { useAppSelector, useAppDispatch } from '../hooks/useStore';
+import { logoutUser } from "../features/authSlice";
 import * as Haptics from 'expo-haptics';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-export const WIDTH3 = Dimensions.get("window").width - 40;
-export const arrow3 = Dimensions.get("window").width - 120; 
+const PersonalInformation = () => {
 
-const Accounts = ({ navigation }: any) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
-  
-  // ojinnnakapascal + 2@gmail.com
 
-  // const handleSignOut = () => {
-  //   auth
-  //     .signOut()
-  //     .then(() => {
-  //       navigation.replace("Login");
-  //     })
-  //     .catch((error) => alert(error.message));
 
-  // };
-
-  // const logoutUser = () => {
-  //   AsyncStorage.removeItem('user')
-  // }
-
- 
   return (
-    <View style={styles.AccountsContainer}>
-      <View style={styles.Avater}>
-        <View style={styles.AvaterImage}>
-          {/* @ts-ignore */}
-          <Avatar
-            size={120}
-            rounded
-            source={require("../assets/images/john.png")}
-            title="Profile"
-            containerStyle={{ backgroundColor: "grey" }}>
-            <View style={styles.AvaterAccessoryIcon}>
+    <View style={styles.PersonalInformationContainer} lightColor="#fff" darkColor="#000">
 
-              <Ionicons name="camera-outline" size={22} />
+      <View style={styles.InformationIconContainer}>
+        <Text>
+          <Entypo style={styles.userIcon1} name="user" size={70} />
+        </Text>
+      </View>
 
+      {/* Personal Information Section */}
+      <View>
+
+        <View style={styles.PersonalInformationView}>
+          <View  >
+            <View style={styles.modalTextInput}>
+              <View style={styles.modalTextInputCOl}>
+                <View style={styles.modalTextInputMargin}>
+                  <Text style={styles.infoInputColor}>First Name</Text></View>
+                <View>
+                  <Text style={styles.infoInputColor}>
+                    {/* @ts-ignore */}
+                    {user?.displayName}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modalTextInputCOl}>
+                <View><Text style={styles.infoInputColor}>Phone</Text></View>
+                <View>
+                  <Text style={styles.infoInputColor}>
+                    N/A
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modalTextInputCOl}>
+                <View><Text style={styles.infoInputColor}>Email</Text></View>
+                <View>
+                  <Text style={styles.infoInputColor}>
+                    {/* @ts-ignore */}
+                    {user?.email}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.modalTextInputCOl}>
+                <View><Text style={styles.infoInputColor}>Address</Text></View>
+                <View>
+                  <Text style={styles.infoInputColor}>
+                    N/A
+                  </Text>
+                </View>
+              </View>
             </View>
-          </Avatar>
+          </View>
+          {/* @ts-ignore */}
+          <TouchableOpacity style={styles.infoInputButton} onPress={() => dispatch(logoutUser(), Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy))} >
+            <Text style={styles.infoInputSaveButton}>Logout</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
-      <View style={styles.AvaterID}>
-         {/* @ts-ignore */}
-        <Text style={styles.AvaterIDText}>{user?.email} </Text>
-      </View>
-
-      <View style={styles.AvaterID2}>
-        {/* @ts-ignore */}
-        <Text style={styles.AvaterIDText2}>{user?.displayName} </Text>
-      </View>
-
-      <TouchableOpacity
-        style={styles.AvaterIDInfo}
-        onPress={() => navigation.navigate("PersonalInformation")}>
-        <View style={styles.AvaterIDColor}>
-          <Text style={styles.colorAvater}>
-            <Feather name="user" size={12} />
-          </Text>
-        </View>
-        <View style={styles.infoArrowLeft}>
-          <View>
-            <Text style={styles.AvaterIDColorText}>Personal information</Text>
-          </View>
-          <View style={styles.arrowrightMove}>
-            <Text>
-              <MaterialIcons
-                style={styles.arrowrightColor}
-                name="keyboard-arrow-right"
-                size={25}
-              />
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.AvaterIDInfo}
-        onPress={() => navigation.navigate("PasswordSecurity")}>
-        <View style={styles.AvaterIDColor}>
-          <Text style={styles.colorAvater}>
-            <Feather name="lock" size={12} />
-          </Text>
-        </View>
-        <View style={styles.infoArrowLeft}>
-          <View>
-            <Text style={styles.AvaterIDColorText}>Security</Text>
-          </View>
-          <View style={styles.arrowrightMove}>
-            <Text>
-              <MaterialIcons
-                style={styles.arrowrightColor}
-                name="keyboard-arrow-right"
-                size={25}
-              />
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.AvaterIDInfo}
-        onPress={() => navigation.navigate("Support")}>
-        <View style={styles.AvaterIDColor}>
-          <Text style={styles.colorAvater}>
-            <Feather name="headphones" size={12} />
-          </Text>
-        </View>
-        <View style={styles.infoArrowLeft}>
-          <View>
-            <Text style={styles.AvaterIDColorText}>Contact support</Text>
-          </View>
-          <View style={styles.arrowrightMove}>
-            <Text>
-              <MaterialIcons
-                style={styles.arrowrightColor}
-                name="keyboard-arrow-right"
-                size={25}
-              />
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      {/* onPress={handleSignOut} */}
-      {/* @ts-ignore */}
-      <TouchableOpacity style={styles.AvaterIDInfo2} onPress={() => dispatch(logoutUser(), Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy))}>
-        <Text style={styles.logoutText}>Sign Out</Text>
-      </TouchableOpacity>
     </View>
   );
-};
+}
 
-export default Accounts;
+export default PersonalInformation;
+
 
 const styles = StyleSheet.create({
-  logoutText: {
-    color: "#FF4622",
-    fontSize: 14,
-    fontFamily: "Poppins_600SemiBold",
-    // textAlign: 'center'
+  titleStyle: {
+    position: 'relative',
+    top: -20
   },
 
-  arrowrightMove: {
-    position: "absolute",
-    left: arrow3,
-  },
-
-  arrowrightColor: {
-    color: "#B1B5C5",
-  },
-
-  infoArrowLeft: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  colorAvater: {
-    color: "#007AFF",
-  },
-
-  AvaterIDColorText: {
-    fontSize: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    fontFamily: "Poppins_600SemiBold",
-  },
-
-  AvaterIDColor: {
-    width: 30,
-    height: 30,
-    backgroundColor: "#D9E8FD",
-    borderRadius: 50,
-    margin: 5,
-    marginRight: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#007AFF",
-  },
-
-  AvaterIDInfo2: {
-    height: 42,
-    borderColor: "#FEEAEA",
-    borderWidth: 0.8,
-    alignSelf: "center",
-    borderRadius: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    width: WIDTH3,
-    justifyContent: "center",
-    backgroundColor: "#FEEAEA",
-  },
-  AvaterIDInfo: {
-    height: 42,
-    borderColor: "#BEC3D5",
-    borderWidth: 0.8,
-    alignSelf: "center",
-    borderRadius: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-    width: WIDTH3,
-  },
-
-  AvaterIDText: {
-    textAlign: "center",
-    fontFamily: "Poppins_400Regular",
-    color: "#007AFF",
-    width: "100%"
-  },
-  AvaterIDText2: {
-    textAlign: "center",
-    fontSize: 24,
+  messageStyle: {
+    fontSize: 20,
+    fontWeight: '800',
+    width: 180,
+    textAlign: 'center',
     color: "#04224E",
-    fontFamily: "Poppins_600SemiBold",
+    position: 'relative',
+    bottom: 20
   },
 
-  AvaterID: {
-    height: 18,
-    backgroundColor: "#D9E8FD",
-    alignSelf: "center",
-    marginTop: 15,
-    borderRadius: 10,
-    paddingHorizontal:4
-  },
-  AvaterID2: {
-    alignSelf: "center",
-    marginTop: 8,
-    marginBottom: Platform.OS === "android" ? 20 : 42,
-  },
-
-  AvaterAccessoryIcon: {
-    height: 30,
-    width: 30,
-    position: "absolute",
-    right: -8,
+  cancelButton: {
+    backgroundColor: '#007AFF',
+    position: 'relative',
+    width: 181,
+    height: 39,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
     bottom: 20,
-    // backgroundColor: "#fff",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
-  AvaterImage: {
-    justifyContent: "center",
-    alignItems: "center",
+  container: {
+
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: '#fff',
+    width: 319,
+    height: 314,
+    borderRadius: 20,
+  },
+  button: {
+    margin: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 5,
+    backgroundColor: "#AEDEF4",
   },
 
-  Avater: {
-    height: 155,
-    width: 155,
-    backgroundColor: "#D9E8FD",
-    marginTop: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
+
+  infoInputSaveButton: {
+    fontWeight: 'bold',
+    color: "#FF4622",
+  },
+
+  infoInputButton: {
+    width: 255,
+    height: 39,
+    backgroundColor: "#FEEAEA",
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 26,
+    alignSelf: 'center',
+    borderRadius: 5,
+  },
+
+  PersonalInformationView: {
+    marginRight: 28,
+    marginLeft: 28,
+  },
+
+  infoInputColor: {
+    color: '#9CA5C5',
+    fontSize: 13,
+    fontFamily: 'Poppins_400Regular',
+
+  },
+
+
+  modalTextInputMargin: {
+    paddingRight: '10%',
+
+  },
+
+  modalTextInputCOl: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: Platform.OS === 'android' ? 12 : 20,
+    alignItems: 'flex-end',
+    borderBottomColor: '#BEC3D5',
+    borderBottomWidth: 1
+  },
+
+  modalTextInput: {
+
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+
+  },
+
+  ButtonToggleInfo: {
+    marginRight: 20,
+    marginLeft: 20,
+    backgroundColor: '#F6F6F6',
+    padding: 2,
+    borderRadius: 6,
+    borderColor: '#aaa',
+    marginBottom: 10,
+    borderWidth: 0.5,
+    marginTop: 20,
+  },
+
+  userIcon1: {
+    color: '#007AFF'
+  },
+  userIcon: {
+    color: '#32BEA6'
+  },
+
+  InformationIconContainer: {
+
+    width: 150,
+    height: 140,
+    backgroundColor: '#F2F8FF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 30,
     borderRadius: 100,
+
   },
 
-  AccountsContainer: {
-    height: "100%",
-    flexDirection: "column",
-    // backgroundColor: "#fff",
-  },
-});
+  PersonalInformationContainer: {
+    flex: 1,
+    // backgroundColor: '#fff'
+  }
+
+})

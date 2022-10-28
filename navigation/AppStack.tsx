@@ -66,7 +66,6 @@ function AuthStack() {
       headerStyle: { backgroundColor: Colors[colorScheme].TopTab },
       headerTintColor: Colors[colorScheme].headerTintColor,
       headerTitleStyle: { fontWeight: 'bold', fontFamily: 'Poppins_500Medium', },
-      headerShadowVisible: false,
     }}>
 
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
@@ -136,7 +135,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           headerTitle: '',
-          headerShadowVisible: false,
           tabBarIcon: ({ color, size }) => <Ionicons name="qr-code" color={color} size={size} />,
           headerRight: () => (
             <Pressable

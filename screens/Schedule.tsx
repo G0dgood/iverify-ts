@@ -48,7 +48,7 @@ const Schedule = ({ navigation }: any) => {
   const Schedule = data?.data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   })
-  console.log('Schedule', Schedule)
+  // console.log('Schedule', Schedule.length)
 
   return (
     <View style={styles.ScheduleContainer} lightColor="#fff" darkColor="#000">
@@ -82,6 +82,7 @@ const Schedule = ({ navigation }: any) => {
                   )}
                 </Text>
               </View>
+
               <View style={styles.ScheduleNameContainer}>
                 <View>
                   <Text style={styles.ScheduleNameTop}>
@@ -462,7 +463,6 @@ const styles = StyleSheet.create({
 
   ScheduleContainer: {
     flex: 1,
-    height: "100%",
     // backgroundColor: "#fff",
   },
 });
