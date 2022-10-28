@@ -13,6 +13,7 @@ import { Dimensions } from "react-native";
 export const WIDTH2 = Dimensions.get("window").width - 40;
 export const arrow2 = Dimensions.get("window").width - 125;
 import Modal from "react-native-modal";
+import { ProgressBar } from 'react-native-paper';
 import { useAppSelector } from "../hooks/useStore";
 import { useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -27,11 +28,7 @@ const Schedule = ({ navigation }: any) => {
   // @ts-ignore
   // const { id } = route.params;
 
-  const {
-    data,
-    isSuccess,
-    isLoading,
-  } = useAppSelector((state) => state.verify);
+  const { data, isLoading } = useAppSelector((state) => state.verify);
 
 
 
@@ -51,16 +48,23 @@ const Schedule = ({ navigation }: any) => {
   const Schedule = data?.data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   })
-  console.log('Schedule', Schedule?.requestId)
+  // console.log('Schedule', Schedule.length)
 
   return (
     <View style={styles.ScheduleContainer} lightColor="#fff" darkColor="#000">
+      {isLoading && <ProgressBar progress={0.3} color={'#007AFF'} indeterminate={isLoading} />}
 
       <ScrollView style={styles.ScheduleScrollView}>
         {/* @ts-ignore */}
-        {Schedule?.map((item: any, index: any) => {
+        {Schedule === undefined ? <View style={styles.mainEmoji}>
+          <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+        </View> : Schedule?.map((item: any, index: any) => {
           return (
-            <TouchableOpacity style={styles.ScheduleView} onPress={() => navigation.navigate("DetailsPage")}>
+            <TouchableOpacity style={styles.ScheduleView}
+              onPress={() => navigation.navigate("DetailsPage", {
+                requestId: item?.payment?.requestId,
+              })}
+              key={index}>
               <View style={item?.service?.category === "EMPLOYEE"
                 ? styles.viewIcon
                 : item?.service?.category === "TENANT"
@@ -78,6 +82,7 @@ const Schedule = ({ navigation }: any) => {
                   )}
                 </Text>
               </View>
+
               <View style={styles.ScheduleNameContainer}>
                 <View>
                   <Text style={styles.ScheduleNameTop}>
@@ -102,33 +107,7 @@ const Schedule = ({ navigation }: any) => {
             </TouchableOpacity>
           )
         })}
-        {/* <TouchableOpacity style={styles.ScheduleView}>
-          <View style={styles.ScheduleNameUp2}>
-            <Text style={styles.ScheduleTextAlign2}>
-              <Entypo name="location" size={10} />
-            </Text>
-          </View>
-          <View style={styles.ScheduleNameContainer}>
-            <View  >
-              <Text style={styles.ScheduleNameTop}>
-                Bukola Henry
-                <Text style={styles.ScheduleNameTop2}> ₦2,500</Text>
-              </Text>
-              <Text style={styles.ScheduleNameBottom}>
-                Address verification (2hrs ago)
-              </Text>
-            </View>
-            <View style={styles.ScheduleNameArrow}>
-              <Text>
-                <MaterialIcons
-                  style={styles.ScheduleArrowright}
-                  name="keyboard-arrow-right"
-                  size={25}
-                />
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity> */}
+
 
         <View style={styles.centeredView}>
           <Modal
@@ -227,6 +206,14 @@ const Schedule = ({ navigation }: any) => {
 export default Schedule;
 
 const styles = StyleSheet.create({
+
+  mainEmoji: {
+    margin: 100,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
 
   idcard2: {
     color: "#51A3FF",
@@ -476,7 +463,6 @@ const styles = StyleSheet.create({
 
   ScheduleContainer: {
     flex: 1,
-    height: "100%",
     // backgroundColor: "#fff",
   },
 });

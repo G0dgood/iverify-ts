@@ -1,13 +1,54 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native"
+import { StyleSheet, View, ActivityIndicator } from "react-native"
 import Carousel, { Pagination } from 'react-native-snap-carousel'
 import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from './CarouselCardItem'
-import { data } from './data'
 
-const CarouselCards = (loading: any) => {
+
+const CarouselCards = ({ loading, count, completed, ongoing, canclled, rejected, pending }: any) => {
 
   const isCarousel = React.useRef(null)
   const [index, setIndex] = React.useState(0)
+
+
+  const data = [
+
+    // {
+    //     title: 'Amount Earned',
+    //     body: '105,000',
+    //     naira: '₦',
+    //     cent: '.00'
+    // },
+    {
+      title: 'Total Verifications',
+      body: !count ? '0' : count,
+
+    },
+    {
+      title: 'Pending Verifications',
+      body: !pending ? '0' : pending,
+
+    },
+    {
+      title: 'Ongoing Verification',
+      body: !ongoing ? '0' : ongoing,
+
+    },
+    {
+      title: 'Cancelled',
+      body: !canclled ? '0' : canclled,
+
+    },
+    {
+      title: 'Rejected',
+      body: !rejected ? '0' : rejected,
+
+    },
+    {
+      title: 'Completed',
+      body: !completed ? 0 : completed,
+
+    },
+  ]
 
   return (
     <View>
@@ -41,7 +82,7 @@ const CarouselCards = (loading: any) => {
         />
       </View>
       <View style={styles.mainContainer}>
-        {loading === true && <ActivityIndicator color={"#fff"} />}
+        {loading ? <ActivityIndicator color={"#fff"} /> : null}
 
       </View>
     </View>

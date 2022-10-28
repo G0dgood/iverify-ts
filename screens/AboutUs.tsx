@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, TouchableOpacity, Linking } from 'react-native';
 import { FontAwesome, Zocial, Ionicons } from '@expo/vector-icons';
 import { Text, View, } from '../components/Themed';
 
@@ -36,12 +36,16 @@ const AboutUs = () => {
       </View>
       <View style={styles.textAddress}>
         <View style={styles.locationCover}>
-
           <Zocial name="email" size={30} style={styles.locationIcon} />
         </View>
-        <View style={styles.address}>
-          <Text style={styles.address}>info@iverify.ng</Text>
-          <Text style={styles.address}>support@iverify.ng</Text>
+        <View>
+          <TouchableOpacity style={styles.address} onPress={() => Linking.openURL('mailto:info@iverify.ng')}>
+            <Text style={styles.address}>info@iverify.ng</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.address} onPress={() => Linking.openURL('mailto:support@iverify.ng')}>
+            <Text style={styles.address}>support@iverify.ng </Text>
+          </TouchableOpacity>
+
         </View>
       </View>
     </View>
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     flex: 1,
     marginRight: 60,
-    fontFamily: 'Poppins_400Regular'
+    fontFamily: 'Poppins_400Regular',
   },
 
   locationIcon: {

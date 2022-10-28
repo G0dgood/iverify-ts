@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  Platform,
+ StyleSheet,
+ SafeAreaView,
+ TextInput,
+ ScrollView,
+ TouchableOpacity,
+ Alert,
+ Platform,
 } from "react-native";
 import { Text, View, } from '../components/Themed';
-import { Dimensions } from "react-native"; 
+import { Dimensions } from "react-native";
 import ButtonToggleGroup from "react-native-button-toggle-group";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -21,985 +21,582 @@ export const SLIDER_WIDTH = Dimensions.get("window").width - 80;
 export const WIDTH = Dimensions.get("window").width - 40;
 export const arrow = Dimensions.get("window").width - 125;
 import Checkbox from "expo-checkbox";
+import { useAppSelector } from "../hooks/useStore";
+import { ProgressBar } from "react-native-paper";
 
 const Reports = ({ navigation }: any) => {
-  const [value, setValue] = React.useState("Employee");
-  const [isModalVisible, setModalVisible] = useState(false);
 
-  const [isChecked1, setChecked1] = useState(false);
-  const [isChecked2, setChecked2] = useState(false);
-  const [isChecked3, setChecked3] = useState(false);
+ const { data, isLoading, } = useAppSelector((state) => state.verify);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+ const [value, setValue] = React.useState("Employee");
+ const [isModalVisible, setModalVisible] = useState(false);
 
+ const [isChecked1, setChecked1] = useState(false);
+ const [isChecked2, setChecked2] = useState(false);
+ const [isChecked3, setChecked3] = useState(false);
+
+ const toggleModal = () => {
+  setModalVisible(!isModalVisible);
+ };
+
+ // @ts-ignore
+ const info = data?.data?.filter((obj) => {
+  return obj?.service?.category?.toLowerCase() === value.toLowerCase();
+ });
+
+
+
+ const Card = ({ value }: any) => {
   return (
-    <View style={styles.ReportsContainer} lightColor="#fff" darkColor="#000">
-      
-      <View>
-        <View style={styles.ButtonToggle}>
-          {/* @ts-ignore */}
-          <ButtonToggleGroup
-            highlightBackgroundColor={"#fff"}
-            highlightTextColor={"#007AFF"}
-            // inactiveBackgroundColor={'#aaa'}
-            style={styles.Toggle}
-            inactiveTextColor={"#BEC3D5"}
-            values={["Employee", "Guarantor", "PWA", "Tenant"]}
-            value={value}
-            onSelect={(val) => setValue(val)}
-          />
-        </View>
-        <View style={styles.FiterToggle}>
-          <View style={styles.FiterToggleSearch}>
-            <TextInput
-              placeholder="Search here "
-              placeholderTextColor="#BEC3D5"
-              style={styles.Fiterinput}
-            />
-            <Ionicons style={styles.FiterSearchIcon} name="search" size={20} />
-          </View>
-          <View style={styles.SearchIconBtn}>
-            <TouchableOpacity onPress={toggleModal}>
-              <Ionicons style={styles.FiterBtnIcon} name="filter" size={25} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <ScrollView style={styles.FiterScrollView}>
-          {/* <!-- Table starts here --> */}
-          {value === "Employee" && (
-            <View>
-              <TouchableOpacity
-                style={styles.FiterView}
-                onPress={() => navigation.navigate("ReportStatus")}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Chioma Gregg</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Desmond Kelvin</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Esosah Rume</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Zita Ikenna</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp}>
-                  <Text >
-                    <AntDesign
-                      style={styles.EmployeeIcon}
-                      name="idcard"
-                      size={10}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Henry James</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Employee verification (2hrs ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
-          {value === "Guarantor" && (
-            <View>
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp2}>
-                  <Text >
-                    <FontAwesome5
-                      style={styles.GuarantorIcon}
-                      name="people-arrows"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Bukola Adenike</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Guarantor verification (3days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp2}>
-                  <Text >
-                    <FontAwesome5
-                      style={styles.GuarantorIcon}
-                      name="people-arrows"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Blessing Gibson</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Guarantor verification (3days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp2}>
-                  <Text >
-                    <FontAwesome5
-                      style={styles.GuarantorIcon}
-                      name="people-arrows"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Faith Okoli</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Guarantor verification (3days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp2}>
-                  <Text >
-                    <FontAwesome5
-                      style={styles.GuarantorIcon}
-                      name="people-arrows"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Zita Ikenna</Text>
-                    <Text style={styles.FiterNameBottom}>Damilola Agbaje</Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp2}>
-                  <Text >
-                    <FontAwesome5
-                      style={styles.GuarantorIcon}
-                      name="people-arrows"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Fegor John</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Guarantor verification (3days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
-          {value === "PWA" && (
-            <View>
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp3}>
-                  <Text >
-                    <Ionicons
-                      style={styles.PwaIcon}
-                      name="business"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Pascal Godwin</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      PWA verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp3}>
-                  <Text >
-                    <Ionicons
-                      style={styles.PwaIcon}
-                      name="business"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Loveth Lloyd</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      PWA verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp3}>
-                  <Text >
-                    <Ionicons
-                      style={styles.PwaIcon}
-                      name="business"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Fred Amah</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      PWA verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp3}>
-                  <Text >
-                    <Ionicons
-                      style={styles.PwaIcon}
-                      name="business"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Gilbert Nwanya</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      PWA verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp3}>
-                  <Text >
-                    <Ionicons
-                      style={styles.PwaIcon}
-                      name="business"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Arinzechukwu Okoro</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      PWA verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
-          {value === "Tenant" && (
-            <View>
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp4}>
-                  <Text >
-                    <Entypo
-                      style={styles.TenantIcon}
-                      name="location"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Kenneth Jennifer</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Tenant verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp4}>
-                  <Text >
-                    <Entypo
-                      style={styles.TenantIcon}
-                      name="location"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>
-                      Onyinyechukwu Joshua
-                    </Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Tenant verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp4}>
-                  <Text >
-                    <Entypo
-                      style={styles.TenantIcon}
-                      name="location"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Tammy May</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Tenant verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp4}>
-                  <Text >
-                    <Entypo
-                      style={styles.TenantIcon}
-                      name="location"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Hope Daniel</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Tenant verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.FiterView}>
-                <View style={styles.FiterNameUp4}>
-                  <Text >
-                    <Entypo
-                      style={styles.TenantIcon}
-                      name="location"
-                      size={12}
-                    />
-                  </Text>
-                </View>
-                <View style={styles.FiterNameContainer}>
-                  <View>
-                    <Text style={styles.FiterNameTop}>Edidiong Bassey</Text>
-                    <Text style={styles.FiterNameBottom}>
-                      Tenant verification (2days ago)
-                    </Text>
-                  </View>
-                  <View style={styles.FiterNameArrow}>
-                    <Text>
-                      <MaterialIcons
-                        style={styles.FiterArrowright}
-                        name="keyboard-arrow-right"
-                        size={25}
-                      />
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
-        </ScrollView>
-      </View>
-      <View style={styles.centeredView}>
-        <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => setModalVisible(false)}
-          style={{ flex: 1 }}>
-          <View>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>FILTER REPORTS</Text>
-                <View style={styles.modalTextInput}>
-                  <View style={styles.modalTextInputCOl}>
-                    <View style={styles.modalTextInputMargin}>
-                      <Text style={styles.modalInputColor}>Approved</Text>
-                    </View>
-                    <View>
-                      <Text>
-                        <Checkbox
-                          style={styles.checkbox}
-                          value={isChecked1}
-                          onValueChange={setChecked1}
-                          color={isChecked1 ? "#007AFF" : undefined}
-                        />
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.modalTextInputCOl}>
-                    <View>
-                      <Text style={styles.modalInputColor}>Pending</Text>
-                    </View>
-                    <View>
-                      <Text>
-                        <Checkbox
-                          style={styles.checkbox}
-                          value={isChecked2}
-                          onValueChange={setChecked2}
-                          color={isChecked2 ? "#007AFF" : undefined}
-                        />
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.modalTextInputCOl}>
-                    <View>
-                      <Text style={styles.modalInputColor}>Disapproved</Text>
-                    </View>
-                    <View>
-                      <Text>
-                        <Checkbox
-                          style={styles.checkbox}
-                          value={isChecked3}
-                          onValueChange={setChecked3}
-                          color={isChecked3 ? "#007AFF" : undefined}
-                        />
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={styles.modalButton}
-                  onPress={() =>
-                    Alert.alert("Button with adjusted color pressed")
-                  }>
-                  <Text style={styles.modalButtonColor}>APPLY FILTER</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
+   <View style={styles.LatestView}>
+    <View
+     style={
+      value?.service?.category === "EMPLOYEE"
+       ? styles.viewIcon
+       : value?.service?.category === "TENANT"
+        ? styles.viewIcon2
+        : styles.viewIcon3
+     }>
+     <Text>
+      {value?.service?.category === "EMPLOYEE" ? (
+       <AntDesign style={styles.idcard} name="idcard" size={12} />
+      ) : value?.service?.category === "TENANT" ? (
+       <Entypo style={styles.idcard2} name="location" size={12} />
+      ) : (
+       value?.service?.category === "CERTIFICATE" && (
+        <Ionicons style={styles.idcard3} name="business" size={12} />
+       )
+      )}
+     </Text>
     </View>
+    <View style={styles.UpNamedownName}>
+     <Text style={styles.UpName}>
+      {value?.requester?.user?.firstName}{" "}
+      {value?.requester?.user?.lastName}
+     </Text>
+
+     <Text style={styles.downName}>{value?.service?.description} </Text>
+    </View>
+    <View>
+     <Text style={styles.LatestName}>
+      <MaterialIcons
+       style={styles.arrowrightName}
+       name="keyboard-arrow-right"
+       size={20}
+      />
+     </Text>
+    </View>
+   </View>
   );
+ };
+ return (
+  <View style={styles.ReportsContainer} lightColor="#fff" darkColor="#000">
+   {isLoading && <ProgressBar progress={0.3} color={'#007AFF'} indeterminate={isLoading} />}
+   <View>
+    <View style={styles.ButtonToggle}>
+     {/* @ts-ignore */}
+     <ButtonToggleGroup
+      highlightBackgroundColor={"#fff"}
+      highlightTextColor={"#007AFF"}
+      // inactiveBackgroundColor={'#aaa'}
+      style={styles.Toggle}
+      inactiveTextColor={"#BEC3D5"}
+      values={["Employee", "Certificate", "Tenant"]}
+      value={value}
+      onSelect={(val) => setValue(val)}
+     />
+    </View>
+    <View style={styles.FiterToggle}>
+     <View style={styles.FiterToggleSearch}>
+      <TextInput
+       placeholder="Search here "
+       placeholderTextColor="#BEC3D5"
+       style={styles.Fiterinput}
+      />
+      <Ionicons style={styles.FiterSearchIcon} name="search" size={20} />
+     </View>
+     <View style={styles.SearchIconBtn}>
+      <TouchableOpacity onPress={toggleModal}>
+       <Ionicons style={styles.FiterBtnIcon} name="filter" size={25} />
+      </TouchableOpacity>
+     </View>
+    </View>
+    <ScrollView style={styles.FiterScrollView}>
+     {/* <!-- Table starts here --> */}
+     {value === "Employee" && (
+      <View>
+       {info === undefined ?
+        <View style={styles.mainEmoji}>
+         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+        </View> : info?.map((item: any, index: any) => (
+         <TouchableOpacity
+          key={index}
+          onPress={() =>
+           navigation.navigate("ReportStatus", {
+            screen: "ReportStatus",
+            // image: item?.image,
+           })
+          }>
+          <Card key={index} value={item} />
+         </TouchableOpacity>
+        ))
+       }
+      </View>
+     )}
+
+     {value === "Certificate" && (
+      <View>
+       {info === undefined ?
+        <View style={styles.mainEmoji}>
+         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+        </View> : info?.map((item: any, index: any) => (
+         <TouchableOpacity
+          key={index}
+          onPress={() =>
+           navigation.navigate("ReportStatus", {
+            screen: "ReportStatus",
+            image: item?.image,
+           })
+          }>
+          <Card key={index} value={item} />
+         </TouchableOpacity>
+        ))
+       }
+      </View>
+     )}
+
+
+     {value === "Tenant" && (
+      <View>
+       {info === undefined ?
+        <View style={styles.mainEmoji}>
+         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+        </View> : info?.map((item: any, index: any) => (
+         <TouchableOpacity
+          key={index}
+          onPress={() =>
+           navigation.navigate("ReportStatus", {
+            screen: "ReportStatus",
+            image: item?.image,
+           })
+          }>
+          <Card key={index} value={item} />
+         </TouchableOpacity>
+        ))
+       }
+      </View>
+     )}
+
+    </ScrollView>
+   </View >
+   <View style={styles.centeredView}>
+    <Modal
+     isVisible={isModalVisible}
+     onBackdropPress={() => setModalVisible(false)}
+     style={{ flex: 1 }}>
+     <View style={styles.modalView}>
+      <Text style={styles.modalText}>FILTER REPORTS</Text>
+      <View style={styles.modalTextInput}>
+       <View style={styles.modalTextInputCOl}>
+        <View style={styles.modalTextInputMargin}>
+         <Text style={styles.modalInputColor}>Approved</Text>
+        </View>
+        <View>
+         <Text>
+          <Checkbox
+           style={styles.checkbox}
+           value={isChecked1}
+           onValueChange={setChecked1}
+           color={isChecked1 ? "#007AFF" : undefined}
+          />
+         </Text>
+        </View>
+       </View>
+       <View style={styles.modalTextInputCOl}>
+        <View>
+         <Text style={styles.modalInputColor}>Pending</Text>
+        </View>
+        <View>
+         <Text>
+          <Checkbox
+           style={styles.checkbox}
+           value={isChecked2}
+           onValueChange={setChecked2}
+           color={isChecked2 ? "#007AFF" : undefined}
+          />
+         </Text>
+        </View>
+       </View>
+       <View style={styles.modalTextInputCOl}>
+        <View>
+         <Text style={styles.modalInputColor}>Disapproved</Text>
+        </View>
+        <View>
+         <Text>
+          <Checkbox
+           style={styles.checkbox}
+           value={isChecked3}
+           onValueChange={setChecked3}
+           color={isChecked3 ? "#007AFF" : undefined}
+          />
+         </Text>
+        </View>
+       </View>
+      </View>
+      <TouchableOpacity
+       style={styles.modalButton}
+       onPress={() =>
+        Alert.alert("Button with adjusted color pressed")
+       }>
+       <Text style={styles.modalButtonColor}>APPLY FILTER</Text>
+      </TouchableOpacity>
+     </View>
+    </Modal>
+   </View>
+  </View >
+ );
 };
 
 export default Reports;
 
 const styles = StyleSheet.create({
-  Toggle: {
-    // shadowOffset: 'red'
-  },
+ LatestName: {
+  paddingTop: 5,
+ },
+ arrowrightName: {
+  color: "#BEC3D5",
+ },
+ LatestView: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginLeft: 18,
+  marginRight: 18,
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: "#BEC3D5",
+  padding: 5,
+  alignItems: "center",
+  marginBottom: 18,
+ },
+ UpName: {
+  fontSize: 12,
+  fontFamily: "Poppins_600SemiBold",
+ },
+ UpNamedownName: {
+  position: "absolute",
+  left: 60,
+ },
+ downName: {
+  color: "#AAA",
+  fontSize: 12,
+  fontFamily: "Poppins_400Regular",
+ },
+ idcard: {
+  color: "#0D8B8B",
+ },
+ idcard2: {
+  color: "#51A3FF",
+ },
+ idcard3: {
+  color: "#FD937C",
+ },
+ idcard4: {
+  color: "#D777FB",
+ },
+ viewIcon: {
+  backgroundColor: "#D9FDFB",
+  padding: 12,
+  borderRadius: 25,
+  marginLeft: 5,
+ },
 
-  checkbox: {
-    borderRadius: 10,
-    color: "red",
-  },
-  modalCheck: {
-    position: "absolute",
-    margin: 0,
-    padding: 0,
-  },
-  modalButtonColor: {
-    color: "#fff",
-    fontFamily: "Poppins_400Regular",
-  },
+ viewIcon2: {
+  backgroundColor: "#D9E8FD",
+  padding: 12,
+  borderRadius: 25,
+  marginLeft: 5,
+ },
 
-  modalButton: {
-    width: 181,
-    height: 39,
-    backgroundColor: "#007AFF",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30,
-    borderRadius: 5,
-  },
+ viewIcon3: {
+  backgroundColor: "#FEEAEA",
+  padding: 12,
+  borderRadius: 25,
+  marginLeft: 5,
+ },
 
-  modalInputColor: {
-    color: "#20549D",
-    fontFamily: "Poppins_400Regular",
-  },
-  modalTextInputMargin: {
-    paddingRight: "50%",
-  },
+ viewIcon4: {
+  backgroundColor: "#F1D9FD",
+  padding: 12,
+  borderRadius: 25,
+  marginLeft: 5,
+ },
+ mainEmoji: {
+  margin: 100,
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  alignSelf: "center",
+ },
+ Toggle: {
+  // shadowOffset: 'red'
+ },
 
-  modalTextInputCOl: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: 25,
-    alignItems: "flex-end",
-    borderBottomColor: "#BEC3D5",
-    borderBottomWidth: 1,
-  },
+ checkbox: {
+  borderRadius: 10,
+  color: "red",
+ },
+ modalCheck: {
+  position: "absolute",
+  margin: 0,
+  padding: 0,
+ },
+ modalButtonColor: {
+  color: "#fff",
+  fontFamily: "Poppins_400Regular",
+ },
 
-  modalTextInput: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
+ modalButton: {
+  width: 181,
+  height: 39,
+  backgroundColor: "#007AFF",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 30,
+  borderRadius: 5,
+ },
 
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
+ modalInputColor: {
+  color: "#20549D",
+  fontFamily: "Poppins_400Regular",
+ },
+ modalTextInputMargin: {
+  paddingRight: "50%",
+ },
 
-  modalView: {
-    width: SLIDER_WIDTH,
-    height: 314,
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingTop: 30,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
+ modalTextInputCOl: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingTop: 25,
+  alignItems: "flex-end",
+  borderBottomColor: "#BEC3D5",
+  borderBottomWidth: 1,
+ },
 
-    justifyContent: "flex-start",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    textAlign: "center",
-    backgroundColor: "#F7F8FA",
-    padding: 10,
-    width: "100%",
-    color: "#9CA5C5",
-    fontSize: 16,
-    fontFamily: "Poppins_600SemiBold",
-  },
+ modalTextInput: {
+  flexDirection: "column",
+  justifyContent: "space-between",
+ },
 
-  TenantIcon: {
-    color: "#007AFF",
-  },
-  PwaIcon: {
-    color: "#FC5E3B",
-  },
-  GuarantorIcon: {
-    color: "#DD40BA",
-  },
-  EmployeeIcon: {
-    color: "#0D8B8B",
-  },
+ centeredView: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: 22,
+ },
 
-  FiterScrollView: {
-    height: "100%",
+ modalView: {
+  width: SLIDER_WIDTH,
+  height: 314,
+  margin: 20,
+  backgroundColor: "white",
+  borderRadius: 20,
+  paddingTop: 30,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: {
+   width: 0,
+   height: 2,
   },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
+  elevation: 5,
+ },
+ button: {
+  borderRadius: 20,
+  padding: 10,
+  elevation: 2,
+ },
+ buttonOpen: {
+  backgroundColor: "#F194FF",
+ },
+ buttonClose: {
+  backgroundColor: "#2196F3",
 
-  FiterArrowright: {
-    color: "#B1B5C5",
-    alignItems: "center",
-  },
+  justifyContent: "flex-start",
+ },
+ textStyle: {
+  color: "white",
+  fontWeight: "bold",
+  textAlign: "center",
+ },
+ modalText: {
+  textAlign: "center",
+  backgroundColor: "#F7F8FA",
+  padding: 10,
+  width: "100%",
+  color: "#9CA5C5",
+  fontSize: 16,
+  fontFamily: "Poppins_600SemiBold",
+ },
 
-  FiterNameArrow: {
-    position: "absolute",
-    left: arrow,
-    marginTop: Platform.OS === "android" ? 7 : 4,
-  },
+ TenantIcon: {
+  color: "#007AFF",
+ },
+ PwaIcon: {
+  color: "#FC5E3B",
+ },
+ GuarantorIcon: {
+  color: "#DD40BA",
+ },
+ EmployeeIcon: {
+  color: "#0D8B8B",
+ },
 
-  FiterNameBottom: {
-    color: "#BEC3D5",
-    fontSize: 12,
-    fontFamily: "Poppins_400Regular",
-  },
+ FiterScrollView: {
+  height: "100%",
+ },
 
-  FiterNameTop: {
-    fontSize: 11,
-    fontFamily: "Poppins_600SemiBold",
-    marginRight: "5%",
-  },
+ FiterArrowright: {
+  color: "#B1B5C5",
+  alignItems: "center",
+ },
 
-  FiterNameContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
+ FiterNameArrow: {
+  position: "absolute",
+  left: arrow,
+  marginTop: Platform.OS === "android" ? 7 : 4,
+ },
 
-  FiterTextAlign2: {
-    textAlign: "center",
-    color: "#007AFF",
-  },
+ FiterNameBottom: {
+  color: "#BEC3D5",
+  fontSize: 12,
+  fontFamily: "Poppins_400Regular",
+ },
 
-  FiterNameUp4: {
-    height: 30,
-    width: 30,
-    backgroundColor: "#D9E8FD",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-  },
-  FiterNameUp3: {
-    height: 30,
-    width: 30,
-    backgroundColor: "#FEEAEA",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-  },
+ FiterNameTop: {
+  fontSize: 11,
+  fontFamily: "Poppins_600SemiBold",
+  marginRight: "5%",
+ },
 
-  FiterNameUp2: {
-    height: 30,
-    width: 30,
-    backgroundColor: "#F1D9FD",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-  },
+ FiterNameContainer: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+ },
 
-  FiterNameUp: {
-    height: 30,
-    width: 30,
-    backgroundColor: "#D9FDFB",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-  },
+ FiterTextAlign2: {
+  textAlign: "center",
+  color: "#007AFF",
+ },
 
-  FiterView: {
-    height: 42,
-    borderColor: "#aaa",
-    borderWidth: 1,
-    alignSelf: "center",
-    borderRadius: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 14,
-    width: WIDTH,
-  },
+ FiterNameUp4: {
+  height: 30,
+  width: 30,
+  backgroundColor: "#D9E8FD",
+  borderRadius: 50,
+  justifyContent: "center",
+  alignItems: "center",
+  margin: 10,
+ },
+ FiterNameUp3: {
+  height: 30,
+  width: 30,
+  backgroundColor: "#FEEAEA",
+  borderRadius: 50,
+  justifyContent: "center",
+  alignItems: "center",
+  margin: 10,
+ },
 
-  FiterBtnIcon: {
-    color: "#fff",
-  },
+ FiterNameUp2: {
+  height: 30,
+  width: 30,
+  backgroundColor: "#F1D9FD",
+  borderRadius: 50,
+  justifyContent: "center",
+  alignItems: "center",
+  margin: 10,
+ },
 
-  SearchIconBtn: {
-    width: "12%",
-    height: 40,
-    backgroundColor: "#007AFF",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-  },
+ FiterNameUp: {
+  height: 30,
+  width: 30,
+  backgroundColor: "#D9FDFB",
+  borderRadius: 50,
+  justifyContent: "center",
+  alignItems: "center",
+  margin: 10,
+ },
 
-  FiterSearchIcon: {
-    color: "#BEC3D5",
-  },
+ FiterView: {
+  height: 42,
+  borderColor: "#aaa",
+  borderWidth: 1,
+  alignSelf: "center",
+  borderRadius: 5,
+  flexDirection: "row",
+  alignItems: "center",
+  marginBottom: 14,
+  width: WIDTH,
+ },
 
-  Fiterinput: {
-    color: "#000",
-    flex: 1,
-    fontFamily: "Poppins_400Regular",
-  },
-  FiterToggleSearch: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderColor: "#aaa",
-    backgroundColor: "#F6F6F6",
-    width: "85%",
-    height: 40,
-    borderRadius: 5,
-    alignItems: "center",
-    padding: 8,
-    borderWidth: 0.5,
-  },
+ FiterBtnIcon: {
+  color: "#fff",
+ },
 
-  FiterToggle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginRight: 20,
-    marginLeft: 20,
-    marginBottom: 30,
-  },
+ SearchIconBtn: {
+  width: "12%",
+  height: 40,
+  backgroundColor: "#007AFF",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 5,
+ },
 
-  ButtonToggle: {
-    marginRight: 20,
-    marginLeft: 20,
-    backgroundColor: "#F6F6F6",
-    padding: 2,
-    borderRadius: 6,
-    borderColor: "#aaa",
-    marginBottom: 30,
-    borderWidth: 0.5,
-  },
+ FiterSearchIcon: {
+  color: "#BEC3D5",
+ },
 
-  ReportsContainer: {
-    flex: 1,
-    height: "100%",
-    paddingTop: 30,
-    // backgroundColor: "#fff",
-  },
+ Fiterinput: {
+  color: "#000",
+  flex: 1,
+  fontFamily: "Poppins_400Regular",
+ },
+ FiterToggleSearch: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  borderColor: "#aaa",
+  backgroundColor: "#F6F6F6",
+  width: "85%",
+  height: 40,
+  borderRadius: 5,
+  alignItems: "center",
+  padding: 8,
+  borderWidth: 0.5,
+ },
+
+ FiterToggle: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginRight: 20,
+  marginLeft: 20,
+  marginBottom: 30,
+ },
+
+ ButtonToggle: {
+  marginRight: 20,
+  marginLeft: 20,
+  backgroundColor: "#F6F6F6",
+  padding: 2,
+  borderRadius: 6,
+  borderColor: "#aaa",
+  marginBottom: 30,
+  borderWidth: 0.5,
+  marginTop: 30
+ },
+
+ ReportsContainer: {
+  flex: 1,
+  // backgroundColor: "#fff",
+ },
 });
