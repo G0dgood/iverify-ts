@@ -8,6 +8,7 @@ import { useAppSelector } from '../hooks/useStore'
 import { ProgressBar } from 'react-native-paper'
 // import { baseUrl } from '../shared/baseUrl'
 import * as Haptics from "expo-haptics";
+import moment from 'moment'
 const DetailsPage = () => {
 
 	const { user } = useAppSelector((state: { auth: any; }) => state.auth)
@@ -17,6 +18,8 @@ const DetailsPage = () => {
 
 
 	const [data, setdata] = useState<any>([]);
+	const [data1, setdata1] = useState<any>([]);
+	const [data2, setdata2] = useState<any>([]);
 	const [isError, setisError] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [greet, setGreet] = useState("");
@@ -65,7 +68,8 @@ const DetailsPage = () => {
 		}, 5000);
 	}, []);
 
-	console.log('Details', data)
+
+
 	useEffect(() => {
 		if (data) {
 			try {
@@ -76,6 +80,375 @@ const DetailsPage = () => {
 		}
 	}, [data]);
 
+	useEffect(() => {
+		if (data) {
+			try {
+				setdata1(data?.tenants);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if (data) {
+			try {
+				setdata2(data?.certificates);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	}, [data]);
+
+
+
+	const Card = ({ value, index }: any) => {
+		return (
+			<View style={styles.PersonalInformationView} key={index}>
+				<View style={{ borderRadius: 5 }}>
+					<View style={styles.modalTextInput}>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>ID:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									{value?.id}
+								</Text>
+							</View>
+						</View>
+
+						<View>
+							<View style={styles.modalTextInputCOl}>
+								<View style={styles.modalTextInputMargin}>
+									<Text style={styles.infoInputColor}>Service:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										{value?.service?.name}
+									</Text>
+								</View>
+							</View>
+							<View style={styles.modalTextInputCOl}>
+								<View><Text style={styles.infoInputColor}>Fee:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										gggg
+									</Text>
+								</View>
+							</View>
+							<View style={styles.modalTextInputCOl}>
+								<View>
+									<Text style={styles.infoInputColor}>Payment Reference:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										ffff
+									</Text>
+								</View>
+							</View>
+						</View>
+
+						<View style={styles.modalTextInputCOl}>
+							<View>
+								<Text style={styles.infoInputColor}>Status:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									{value?.status}
+								</Text>
+							</View>
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View><Text style={styles.infoInputColor}>Created:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									{moment(value?.createdAt).format("DD-MMM-YY")}
+								</Text>
+							</View>
+						</View>
+					</View>
+				</View>
+				<View style={styles.buttom}   >
+				</View>
+			</View>
+		);
+	};
+
+	const Card1 = ({ value, index }: any) => {
+		return (
+			<View style={styles.PersonalInformationView} key={index}>
+				<View style={styles.modalTextInput}>
+					<View>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>BIODATA:</Text>
+							</View>
+							{/* <View>
+												<Text style={styles.infoInputColor}>
+													ffff
+												</Text>
+											</View> */}
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View><Text style={styles.infoInputColor}>Full Name:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									{value?.fullName}
+								</Text>
+							</View>
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View>
+								<Text style={styles.infoInputColor}>Phone No.:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									{value?.phoneNo === null ? "N/A" : value?.phoneNo}
+								</Text>
+							</View>
+						</View>
+					</View>
+
+
+					<View style={styles.modalTextInputCOl}>
+						<View>
+							<Text style={styles.infoInputColor}>National Identity Number (NIN):</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								gggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>ADDRESS:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>WORK HISTORY</Text>
+						</View>
+						{/* <View>
+											<Text style={styles.infoInputColor}>
+												ggg
+											</Text>
+										</View> */}
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Residential address:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>WORK HISTORY:</Text>
+						</View>
+						{/* <View>
+											<Text style={styles.infoInputColor}>
+												ggg
+											</Text>
+										</View> */}
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Previous Work Name:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Previous Work Address:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								{value?.previousWorkName === null ? 'N/A' : value?.previousWorkName}
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>GUARANTOR - 1:</Text>
+						</View>
+						{/* <View>
+											<Text style={styles.infoInputColor}>
+												ggg
+											</Text>
+										</View> */}
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Full Name:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Full Name:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Residential Address:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								ggg
+							</Text>
+						</View>
+					</View>
+					<View style={styles.modalTextInputCOl}>
+						<View style={styles.modalTextInputMargin}>
+							<Text style={styles.infoInputColor}>Date of birth:</Text>
+						</View>
+						<View>
+							<Text style={styles.infoInputColor}>
+								{value?.dob === null ? 'N/A' : value?.dob}
+							</Text>
+						</View>
+					</View>
+				</View>
+			</View>
+		);
+	};
+	const Card2 = ({ value, index }: any) => {
+		return (
+			<View style={styles.PersonalInformationView} key={index}>
+				<View style={{ borderRadius: 5 }}>
+					<View style={styles.modalTextInput}>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
+							</View>
+						</View>
+						{/* <View style={styles.modalTextInputCOl}>
+										<View style={styles.modalTextInputMargin}>
+											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
+										</View>
+										<View>
+											<Text style={styles.infoInputColor}>
+												gggg
+											</Text>
+										</View>
+									</View> */}
+
+						<View>
+							<View style={styles.modalTextInputCOl}>
+								<View style={styles.modalTextInputMargin}>
+									<Text style={styles.infoInputColor}>First Name:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										gggg
+									</Text>
+								</View>
+							</View>
+							<View style={styles.modalTextInputCOl}>
+								<View><Text style={styles.infoInputColor}>Last Name:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										gggg
+									</Text>
+								</View>
+							</View>
+							<View style={styles.modalTextInputCOl}>
+								<View>
+									<Text style={styles.infoInputColor}>Email:</Text>
+								</View>
+								<View>
+									<Text style={styles.infoInputColor}>
+										ffff
+									</Text>
+								</View>
+							</View>
+						</View>
+
+						<View style={styles.modalTextInputCOl}>
+							<View>
+								<Text style={styles.infoInputColor}>Date Joined:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									fff
+								</Text>
+							</View>
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View>
+								<Text style={styles.infoInputColor}>WORKSPACE INFORMATION:</Text>
+							</View>
+							{/* <View>
+											<Text style={styles.infoInputColor}>
+												ffff
+											</Text>
+										</View> */}
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>Name:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									gggg
+								</Text>
+							</View>
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>Domain:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									gggg
+								</Text>
+							</View>
+						</View>
+						<View style={styles.modalTextInputCOl}>
+							<View style={styles.modalTextInputMargin}>
+								<Text style={styles.infoInputColor}>Type:</Text>
+							</View>
+							<View>
+								<Text style={styles.infoInputColor}>
+									gggg
+								</Text>
+							</View>
+						</View>
+					</View>
+				</View>
+				<View style={styles.buttom}>
+				</View>
+			</View>
+		);
+	};
+
 	return (
 		<View style={styles.container}>
 			{loading && <ProgressBar progress={0.3} color={'#007AFF'} indeterminate={loading} />}
@@ -84,7 +457,19 @@ const DetailsPage = () => {
 				<View style={styles.generaldetailsContainer}>
 
 					<View style={styles.generaldetail}  >
-						{datax?.map((item: any, index: any) => (
+
+
+						{!datax ? '' : datax?.map((item: any, index: any) => (
+							<View key={index}>
+								<Text style={styles.pldetailsTitle}>{item?.fullName}</Text>
+							</View>
+						))}
+						{!data1 ? '' : data1?.map((item: any, index: any) => (
+							<View key={index}>
+								<Text style={styles.pldetailsTitle}>{item?.fullName}</Text>
+							</View>
+						))}
+						{!data2 ? '' : data2?.map((item: any, index: any) => (
 							<View key={index}>
 								<Text style={styles.pldetailsTitle}>{item?.fullName}</Text>
 							</View>
@@ -114,381 +499,51 @@ const DetailsPage = () => {
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >DETAILS</Text>
 						</View>
-						{datax?.map((item: any, index: any) => (
-							<View style={styles.PersonalInformationView} key={index}>
-								<View style={{ borderRadius: 5 }}>
-									<View style={styles.modalTextInput}>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>ID:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													{item?.id}
-												</Text>
-											</View>
-										</View>
 
-										<View>
-											<View style={styles.modalTextInputCOl}>
-												<View style={styles.modalTextInputMargin}>
-													<Text style={styles.infoInputColor}>Service:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														gggg
-													</Text>
-												</View>
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View><Text style={styles.infoInputColor}>Fee:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														gggg
-													</Text>
-												</View>
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View>
-													<Text style={styles.infoInputColor}>Payment Reference:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														ffff
-													</Text>
-												</View>
-											</View>
-										</View>
-
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>Status:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													{item?.status}
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View><Text style={styles.infoInputColor}>Created:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ffff
-												</Text>
-											</View>
-										</View>
-									</View>
-								</View>
-								<View style={styles.buttom}   >
-								</View>
-							</View>
+						{!datax ? '' : datax?.map((item: any, index: any) => (
+							<Card key={index} value={item} />
+						))}
+						{!data1 ? '' : data1?.map((item: any, index: any) => (
+							<Card key={index} value={item} />
+						))}
+						{!data2 ? '' : data2?.map((item: any, index: any) => (
+							<Card key={index} value={item} />
 						))}
 
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >REQUEST DETAILS</Text>
 						</View>
-						{datax?.map((item: any, index: any) => (
-							<View style={styles.PersonalInformationView} key={index}>
-								<View>
-									<View style={styles.modalTextInput}>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Status:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													{item?.status}
-												</Text>
-											</View>
-										</View>
-
-										<View>
-											<View style={styles.modalTextInputCOl}>
-												<View style={styles.modalTextInputMargin}>
-													<Text style={styles.infoInputColor}>BIODATA:</Text>
-												</View>
-												{/* <View>
-												<Text style={styles.infoInputColor}>
-													ffff
-												</Text>
-											</View> */}
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View><Text style={styles.infoInputColor}>Full Name:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														{item?.fullName}
-													</Text>
-												</View>
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View>
-													<Text style={styles.infoInputColor}>Phone No.:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														{item?.phoneNo === null ? "N/A" : item?.phoneNo}
-													</Text>
-												</View>
-											</View>
-										</View>
 
 
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>National Identity Number (NIN):</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View><Text style={styles.infoInputColor}>ADDRESS:</Text>
-											</View>
-											{/* <View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View> */}
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>ADDRESS:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>WORK HISTORY</Text>
-											</View>
-											{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Residential address:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>WORK HISTORY:</Text>
-											</View>
-											{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Previous Work Name:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Previous Work Address:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													{item?.previousWorkName === null ? 'N/A' : item?.previousWorkName}
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>GUARANTOR - 1:</Text>
-											</View>
-											{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Full Name:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Full Name:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Residential Address:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													ggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Date of birth:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													{item?.dob === null ? 'N/A' : item?.dob}
-												</Text>
-											</View>
-										</View>
-									</View>
-								</View>
-							</View>
+						{!datax ? '' : datax?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
+						))}
+						{!data1 ? '' : data1?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
+						))}
+						{!data2 ? '' : data2?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
 						))}
 						<View style={styles.buttom}   >
 						</View>
 
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
-							<Text style={styles.containerTitle} >
-								Requester</Text>
+							<Text style={styles.containerTitle} >Requester</Text>
 						</View>
-						{datax?.map((item: any, index: any) => (
-							<View style={styles.PersonalInformationView} key={index}>
-								<View style={{ borderRadius: 5 }}>
-									<View style={styles.modalTextInput}>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
-											</View>
-										</View>
-										{/* <View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View>
-									</View> */}
-
-										<View>
-											<View style={styles.modalTextInputCOl}>
-												<View style={styles.modalTextInputMargin}>
-													<Text style={styles.infoInputColor}>First Name:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														gggg
-													</Text>
-												</View>
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View><Text style={styles.infoInputColor}>Last Name:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														gggg
-													</Text>
-												</View>
-											</View>
-											<View style={styles.modalTextInputCOl}>
-												<View>
-													<Text style={styles.infoInputColor}>Email:</Text>
-												</View>
-												<View>
-													<Text style={styles.infoInputColor}>
-														ffff
-													</Text>
-												</View>
-											</View>
-										</View>
-
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>Date Joined:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													fff
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View>
-												<Text style={styles.infoInputColor}>WORKSPACE INFORMATION:</Text>
-											</View>
-											{/* <View>
-											<Text style={styles.infoInputColor}>
-												ffff
-											</Text>
-										</View> */}
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Name:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Domain:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-										<View style={styles.modalTextInputCOl}>
-											<View style={styles.modalTextInputMargin}>
-												<Text style={styles.infoInputColor}>Type:</Text>
-											</View>
-											<View>
-												<Text style={styles.infoInputColor}>
-													gggg
-												</Text>
-											</View>
-										</View>
-									</View>
-								</View>
-								<View style={styles.buttom}   >
-								</View>
-							</View>
+						{/* {datax?.map((item: any, index: any) => (
+						
+						))} */}
+						{!datax ? '' : datax?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
+						))}
+						{!data1 ? '' : data1?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
+						))}
+						{!data2 ? '' : data2?.map((item: any, index: any) => (
+							<Card1 key={index} value={item} />
 						))}
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
-							<Text style={styles.containerTitle} >
-								PAYMENT</Text>
+							<Text style={styles.containerTitle} >PAYMENT</Text>
 						</View>
 
 						<View style={styles.PersonalInformationView}>
@@ -608,7 +663,7 @@ const DetailsPage = () => {
 										</View>
 										<View>
 											<Text style={styles.infoInputColor}>
-												{data?.payment?.createdAt}
+												{moment(data?.payment?.createdAt).format("DD-MMM-YY")}
 											</Text>
 										</View>
 									</View>
@@ -618,7 +673,7 @@ const DetailsPage = () => {
 										</View>
 										<View>
 											<Text style={styles.infoInputColor}>
-												{data?.payment?.updatedAt}
+												{moment(data?.payment?.updatedAt).format("DD-MMM-YY")}
 											</Text>
 										</View>
 									</View>
@@ -676,10 +731,11 @@ const styles = StyleSheet.create({
 	introNextTouch: {
 		justifyContent: "center",
 		borderRadius: 8,
-		backgroundColor: "#990000",
+		backgroundColor: "#007AFF",
 		marginTop: Platform.OS === "ios" ? 40 : 30,
 		fontFamily: 'Poppins_500Medium',
-		height: 70
+		padding: 10
+
 	},
 	signupinput: {
 		padding: 25,
@@ -744,13 +800,10 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1
 	},
 
-
 	infoInputColor: {
 		fontSize: 14,
 		fontFamily: 'Poppins_400Regular',
-
 	},
-
 	AccountDetailsflex: {
 		flexDirection: "row",
 		justifyContent: 'space-between',
@@ -760,18 +813,13 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		marginTop: 25,
 		height: 10,
-
 	},
-
 	buttomText: {
 		padding: 10,
 		textAlign: 'center',
 		color: "#fff",
-
 	},
-
 	containerAccount: { paddingTop: 20, paddingLeft: 20, paddingBottom: 10, },
-
 	containerAccount1: {
 		padding: 20,
 		borderBottomColor: "#D1D1D1",
@@ -807,12 +855,9 @@ const styles = StyleSheet.create({
 	detailsMargin: {
 		margin: 20,
 	},
-
-
 	proJecAdd: {
 		color: "#000"
 	},
-
 	proJectButtons: {
 		marginRight: 5,
 		borderWidth: 2,

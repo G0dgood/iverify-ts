@@ -32,6 +32,8 @@ const Home = () => {
     isLoading,
   } = useAppSelector((state) => state.verify);
 
+  console.log(user);
+
   React.useEffect(() => {
     userInfo();
   }, [isSuccess]);
@@ -256,11 +258,7 @@ const Home = () => {
                   // @ts-ignore
                   <TouchableOpacity
                     key={index}
-                    onPress={() =>
-                      navigation.navigate("Reports", {
-                        image: item?.image,
-                      })
-                    }>
+                    onPress={() => navigation.navigate("Reports")}>
                     <Card key={index} value={item} />
                   </TouchableOpacity>
                 );

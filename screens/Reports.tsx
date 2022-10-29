@@ -133,8 +133,7 @@ const Reports = ({ navigation }: any) => {
           key={index}
           onPress={() =>
            navigation.navigate("ReportStatus", {
-            screen: "ReportStatus",
-            // image: item?.image,
+            name: item?.service?.description,
            })
           }>
           <Card key={index} value={item} />
@@ -155,7 +154,7 @@ const Reports = ({ navigation }: any) => {
           onPress={() =>
            navigation.navigate("ReportStatus", {
             screen: "ReportStatus",
-            image: item?.image,
+            name: item?.service?.description,
            })
           }>
           <Card key={index} value={item} />
@@ -177,7 +176,7 @@ const Reports = ({ navigation }: any) => {
           onPress={() =>
            navigation.navigate("ReportStatus", {
             screen: "ReportStatus",
-            image: item?.image,
+            name: item?.service?.description,
            })
           }>
           <Card key={index} value={item} />
