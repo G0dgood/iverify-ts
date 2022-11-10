@@ -1,31 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import axios from "axios";
+import { StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import moment from "moment";
 import { Text, View } from "../components/Themed";
 import { useNavigation } from "@react-navigation/native";
 import { Badge } from "react-native-elements";
 import BannerSlider from "./BannerSlider";
 import { useAppSelector, useAppDispatch } from "../../iverify/hooks/useStore";
-import {
-  MaterialIcons,
-  AntDesign,
-  Entypo,
-  FontAwesome5,
-  Ionicons,
-} from "@expo/vector-icons";
+import { MaterialIcons, AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { allassignedrequest } from "../features/verifySlice";
+import { allassignedrequest, reset } from "../features/verifySlice";
 import * as Haptics from "expo-haptics";
 import Skeleton from "../components/LoaderSkeleton";
+import { logoutUser } from "../features/authSlice";
 import { setUserInfo } from "../features/authSlice";
 const Home = () => {
-  const { user, isSuccess } = useAppSelector((state) => state.auth);
+  const { user, isSuccess, message } = useAppSelector((state) => state.auth);
   const {
     data: datav,
     isSuccess: success,
@@ -48,11 +37,10 @@ const Home = () => {
   const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
-  const [data, setdata] = useState([]);
+  const [datas, setdatas] = useState([]);
   const [isError, setisError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [greet, setGreet] = useState("");
-  const [messages, setMessages] = useState("");
 
   useEffect(() => {
     dispatch(allassignedrequest(user));
@@ -61,25 +49,38 @@ const Home = () => {
   useEffect(() => {
     if (datav) {
       try {
-        setdata(datav);
+        setdatas(datav);
       } catch (err) {
         console.log(err);
       }
     }
   }, [datav]);
 
-  const baseUrl = "https://api-test.iverify.ng";
+  const data = datas?.data?.filter((obj) => {
+    return obj?.service?.category !== "CERTIFICATE";
+  });
+
+  // useEffect(() => {
+  //   if (datav === null) {
+  //     // @ts-ignore
+  //     dispatch(
+  //       logoutUser(),
+  //       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+  //     );
+  //     dispatch(reset());
+  //   }
+  // }, [dispatch, message, navigation, datav]);
 
   useEffect(() => {
     if (isError === true) {
-      Alert.alert("Hello!", messages, [{ text: "OK" }]);
+      Alert.alert("Hello!", message, [{ text: "OK" }]);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     }
     setTimeout(() => {
       setisError(false);
     }, 2000);
     setTimeout(() => {
-      setMessages("");
+      dispatch(reset());
     }, 5000);
   }, []);
 
@@ -87,57 +88,30 @@ const Home = () => {
     getHour();
   }, [isSuccess]);
 
-  // ojinnnakapascal+2@gmail.com
-
-  // React.useEffect(() => {
-  //   const config = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${user?.idToken}`,
-  //     },
-  //   };
-
-  //   setLoading(true);
-  //   const { data } = axios
-  //     .get(
-  //       `https://api-test.iverify.ng/api/admin/requests?page=1&limit=20`,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       setdata(res?.data);
-  //       console.log("requests", res.data);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       setMessages(err?.message);
-  //       setLoading(false);
-  //       setisError(true);
-  //     });
-  // }, [user?.idToken]);
+  console.log("user", user);
 
   // // @ts-ignore
-  const COMPLETED = data?.data?.filter((obj) => {
+  const COMPLETED = data?.filter((obj) => {
     return obj?.status === "COMPLETED";
   });
   // // @ts-ignore
-  const ONGOING = data?.data?.filter((obj) => {
+  const ONGOING = data?.filter((obj) => {
     return obj?.status === "ONGOING_VERIFICATION";
   });
   // // @ts-ignore
-  const CANCELLED = data?.data?.filter((obj) => {
+  const CANCELLED = data?.filter((obj) => {
     return obj?.status === "CANCELLED";
   });
   // // @ts-ignore
-  const REJECTED = data?.data?.filter((obj) => {
+  const REJECTED = data?.filter((obj) => {
     return obj?.status === "REJECTED";
   });
   // // @ts-ignore
-  const pending = data?.data?.filter((obj) => {
+  const pending = data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   });
 
-  const Schedule = data?.data?.filter((obj) => {
+  const Schedule = data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   });
   // console.log("pending", pending?.length);
@@ -181,10 +155,19 @@ const Home = () => {
         <View style={styles.UpNamedownName}>
           <Text style={styles.UpName}>
             {value?.requester?.user?.firstName}{" "}
-            {value?.requester?.user?.lastName}
+            {value?.requester?.user?.lastName} {"  "}
+            <Text style={styles.ScheduleNameTop2}>
+              ₦{value?.payment?.amount}
+            </Text>
           </Text>
-
-          <Text style={styles.downName}>{value?.service?.description} </Text>
+          <View style={styles.downNameDate}>
+            <Text style={styles.downName}>{value?.service?.description} </Text>
+            {""}
+            <Text style={styles.downNameSide}>
+              {" "}
+              {moment(value?.createdAt).format("DD-MMM-YY")}
+            </Text>
+          </View>
         </View>
         <View>
           <Text style={styles.LatestName}>
@@ -198,7 +181,7 @@ const Home = () => {
       </View>
     );
   };
-  // #F2F1F6
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainScroll}>
@@ -209,7 +192,7 @@ const Home = () => {
 
         <BannerSlider
           loading={loading}
-          count={datav?.count}
+          count={data?.length}
           completed={COMPLETED?.length}
           ongoing={ONGOING?.length}
           canclled={CANCELLED?.length}
@@ -248,17 +231,28 @@ const Home = () => {
           <View>
             {datav === null ? (
               <View style={styles.mainEmoji}>
-                <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+                <Ionicons
+                  name="ios-folder-open-outline"
+                  size={120}
+                  color="#D9E8FD"
+                />
+                <View>
+                  <Text style={styles.ticket}>No Data Found!</Text>
+                </View>
               </View>
             ) : (
-              datav?.data?.map((item, index) => {
+              data?.map((item, index) => {
                 return (
                   // @ts-ignore
                   <TouchableOpacity
                     key={index}
                     onPress={() =>
-                      navigation.navigate("Reports", {
-                        image: item?.image,
+                      navigation.navigate("DetailsPage", {
+                        Id: item?.payment?.requestId,
+                        requestId: item?.id,
+                        name: item?.service?.description,
+                        category: item?.service?.category,
+                        clientinfo: item,
                       })
                     }>
                     <Card key={index} value={item} />
@@ -277,9 +271,24 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  ticket: {
+    color: "#007AFF",
+    fontFamily: "Poppins_600SemiBold",
+  },
+
+  downNameDate: { flexDirection: "row" },
+
+  ScheduleNameTop2: {
+    fontSize: 10,
+    fontFamily: "Poppins_600SemiBold",
+    paddingEnd: 10,
+    // paddingLeft: 10
+    color: "red",
+    backgroundColor: "#FEEAEA",
+  },
   mainEmoji: {
     margin: 100,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -287,7 +296,6 @@ const styles = StyleSheet.create({
   schedule1: {
     fontSize: 15,
     fontFamily: "Poppins_400Regular",
-    color: "#000",
   },
 
   // ViewLast: {
@@ -345,6 +353,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "Poppins_400Regular",
   },
+  downNameSide: {
+    color: "#AAA",
+    fontSize: 12,
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 20,
+  },
   UpName: {
     fontSize: 12,
     fontFamily: "Poppins_600SemiBold",
@@ -376,8 +390,9 @@ const styles = StyleSheet.create({
 
   schedule: {
     fontSize: 15,
-    fontFamily: "Poppins_400Regular",
+    fontFamily: "Poppins_600SemiBold",
     alignItems: "center",
+    color: "#000",
   },
 
   arrowrightName: {

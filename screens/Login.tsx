@@ -8,16 +8,15 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ActivityIndicator,
   Platform,
 } from "react-native";
 import * as Haptics from 'expo-haptics';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-import { auth } from "../screens/firebase/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "../features/authSlice";
 import { useAppDispatch } from "../hooks/useStore";
+import { MaterialIndicator } from "react-native-indicators";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +26,7 @@ const Login = () => {
 
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  
+
 
   const loginHandler = async () => {
     setisLoading(true)
@@ -52,7 +51,7 @@ const Login = () => {
     })
       // @ts-ignore
       .then(res => res.json())
-      .then(async parsedRes => { 
+      .then(async parsedRes => {
         setisLoading(false)
         setsuccess(true)
         console.log('parsedRes', parsedRes);
@@ -138,18 +137,18 @@ const Login = () => {
         <TouchableOpacity style={styles.button} onPress={loginHandler} >
           <Text style={styles.text}>
             {isLoading ? (
-              <ActivityIndicator size="small" color="fff" />
+              <MaterialIndicator color='white' size={30} />
             ) : (
               "LOGIN"
             )}
           </Text>
         </TouchableOpacity>
 
-        <Text
+        {/* <Text
           style={styles.text3}
           onPress={() => navigation.navigate("PasswordReset")}>
           Forgot Password?
-        </Text>
+        </Text> */}
       </View>
     </KeyboardAvoidingView>
   );
@@ -182,14 +181,15 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    // paddingVertical: 12,
+    // paddingHorizontal: 32,
     borderRadius: 5,
     elevation: 50,
     backgroundColor: "#007AFF",
     marginLeft: 40,
     marginRight: 40,
     marginTop: 25,
+    height: 50,
   },
   text: {
     fontSize: 16,

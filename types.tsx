@@ -34,6 +34,7 @@ export type RootStackParamList = {
   ReportStatus: undefined;
   Schedule: undefined;
   HomeD: undefined;
+  SuccessConfirmed: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -42,9 +43,6 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >;
 
 export type RootTabParamList = {
-  
-  TabOne: undefined;
-  TabTwo: undefined;
   Home: undefined;
   Reports: undefined;
   Schedule: undefined;

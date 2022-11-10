@@ -6,7 +6,6 @@ import DropDown from "react-native-paper-dropdown";
 import { Appbar, DarkTheme, DefaultTheme, Provider, Surface, ThemeProvider, } from "react-native-paper";
 import { Text, View, } from '../components/Themed';
 export const TextInputwidth = Dimensions.get('window').width - 60
-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 

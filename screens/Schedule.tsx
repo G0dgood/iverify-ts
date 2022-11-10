@@ -12,7 +12,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { Dimensions } from "react-native";
 export const WIDTH2 = Dimensions.get("window").width - 40;
 export const arrow2 = Dimensions.get("window").width - 125;
-import Modal from "react-native-modal";
+import { logoutUser } from "../features/authSlice";
 import { ProgressBar } from 'react-native-paper';
 import { useAppSelector } from "../hooks/useStore";
 import { useRoute } from "@react-navigation/native";
@@ -45,10 +45,13 @@ const Schedule = ({ navigation }: any) => {
   }
   // , { id }
   // @ts-ignore
-  const Schedule = data?.data?.filter((obj) => {
+  const datas = data?.data?.filter((obj) => {
     return obj?.status !== "COMPLETED";
   })
-  // console.log('Schedule', Schedule.length)
+  const Schedule = datas?.filter((obj: any) => {
+    return obj?.service?.category !== "CERTIFICATE";
+  })
+
 
   return (
     <View style={styles.ScheduleContainer} lightColor="#fff" darkColor="#000">
@@ -57,12 +60,24 @@ const Schedule = ({ navigation }: any) => {
       <ScrollView style={styles.ScheduleScrollView}>
         {/* @ts-ignore */}
         {Schedule === undefined ? <View style={styles.mainEmoji}>
-          <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+          <Ionicons
+            name="ios-folder-open-outline"
+            size={120}
+            color="#D9E8FD"
+          />
+          <View>
+            <Text style={styles.ticket}>No Data Found!</Text>
+          </View>
         </View> : Schedule?.map((item: any, index: any) => {
           return (
             <TouchableOpacity style={styles.ScheduleView}
               onPress={() => navigation.navigate("DetailsPage", {
-                requestId: item?.payment?.requestId,
+                screen: "ReportStatus",
+                Id: item?.payment?.requestId,
+                requestId: item?.id,
+                name: item?.service?.description,
+                category: item?.service?.category,
+                clientinfo: item,
               })}
               key={index}>
               <View style={item?.service?.category === "EMPLOYEE"
@@ -109,95 +124,7 @@ const Schedule = ({ navigation }: any) => {
         })}
 
 
-        <View style={styles.centeredView}>
-          <Modal
-            isVisible={isModalVisible}
-            onBackdropPress={() => setModalVisible(false)}
-            style={{ flex: 1 }}>
-            <View>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={styles.modalBackgroudColor}>
-                    <Text >
-                      <AntDesign
-                        style={styles.idcard}
-                        name="idcard"
-                        size={40}
-                      />
-                    </Text>
-                  </View>
 
-                  <View  >
-                    <Text style={styles.modalTitle}>EMPLOYEE VERIFICATION</Text>
-                  </View>
-
-                  <View style={styles.modalTextInput}>
-                    <View style={styles.modalTextInputCOl}>
-                      <View style={styles.modalTextInputMargin}>
-                        <Text  >Name:</Text>
-                      </View>
-                      <View>
-                        <Text  >
-                          Desmond Kelvin
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.modalTextInputCOl}>
-                      <View>
-                        <Text  >Address:</Text>
-                      </View>
-                      <View>
-                        <Text  >
-                          45 Ikorodu road
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.modalTextInputCOl}>
-                      <View>
-                        <Text  >Phone:</Text>
-                      </View>
-                      <View>
-                        <Text  >08162680095</Text>
-                      </View>
-                    </View>
-                    <View style={styles.modalTextInputCOl}>
-                      <View>
-                        <Text  >
-                          Delivery Time:
-                        </Text>
-                      </View>
-                      <View>
-                        <Text  >2 Days</Text>
-                      </View>
-                    </View>
-                    <View style={styles.modalTextInputCOl}>
-                      <View>
-                        <Text  >Amount:</Text>
-                      </View>
-                      <View>
-                        <Text >₦2,500</Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View style={styles.ScheduleModalButton}>
-                    <TouchableOpacity style={styles.ScheduleButton1}>
-                      <Text style={styles.ScheduleModalButtonText}>REJECT</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.ScheduleButton2}
-                      onPress={() => navigation.navigate("Verification")}>
-                      <Text style={styles.ScheduleModalButtonText}>ACCEPT</Text>
-                    </TouchableOpacity>
-                  </View>
-                  {/* <TouchableOpacity style={styles.modalButton} onPress={() => Alert.alert('Button with adjusted color pressed')}>
-          <Text style={styles.modalButtonColor} >APPLY FILTER</Text>
-         </TouchableOpacity> */}
-                </View>
-              </View>
-            </View>
-          </Modal>
-        </View>
       </ScrollView>
     </View>
   );
@@ -206,10 +133,14 @@ const Schedule = ({ navigation }: any) => {
 export default Schedule;
 
 const styles = StyleSheet.create({
+  ticket: {
+    color: "#007AFF",
+    fontFamily: "Poppins_600SemiBold",
+  },
 
   mainEmoji: {
     margin: 100,
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -224,10 +155,7 @@ const styles = StyleSheet.create({
   idcard4: {
     color: "#D777FB",
   },
-  ScheduleModalButtonText: {
-    color: "#fff",
-    fontFamily: "Poppins_600SemiBold",
-  },
+
 
   ScheduleButton2: {
     width: Platform.OS === "android" ? 90 : button,
@@ -247,73 +175,10 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
 
-  ScheduleModalButton: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    marginTop: 20,
-  },
-
-  modalTextInputMargin: {
-    width: SLIDER_WIDTH2,
-  },
-
-  modalTextInputCOl: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingTop: 12,
-    alignItems: "flex-end",
-    borderBottomColor: "#BEC3D5",
-    borderBottomWidth: 1,
-  },
-
-  modalTextInput: {
-    // flexDirection: 'column',
-    // justifyContent: 'space-between',
-  },
-
-  modalTitle: {
-    marginTop: 10,
-    fontFamily: "Poppins_600SemiBold",
-  },
-
   idcard: {
     color: "#0D8B8B",
   },
 
-  modalBackgroudColor: {
-    height: 80,
-    width: 80,
-    backgroundColor: "#D9FDFB",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 100,
-  },
-
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-
-  modalView: {
-    width: SLIDER_WIDTH,
-    height: 370,
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    paddingTop: 25,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -332,15 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  modalText: {
-    textAlign: "center",
-    backgroundColor: "#F7F8FA",
 
-    width: "100%",
-    color: "#9CA5C5",
-    fontSize: 16,
-    fontFamily: "Poppins_600SemiBold",
-  },
 
   TenantIcon: {
     color: "#007AFF",
