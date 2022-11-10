@@ -11,11 +11,7 @@ import {
 import { Text, View, } from '../components/Themed';
 import { Dimensions } from "react-native";
 import ButtonToggleGroup from "react-native-button-toggle-group";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { logoutUser } from "../features/authSlice";
 import Modal from "react-native-modal";
 export const SLIDER_WIDTH = Dimensions.get("window").width - 80;
 export const WIDTH = Dimensions.get("window").width - 40;
@@ -23,6 +19,7 @@ export const arrow = Dimensions.get("window").width - 125;
 import Checkbox from "expo-checkbox";
 import { useAppSelector } from "../hooks/useStore";
 import { ProgressBar } from "react-native-paper";
+import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const Reports = ({ navigation }: any) => {
 
@@ -38,11 +35,16 @@ const Reports = ({ navigation }: any) => {
  const toggleModal = () => {
   setModalVisible(!isModalVisible);
  };
-
  // @ts-ignore
- const info = data?.data?.filter((obj) => {
+ const datas = data?.data?.filter((obj: any) => {
+  return obj?.service?.category !== "CERTIFICATE";
+ });
+ // @ts-ignore
+ const info = datas?.filter((obj) => {
   return obj?.service?.category?.toLowerCase() === value.toLowerCase();
  });
+
+
 
 
 
@@ -72,7 +74,10 @@ const Reports = ({ navigation }: any) => {
     <View style={styles.UpNamedownName}>
      <Text style={styles.UpName}>
       {value?.requester?.user?.firstName}{" "}
-      {value?.requester?.user?.lastName}
+      {value?.requester?.user?.lastName} {" "}
+      <Text style={styles.ScheduleNameTop2}>
+       ₦{value?.payment?.amount}
+      </Text>
      </Text>
 
      <Text style={styles.downName}>{value?.service?.description} </Text>
@@ -101,7 +106,7 @@ const Reports = ({ navigation }: any) => {
       // inactiveBackgroundColor={'#aaa'}
       style={styles.Toggle}
       inactiveTextColor={"#BEC3D5"}
-      values={["Employee", "Certificate", "Tenant"]}
+      values={["Employee", "Tenant"]}
       value={value}
       onSelect={(val) => setValue(val)}
      />
@@ -122,20 +127,32 @@ const Reports = ({ navigation }: any) => {
      </View>
     </View>
     <ScrollView style={styles.FiterScrollView}>
+
      {/* <!-- Table starts here --> */}
      {value === "Employee" && (
       <View>
        {info === undefined ?
         <View style={styles.mainEmoji}>
-         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+         <Ionicons
+          name="ios-folder-open-outline"
+          size={120}
+          color="#D9E8FD"
+         />
+         <View>
+          <Text style={styles.ticket}>No Data Found!</Text>
+         </View>
         </View> : info?.map((item: any, index: any) => (
          <TouchableOpacity
           key={index}
-          onPress={() =>
-           navigation.navigate("ReportStatus", {
-            name: item?.service?.description,
-           })
-          }>
+
+          onPress={() => navigation.navigate("DetailsPage", {
+           Id: item?.payment?.requestId,
+           requestId: item?.id,
+           name: item?.service?.description,
+           category: item?.service?.category,
+           clientinfo: item,
+          })}
+         >
           <Card key={index} value={item} />
          </TouchableOpacity>
         ))
@@ -143,48 +160,67 @@ const Reports = ({ navigation }: any) => {
       </View>
      )}
 
-     {value === "Certificate" && (
-      <View>
-       {info === undefined ?
-        <View style={styles.mainEmoji}>
-         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
-        </View> : info?.map((item: any, index: any) => (
-         <TouchableOpacity
-          key={index}
-          onPress={() =>
-           navigation.navigate("ReportStatus", {
-            screen: "ReportStatus",
-            name: item?.service?.description,
-           })
-          }>
-          <Card key={index} value={item} />
-         </TouchableOpacity>
-        ))
-       }
-      </View>
-     )}
 
 
      {value === "Tenant" && (
       <View>
        {info === undefined ?
         <View style={styles.mainEmoji}>
-         <Entypo name="emoji-sad" size={120} color="#D9E8FD" />
+         <Ionicons
+          name="ios-folder-open-outline"
+          size={120}
+          color="#D9E8FD"
+         />
+         <View>
+          <Text style={styles.ticket}>No Data Found!</Text>
+         </View>
         </View> : info?.map((item: any, index: any) => (
          <TouchableOpacity
           key={index}
-          onPress={() =>
-           navigation.navigate("ReportStatus", {
-            screen: "ReportStatus",
-            name: item?.service?.description,
-           })
-          }>
+          onPress={() => navigation.navigate("DetailsPage", {
+           Id: item?.payment?.requestId,
+           requestId: item?.id,
+           name: item?.service?.description,
+           category: item?.service?.category,
+           requestItemId: item?.service?.id,
+           clientinfo: item,
+          })}>
           <Card key={index} value={item} />
          </TouchableOpacity>
         ))
        }
       </View>
      )}
+     {/* {value === "Certificate" && (
+      <View>
+       {info === undefined ?
+        <View style={styles.mainEmoji}>
+         <Ionicons
+          name="ios-folder-open-outline"
+          size={120}
+          color="#D9E8FD"
+         />
+         <View>
+          <Text style={styles.ticket}>No Data Found!</Text>
+         </View>
+        </View> : info?.map((item: any, index: any) => (
+         <TouchableOpacity
+          key={index}
+          onPress={() => navigation.navigate("DetailsPage", {
+           Id: item?.payment?.requestId,
+           requestId: item?.id,
+           name: item?.service?.description,
+           category: item?.service?.category,
+           requestItemId: item?.service?.id,
+           clientinfo: item,
+          })}
+         >
+          <Card key={index} value={item} />
+         </TouchableOpacity>
+        ))
+       }
+      </View>
+     )} */}
 
     </ScrollView>
    </View >
@@ -197,11 +233,11 @@ const Reports = ({ navigation }: any) => {
       <Text style={styles.modalText}>FILTER REPORTS</Text>
       <View style={styles.modalTextInput}>
        <View style={styles.modalTextInputCOl}>
-        <View style={styles.modalTextInputMargin}>
+        <View style={styles.modalTextInputMargin} >
          <Text style={styles.modalInputColor}>Approved</Text>
         </View>
         <View>
-         <Text>
+         <Text style={styles.modalViewColor}>
           <Checkbox
            style={styles.checkbox}
            value={isChecked1}
@@ -212,11 +248,11 @@ const Reports = ({ navigation }: any) => {
         </View>
        </View>
        <View style={styles.modalTextInputCOl}>
-        <View>
+        <View style={styles.modalViewColor}>
          <Text style={styles.modalInputColor}>Pending</Text>
         </View>
         <View>
-         <Text>
+         <Text style={styles.modalViewColor}>
           <Checkbox
            style={styles.checkbox}
            value={isChecked2}
@@ -227,11 +263,11 @@ const Reports = ({ navigation }: any) => {
         </View>
        </View>
        <View style={styles.modalTextInputCOl}>
-        <View>
+        <View style={styles.modalViewColor}>
          <Text style={styles.modalInputColor}>Disapproved</Text>
         </View>
         <View>
-         <Text>
+         <Text style={styles.modalViewColor}>
           <Checkbox
            style={styles.checkbox}
            value={isChecked3}
@@ -259,6 +295,22 @@ const Reports = ({ navigation }: any) => {
 export default Reports;
 
 const styles = StyleSheet.create({
+ ticket: {
+  color: "#007AFF",
+  fontFamily: "Poppins_600SemiBold",
+ },
+ ScheduleNameTop2: {
+  fontSize: 10,
+  fontFamily: "Poppins_600SemiBold",
+  paddingEnd: 10,
+  // paddingLeft: 10
+  color: "red",
+  backgroundColor: "#FEEAEA",
+ },
+ modalViewColor: {
+  backgroundColor: '#fff'
+ },
+
  LatestName: {
   paddingTop: 5,
  },
@@ -331,7 +383,7 @@ const styles = StyleSheet.create({
  },
  mainEmoji: {
   margin: 100,
-  flexDirection: "row",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
   alignSelf: "center",
@@ -370,6 +422,7 @@ const styles = StyleSheet.create({
  },
  modalTextInputMargin: {
   paddingRight: "50%",
+  backgroundColor: '#fff'
  },
 
  modalTextInputCOl: {
@@ -379,11 +432,13 @@ const styles = StyleSheet.create({
   alignItems: "flex-end",
   borderBottomColor: "#BEC3D5",
   borderBottomWidth: 1,
+  backgroundColor: '#fff'
  },
 
  modalTextInput: {
   flexDirection: "column",
   justifyContent: "space-between",
+
  },
 
  centeredView: {
@@ -397,7 +452,7 @@ const styles = StyleSheet.create({
   width: SLIDER_WIDTH,
   height: 314,
   margin: 20,
-  backgroundColor: "white",
+  backgroundColor: '#fff',
   borderRadius: 20,
   paddingTop: 30,
   alignItems: "center",
@@ -409,6 +464,7 @@ const styles = StyleSheet.create({
   shadowOpacity: 0.25,
   shadowRadius: 4,
   elevation: 5,
+
  },
  button: {
   borderRadius: 20,

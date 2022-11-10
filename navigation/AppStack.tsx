@@ -26,6 +26,7 @@ import Support from '../screens/Support';
 import Verification from '../screens/Verification';
 import Notification from '../screens/Notification';
 import DetailsPage from '../screens/DetailsPage';
+import SuccessConfirmed from '../screens/SuccessConfirmed';
 
 
 
@@ -91,6 +92,8 @@ function AuthStack() {
       <Stack.Screen name="PasswordSecurity" component={PasswordSecurity} options={{ title: 'Password Security' }} />
       <Stack.Screen name="Support" component={Support} options={{ title: 'Support' }} />
       <Stack.Screen name="Verification" component={Verification} options={{ title: 'Verification' }} />
+      <Stack.Screen name="Schedule" component={Schedule} options={{ title: 'Schedule' }} />
+      <Stack.Screen name="Accounts" component={Accounts} />
       <Stack.Screen name="ReportStatus" component={ReportStatus} options={({ navigation }) => ({
         title: 'Report Status',
         headerRight: () => (
@@ -99,16 +102,16 @@ function AuthStack() {
             style={({ pressed }) => ({
               opacity: pressed ? 0.5 : 1,
             })}>
-            <Image style={styles.imageHeader2} source={require('../assets/images/john.png')} />
+            {/* <Image style={styles.imageHeader2} source={require('../assets/images/john.png')} /> */}
+            <FontAwesome name="user-circle-o" size={24} color="black" />
           </Pressable>
         ),
 
       })} />
-      <Stack.Screen name="Schedule" component={Schedule} options={{ title: 'Schedule' }} />
-      <Stack.Screen name="Accounts" component={Accounts} />
+      <Stack.Screen name="SuccessConfirmed" component={SuccessConfirmed} options={{ title: 'Success Confirmed', headerShown: false }} />
+      <Stack.Screen name="DetailsPage" component={DetailsPage} options={{ title: 'Details Page' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         {/* <Stack.Screen name="Modal" component={ModalScreen} /> */}
-        <Stack.Screen name="DetailsPage" component={DetailsPage} options={{ title: 'Details Page' }} />
         <Stack.Screen name="Notification" component={Notification} options={{ title: 'Notification' }} />
         <Stack.Screen name="AboutUs" component={AboutUs} options={{ title: 'About Us' }} />
       </Stack.Group>
@@ -142,18 +145,19 @@ function BottomTabNavigator() {
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
-              <Image style={styles.imageHeader} source={require('../assets/images/john.png')} />
+              {/* <Image style={styles.imageHeader} source={require('../assets/images/john.png')} /> */}
+              <FontAwesome name="user-circle-o" color={Colors[colorScheme].text} size={25} style={{ marginRight: 15 }} />
             </Pressable>
           ),
-          headerLeft: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Notification')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <MaterialCommunityIcons name="bell" size={25} color={Colors[colorScheme].text} style={{ marginLeft: 15 }} />
-            </Pressable>
-          ),
+          // headerLeft: () => (
+          //   <Pressable
+          //     onPress={() => navigation.navigate('Notification')}
+          //     style={({ pressed }) => ({
+          //       opacity: pressed ? 0.5 : 1,
+          //     })}>
+          //     <MaterialCommunityIcons name="bell" size={25} color={Colors[colorScheme].text} style={{ marginLeft: 15 }} />
+          //   </Pressable>
+          // ),
         })}
       />
       <BottomTab.Screen
@@ -165,10 +169,11 @@ function BottomTabNavigator() {
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Accounts')}
-              style={({ pressed }) => ({
+              style={({ pressed }: any) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
-              <Image style={styles.imageHeader} source={require('../assets/images/john.png')} />
+              {/* <Image style={styles.imageHeader} source={require('../assets/images/john.png')} /> */}
+              <FontAwesome name="user-circle-o" color={Colors[colorScheme].text} size={25} style={{ marginRight: 15 }} />
             </Pressable>
           ),
 
@@ -186,7 +191,8 @@ function BottomTabNavigator() {
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
-              <Image style={styles.imageHeader} source={require('../assets/images/john.png')} />
+              {/* <Image style={styles.imageHeader} source={require('../assets/images/john.png')} /> */}
+              <FontAwesome name="user-circle-o" color={Colors[colorScheme].text} size={25} style={{ marginRight: 15 }} />
             </Pressable>
           ),
 

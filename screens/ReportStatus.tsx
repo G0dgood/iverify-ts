@@ -1,489 +1,440 @@
-// import React, { useState } from 'react';
-// import { SafeAreaView, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
-// import HeaderTwo from '../components/HeaderTwo';
-// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import { Appbar, DarkTheme, DefaultTheme, Provider, Surface, ThemeProvider, }
-//  from "react-native-paper";
-// import { TextInput } from 'react-native-paper';
-// export const TextInputwidth = Dimensions.get('window').width - 60
-// import { Text, View, } from '../components/Themed';
-// const ReportStatus = () => {
-
-
-//  const [showDropDown, setShowDropDown] = useState(false);
-//  const [showIdDropDown, setShowIdDropDown] = useState(false);
-//  const [verification, setVerification] = useState('Select Verification');
-//  const [idCardType, setIdCardType] = useState('');
-//  const [nightMode, setNightmode] = useState(false);
-
-//  const verificationList = [
-//   {
-//    label: "Employee verification",
-//    value: "Employee verification",
-//   },
-//   {
-//    label: "Tenant verification",
-//    value: "Tenant verification",
-//   },
-//   {
-//    label: "Guarantor verification ",
-//    value: "Guarantor verification ",
-//   },
-//   {
-//    label: "Previous Work Address",
-//    value: "Previous Work Address",
-//   },
-//  ];
-//  const iDCardList = [
-//   {
-//    label: "Passport",
-//    value: "Passport",
-//   },
-//   {
-//    label: "Work ID Card",
-//    value: "Work ID Card",
-//   },
-//   {
-//    label: "NIN ",
-//    value: "NIN ",
-//   },
-//   {
-//    label: "Voters Card",
-//    value: "Voters Card",
-//   },
-//  ];
-
-//  const EMPLOYEE = [
-//   {
-//    serviceCode: "EMPLOYEE",
-//    requestId: "cl4zdkkx0121tk1yq80c12nh",
-//    requestItemId: "cl4zpnskx0121tk1yq80c12nh",
-//    data: {
-//     client: {
-//      value: "Adebunmi Owa",
-//      comment: "VERIFIED"
-//     },
-//     applicant: {
-//      designation: {
-//       value: "N/A",
-//       comment: ""
-//      },
-//      searchDate: {
-//       value: "23/01/2022",
-//       comment: ""
-//      },
-//      fullName: {
-//       value: "Olufemi Bunmi",
-//       comment: ""
-//      },
-//      residentialAddress: {
-//       value: "Olonode street",
-//       comment: ""
-//      },
-//      phoneNo: {
-//       value: "08122019274, 09012348904",
-//       comment: ""
-//      },
-//      meansOfId: {
-//       value: "N/A",
-//       comment: ""
-//      },
-//      guarantorsName: [
-//       {
-//        value: "ADEBOLA DANIEL FOLORUNSHO 08070363393",
-//        comment: "VERIFIED"
-//       },
-//       {
-//        value: "SEGUN-JACOB AGNES OMOWUNMI 08065706199",
-//        comment: "VERIFIED"
-//       }
-//      ],
-//      guarantorsAddress: [
-//       {
-//        value: "ADEBOLA DANIEL FOLORUNSHO RESIDENTIAL ADDRESS: 17A ABIODUN OLUSOLA MAGODO GRA PHASE 2, LAGOS WORK ADDRESS: SHELL NIG. E & P COMPANY",
-//        comment: "VERIFIED"
-//       },
-//       {
-//        value: "SEGUN-JACOB AGNES OMOWUNMI RESIDENTIAL ADDRESS: BLOCK 7, FLAT 5 OZOLUA WARD UNIVERSITY OF LAGOS. WORK ADDRESS: UNIVERSITY OF LAGOS MEDICAL CENTER, AKIKA, YABA, LAGOS",
-//        comment: "VERIFIED"
-//       }
-//      ],
-//      previousWork: {
-//       value: "FINA TRUST MICROFINANCE BANK 46 TOYIN STREET, IKEJA, LAGOS",
-//       comment: "VERIFIED"
-//      }
-//     },
-//     searchReport: {
-//      fullName: {
-//       value: "Adebunmi Owa",
-//       comment: "VERIFIED"
-//      },
-//      socialMediaName: {
-//       value: "N/A",
-//       comment: ""
-//      },
-//      residentialAddress: {
-//       value: "25 OGUNJIRIN STREET, ARAROMI QUARTERS, KETU, LAGOS",
-//       comment: "THE EMPLOYEE IS A RESIDENT OF THE ADDRESS PROVIDED"
-//      },
-//      employmentReport: {
-//       value: "FINA TRUST MICROFINANCE BANK 46 TOYIN STREET, IKEJA, LAGOS",
-//       comment: "EMPLOYEE KNOWN: YES DURATION: 28/06/2021 – 24/11/2021 CONDUCT: GOOD REASON FOR LEAVING: VOLUTARY RESIGNATION"
-//      },
-//      guarantors: [
-//       {
-//        value: "ADEBOLA DANIEL FOLORUNSHO RESIDENTIAL ADDRESS: 17A ABIODUN OLUSOLA MAGODO GRA PHASE 2, LAGOS",
-//        comment: "CONSENT GIVEN RELATIONSHIP: BROTHER THE GUARANTOR IS A RESIDENT OF THE ADDRESS PROVIDED WE CAN NOT CONFIRM THE WORK ADDRESS. GUARANTOR CLAIMS HE WORKS FROM HOME"
-//       },
-//       {
-//        value: "SEGUN-JACOB AGNES OMOWUNMI RESIDENTIAL ADDRESS: BLOCK 7, FLAT 5 OZOLUA WARD UNIVERSITY OF LAGOS",
-//        comment: "CONSENT GIVEN RELATIONSHIP: FAMILY FRIENDS THE GUARANTOR HAS KNOWN THE EMPLOYEE FOR OVER 20 YEARS THE GUARANTOR IS A RESIDENT AT THE ADDRESS PROVIDED THE GUARANTOR IS KNOWN AT THE WORK ADDRESS PROVIDED"
-//       }
-//      ]
-//     },
-//     observation: {
-//      value: "ALL INFORMATION PRESENTED IS CONSISTENT WITH THE REPORT FOUND UPON SEARCH",
-//      comment: ""
-//     },
-//     visuals: [
-//      {
-//       description: "VISUALS OF EMPLOYEE’S RESIDENTIAL ADDRESS - ADDRESS 25 OGUNJIRIN STREET, ARAROMI QUARTERS, KETU, LAGOS",
-//       imageUrl: "https://via.placeholder.com/150C/"
-//      }
-//     ]
-//    }
-//   }
-//  ];
-
-//  return (
-//   <View style={styles.ReportStatusContainer}>
-//    <View style={styles.ReportStatus}>
-//     <Text style={styles.ReportStatusText}>STATUS:</Text>
-//     <Text style={styles.ReportStatusText2}>Pending</Text>
-//    </View>
-//    <ScrollView>
-//     <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false}>
-//      <View style={styles.VerificationTextInput}>
-//       <View style={styles.spacerStyle} />
-
-//       <View>
-//        <TextInput
-//         style={styles.VerificationSelect}
-//         label='Type of Verification'
-//         mode='outlined'
-//         selectionColor='#BEC3D5'
-//         outlineColor='#BEC4CD'
-//         activeOutlineColor='#E4E6EE' />
-//       </View>
-
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Full Name'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE' />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Address'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE' />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Phone Number'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE' />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Previous Work Address'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//        multiline={true}
-//        numberOfLines={5} />
-
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='ID Card Type'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='No file chosen'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//        multiline={true}
-//        numberOfLines={5} />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='ID Card No.'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Date of Visitation.'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Is the person known at the address.'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Is the residential address valid'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Capture picture'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Is the person known at the address'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Color of house'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Type of house'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Is the person known at the address'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Upload document if any'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//       />
-//       <TextInput
-//        style={styles.VerificationSelect}
-//        label='Remarks'
-//        mode='outlined'
-//        selectionColor='#BEC3D5'
-//        outlineColor='#BEC4CD'
-//        activeOutlineColor='#E4E6EE'
-//        multiline={true}
-//        numberOfLines={5}
-//       />
-
-//      </View>
-//     </KeyboardAwareScrollView>
-//    </ScrollView>
-//   </View>
-//  );
-// };
-
-// export default ReportStatus;
-
-
-// const styles = StyleSheet.create({
-
-
-
-
-
-//  spacerStyl1113e: {
-//   justifyContent: 'center',
-
-
-//   borderColor: 'red'
-//  },
-//  spacerStyle: {
-//   marginBottom: 15,
-//  },
-
-//  VerificationSelect: {
-//   marginTop: 15,
-//   backgroundColor: '#F7F8FA',
-//   borderRadius: 5,
-//   color: '#20549D',
-//   fontFamily: 'Poppins_400Regular',
-//  },
-
-//  VerificationTextInput: {
-//   width: TextInputwidth,
-//   alignSelf: 'center'
-//  },
-
-//  ReportStatusText2: {
-//   fontFamily: 'Poppins_400Regular',
-//   backgroundColor: '#FEEAEA',
-//   color: '#FC5E3B',
-//   paddingLeft: 5,
-//   paddingRight: 5,
-//  },
-//  ReportStatusText: {
-//   fontFamily: 'Poppins_600SemiBold',
-//   color: '#20549D',
-//   marginRight: 5,
-//  },
-
-//  ReportStatus: {
-//   flexDirection: 'row',
-//   justifyContent: 'center',
-//   alignSelf: 'center'
-//  },
-
-//  ReportStatusContainer: {
-//   paddingTop: 30,
-//   // backgroundColor: '#fff',
-//   flex: 1,
-
-//  }
-
-// })
-
-
-
-
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, StyleSheet, TextInput, ScrollView, Button, Image, Dimensions } from 'react-native';
-// import FormInput from '../../components/FormInput';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, StyleSheet, TextInput, ScrollView, Dimensions, Alert, Platform } from 'react-native';
+import { MaterialIndicator } from 'react-native-indicators';
 import { List } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import * as ImagePicker from 'expo-image-picker';
-import { AntDesign } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-
+import { useAppSelector } from '../hooks/useStore';
+import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Text, View, } from '../components/Themed';
+import { baseUrl } from '../shared/baseUrl';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { AntDesign } from '@expo/vector-icons';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const ReportStatus = ({ navigation }: any) => {
 
   const route = useRoute();
   // @ts-ignore
-  const { name } = route.params;
-
-  const [email, setEmail] = useState('johndoe@yahoo.com');
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
+  const { name, requestId, category, requestItemId, Employee, Certificate, Tenant } = route.params;
+  const { user } = useAppSelector((state: { auth: any; }) => state.auth)
 
 
 
 
-  const [image, setImage] = useState(null);
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
+  const [client, setclient] = useState<string>('')
+  const [clientscomment, setclientscomment] = useState<string>('')
+  const [designation, setdesignation] = useState<string>('')
+  const [designationcomment, setdesignationcomment] = useState<string>('')
+  // const [searchDate, setsearchDate] = useState<string>('')
+  const [searchDatecomment, setsearchDatecomment] = useState<string>('')
+  const [fullName, setfullName] = useState<string>('')
+  const [fullNamecomment, setfullNamecomment] = useState<string>('')
+  const [residentialAddress, setresidentialAddress] = useState<string>('')
+  const [residentialAddresscomment, setresidentialAddresscomment] = useState<string>('')
+  const [phoneNo, setphoneNo] = useState<string>('')
+  const [phoneNocomment, setphoneNocomment] = useState<string>('')
+  const [meansOfId, setmeansOfId] = useState<string>('')
+  const [meansOfIdcomment, setmeansOfIdcomment] = useState<string>('')
+  const [guarantorsName, setguarantorsName] = useState<string>('')
+  // const [guarantorsNametwo, setguarantorsNametwo] = useState<string>('')
+  const [guarantorsNamecomment1, setguarantorsNamebcomment1] = useState<string>('')
+  // const [guarantorsNamecomment2, setguarantorsNamebcomment2] = useState<string>('')
+  const [guarantorsAddressone, setguarantorsAddressone] = useState<string>('')
+  // const [guarantorsAddresstwo, setguarantorsAddresstwo] = useState<string>('')
+  const [guarantorsAddresscomment1, setguarantorsAddresscomment1] = useState<string>('')
+  // const [guarantorsAddresscomment2, setguarantorsAddresscomment2] = useState<string>('')
+  const [previousWork, setpreviousWork] = useState<string>('')
+  const [previousWorkcomment, setpreviousWorkcomment] = useState<string>('')
+  const [socialMediaName, setsocialMediaName] = useState<string>('')
+  const [socialMediaNamecomment, setsocialMediaNamecomment] = useState<string>('')
+  const [employmentReport, setemploymentReport] = useState<string>('')
+  const [employmentReportcomment, setemploymentReportcomment] = useState<string>('')
+  const [guarantors1, setguarantors1] = useState<string>('')
+  const [guarantors1comment, setguarantors1comment] = useState<string>('')
+  const [searchReport, setsearchReport] = useState<string>('09-10-2021')
+  const [searchReportcomment, setsearchReportcomment] = useState<string>('')
+  const [observation, setobservation] = useState<string>('')
+  const [observationcomment, setobservationcomment] = useState<string>('')
+  const [visuals, setvisuals] = useState<string>('')
+  const [visualscomment, setvisualscomment] = useState<string>('')
+  const [visualsimageUrl, setvisualsimageUrl] = useState<string>('')
+  const [address, setAddress] = useState<string>('')
+  const [addresscomment, setAddresscomment] = useState<string>('')
+
+  // TENANT
+  const [companyName, setcompanyName] = useState<string>('')
+  const [companyNamecomment, setcompanyNamecomment] = useState<string>('')
+  const [spouseName, setspouseName] = useState<string>('')
+  const [spouseNamecomment, setspouseNamecomment] = useState<string>('')
+  const [email, setemail] = useState<string>('')
+  const [emailcomment, setemailcomment] = useState<string>('')
+  const [companyAddress, setcompanyAddress] = useState<string>('')
+  const [companyAddresscomment, setcompanyAddresscomment] = useState<string>('')
+  const [landlordInfo, setlandlordInfo] = useState<string>('')
+  const [landlordInfocomment, setlandlordInfocomment] = useState<string>('')
+
+  const [isError, setisError] = useState(false);
+  const [message, setMessage] = useState("");
 
 
-  const [client, setclient] = useState<any>('')
-  const [clientscomment, setclientscomment] = useState<any>('')
-  const [designation, setdesignation] = useState<any>('')
-  const [designationcomment, setdesignationcomment] = useState<any>('')
-  const [searchDate, setsearchDate] = useState<any>('')
-  const [searchDatecomment, setsearchDatecomment] = useState<any>('')
-  const [fullName, setfullName] = useState<any>('')
-  const [fullNamecomment, setfullNamecomment] = useState<any>('')
-  const [residentialAddress, setresidentialAddress] = useState<any>('')
-  const [residentialAddresscomment, setresidentialAddresscomment] = useState<any>('')
-  const [phoneNo, setphoneNo] = useState<any>('')
-  const [phoneNocomment, setphoneNocomment] = useState<any>('')
-  const [meansOfId, setmeansOfId] = useState<any>('')
-  const [meansOfIdcomment, setmeansOfIdcomment] = useState<any>('')
-  const [guarantorsName, setguarantorsName] = useState<any>('')
-  const [guarantorsNamecomment, setguarantorsNamebcomment] = useState<any>('')
-  const [guarantorsNamecomment2, setguarantorsNamebcomment2] = useState<any>('')
-  const [guarantorsAddress, setguarantorsAddress] = useState<any>('')
-  const [guarantorsAddresscomment1, setguarantorsAddresscomment1] = useState<any>('')
-  const [guarantorsAddresscomment2, setguarantorsAddresscomment2] = useState<any>('')
-  const [previousWork, setpreviousWork] = useState<any>('')
-  const [previousWorkcomment, setpreviousWorkcomment] = useState<any>('')
-  const [socialMediaName, setsocialMediaName] = useState<any>('')
-  const [socialMediaNamecomment, setsocialMediaNamecomment] = useState<any>('')
-  const [employmentReport, setemploymentReport] = useState<any>('')
-  const [employmentReportcomment, setemploymentReportcomment] = useState<any>('')
-  // const [guarantors1, setguarantors1] = useState<any>('')
-  // const [guarantors1comment, setguarantors1comment] = useState<any>('')
-  // const [guarantors2, setguarantors2] = useState<any>('')
-  // const [guarantors2comment, setguarantors2comment] = useState<any>('')
-  const [observation, setobservation] = useState<any>('')
-  const [observationcomment, setobservationcomment] = useState<any>('')
-  const [visuals, setvisuals] = useState<any>('')
-  const [visualscomment, setvisualscomment] = useState<any>('')
-  const [visualsimageUrl, setvisualsimageUrl] = useState<any>('')
+  const [isPickerShow, setIsPickerShow] = useState(false);
+  const [date, setDate] = useState(new Date(Date.now()));
+  const [searchDate, setsearchDate] = useState('')
+  const [view, setView] = useState(false);
+
+  const showPicker = () => {
+    setIsPickerShow(true);
+  };
+
+  const onChange = (event: any, value: any) => {
+    setDate(value);
+    if (Platform.OS === 'android') {
+      setIsPickerShow(false);
+    }
+  };
+
+  useEffect(() => {
+    setsearchDate(date.toLocaleDateString())
+  }, [date])
+
+  const handleView = () => {
+    if (!view) {
+      setView(true)
+      setIsPickerShow(false)
+    } else {
+      setView(!view)
+      setIsPickerShow(false)
+    }
+  }
+
+
+
+
+
+
+  const value = {
+    "serviceCode": category,
+    "requestId": requestId,
+    "requestItemId": requestItemId,
+    "data": {
+      "client": {
+        "value": client,
+        "comment": clientscomment,
+      },
+      "applicant": {
+        "designation": {
+          "value": designation,
+          "comment": designationcomment,
+        },
+        "searchDate": {
+          "value": searchDate,
+          "comment": searchDatecomment,
+        },
+        "fullName": {
+          "value": fullName,
+          "comment": fullNamecomment
+        },
+        "residentialAddress": {
+          "value": residentialAddress,
+          "comment": residentialAddresscomment
+        },
+        "phoneNo": {
+          "value": phoneNo,
+          "comment": phoneNocomment
+        },
+        "meansOfId": {
+          "value": meansOfId,
+          "comment": meansOfIdcomment
+        },
+        "guarantors": [
+          {
+            "fullName": {
+              "value": guarantorsName,
+              "comment": guarantorsNamecomment1,
+            },
+            "address": {
+              "value": guarantorsAddressone,
+              "comment": guarantorsAddresscomment1
+            }
+          }
+        ],
+        "previousWork": {
+          "value": previousWork,
+          "comment": previousWorkcomment
+        }
+      },
+      "searchReport": {
+        "fullName": {
+          "value": searchReport,
+          "comment": searchReportcomment,
+        },
+        "socialMediaName": {
+          "value": socialMediaName,
+          "comment": socialMediaNamecomment,
+        },
+        "residentialAddress": {
+          "value": residentialAddress,
+          "comment": residentialAddresscomment,
+        },
+        "employmentReport": {
+          "value": employmentReport,
+          "comment": employmentReportcomment,
+        },
+        "guarantors": [
+          {
+            "fullName": {
+              "value": guarantors1,
+              "comment": guarantors1comment,
+            },
+            "address": {
+              "value": address,
+              "comment": addresscomment,
+            }
+          }
+        ]
+      },
+      "observation": {
+        "value": observation,
+        "comment": observationcomment,
+      },
+      "visuals": [
+        {
+          "description": visuals,
+          "imageUrl": visualsimageUrl,
+        }
+      ]
+    }
+  }
+
+
+  const TENANT = {
+    "serviceCode": category,
+    "requestId": requestId,
+    "requestItemId": requestItemId,
+    "data": {
+      "client": {
+        "value": client,
+        "comment": clientscomment,
+      },
+      "applicant": {
+        "searchDate": {
+          "value": searchDate,
+          "comment": searchDatecomment,
+        },
+        "fullName": {
+          "value": fullName,
+          "comment": fullNamecomment
+        },
+        "residentialAddress": {
+          "value": residentialAddress,
+          "comment": residentialAddresscomment
+        },
+        "companyName": {
+          "value": companyName,
+          "comment": companyNamecomment
+        },
+        "companyAddress": {
+          "value": companyAddress,
+          "comment": companyAddresscomment
+        },
+        "phoneNo": {
+          "value": phoneNo,
+          "comment": phoneNocomment
+        },
+        "spouseName": {
+          "value": spouseName,
+          "comment": spouseNamecomment
+        },
+        "email": {
+          "value": email,
+          "comment": emailcomment
+        },
+        "meansOfId": {
+          "value": meansOfId,
+          "comment": meansOfIdcomment
+        },
+        "landlordInfo": {
+          "value": landlordInfo,
+          "comment": landlordInfocomment
+        },
+        "guarantors": [
+          {
+            "fullName": {
+              "value": guarantors1,
+              "comment": guarantors1comment,
+            },
+            "address": {
+              "value": address,
+              "comment": addresscomment,
+            }
+          }
+        ]
+      },
+      "searchReport": {
+        "fullName": {
+          "value": searchReport,
+          "comment": searchReportcomment,
+        },
+        "socialMediaName": {
+          "value": socialMediaName,
+          "comment": socialMediaNamecomment,
+        },
+        "residentialAddress": {
+          "value": residentialAddress,
+          "comment": residentialAddresscomment
+        },
+        "companyAddress": {
+          "value": companyAddress,
+          "comment": companyAddresscomment
+        },
+        "landlordReview": {
+          "value": landlordInfo,
+          "comment": landlordInfocomment
+        },
+        "guarantors": [
+          {
+            "fullName": {
+              "value": guarantors1,
+              "comment": guarantors1comment,
+            },
+            "address": {
+              "value": guarantorsAddressone,
+              "comment": guarantorsAddresscomment1
+            }
+          }
+        ]
+      },
+      "observation": {
+        "value": observation,
+        "comment": observationcomment,
+      },
+      "visuals": [
+        {
+          "description": visuals,
+          "imageUrl": visualsimageUrl,
+        }
+      ]
+    }
+  }
+
+
+
+
+  const handleSubmit = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user?.idToken}`,
+      },
+    };
+    setLoading(true);
+    axios
+      .post(baseUrl + `/agent/report/create`, category === "EMPLOYEE" ? value : TENANT, config)
+      .then((res) => {
+        navigation.replace('SuccessConfirmed', { name })
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+        console.log("Success", res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log('err', err);
+        setMessage(err?.message);
+        setLoading(false);
+        setisError(true);
+      });
+  }
+
+
+  useEffect(() => {
+    if (isError) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+      Alert.alert(message);
+      setTimeout(() => {
+        setisError(false)
+      }, 1000);
+    }
+  }, [isError])
+
 
 
 
   useEffect(() => {
-    setclient('inputContainer')
-    setdesignation('')
-    setsearchDate('')
-    setfullName('')
-    setresidentialAddress('')
-    setphoneNo('')
-    setmeansOfId('')
-    setguarantorsName('')
-    setguarantorsAddress('')
-    setpreviousWork('')
-    setsocialMediaName('')
-    setemploymentReport('')
-    // setguarantors1('')
-    // setguarantors2('')
-    setvisuals('')
-    setobservation('')
-  }, [])
-
-
-
+    if (name === "Employee Verification") {
+      try {
+        setclient(Employee[0]?.fullName)
+        setdesignation('')
+        setsearchDate('')
+        setfullName(Employee[0]?.fullName)
+        setresidentialAddress('')
+        setphoneNo(Employee[0]?.phoneNo)
+        setmeansOfId(Employee?.identity)
+        // guarantorsNametwo('')
+        setguarantorsAddressone(Employee[0]?.residentialAddress)
+        setpreviousWork('')
+        setsocialMediaName('')
+        setemploymentReport('')
+        // setguarantors1('')
+        // setguarantors2('')
+        setvisuals('')
+        setobservation('')
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (name === "Certificate Verification") {
+      try {
+        setclient(Certificate[0]?.fullName)
+        setdesignation('')
+        setsearchDate('')
+        setfullName(Certificate[0]?.fullName)
+        setresidentialAddress('')
+        setphoneNo('')
+        setmeansOfId('')
+        // guarantorsNametwo('')
+        setguarantorsAddressone('')
+        setpreviousWork('')
+        setsocialMediaName('')
+        setemploymentReport('')
+        // setguarantors1('')
+        // setguarantors2('')
+        setvisuals('')
+        setobservation('')
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (name === "Tenant Verification") {
+      try {
+        setclient(Tenant[0]?.fullName)
+        setdesignation('')
+        setsearchDate('')
+        setfullName(Tenant[0]?.fullName)
+        setresidentialAddress('')
+        setphoneNo(Tenant[0]?.phoneNo)
+        setmeansOfId(Tenant?.identity)
+        // guarantorsName()
+        setguarantorsAddressone(Tenant[0]?.residentialAddress),
+          setpreviousWork('')
+        setsocialMediaName('')
+        setemploymentReport('')
+        // setguarantors1('')
+        // setguarantors2('')
+        setvisuals('')
+        setobservation('')
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }, [name, Employee, Tenant]);
 
 
 
 
   const [Loading, setLoading] = useState<any>(false);
-  const [id, setid] = useState('')
-  const [ids, setids] = useState(false)
+
 
   const [expanded, setExpanded] = React.useState(true);
-  const handlePress = () => setExpanded(!expanded1);
+  const handlePress = () => setExpanded(!expanded);
   const [expanded1, setExpanded1] = React.useState(true);
   const handlePress1 = () => setExpanded1(!expanded1);
   const [expanded2, setExpanded2] = React.useState(true);
@@ -505,416 +456,769 @@ const ReportStatus = ({ navigation }: any) => {
   const [expanded10, setExpanded10] = React.useState(true);
   const handlePress10 = () => setExpanded10(!expanded10);
   const [expanded11, setExpanded11] = React.useState(true);
-  const handlePress11 = () => setExpanded11(!expanded10);
+  const handlePress11 = () => setExpanded11(!expanded11);
   const [expanded12, setExpanded12] = React.useState(true);
-  const handlePress12 = () => setExpanded12(!expanded10);
+  const handlePress12 = () => setExpanded12(!expanded12);
   const [expanded13, setExpanded13] = React.useState(true);
-  const handlePress13 = () => setExpanded13(!expanded10);
-
-  const handlePaymentConfirmed = () => {
-    navigation.replace('PaymentConfirmed')
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
-  }
-
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      // @ts-ignore
-      setImage(result.uri);
-    }
-  };
-
-  // const pickImage1 = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.cancelled) {
-  //     // @ts-ignore
-  //     setImage1(result.uri);
-  //   }
-  // };
-  // const pickImage12 = async () => {
-  //   // No permissions request is necessary for launching the image library
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   console.log(result);
-
-  //   if (!result.cancelled) {
-  //     // @ts-ignore
-  //     setImage2(result.uri);
-  //   }
-  // };
+  const handlePress13 = () => setExpanded13(!expanded13);
+  const [expanded14, setExpanded14] = React.useState(true);
+  const handlePress14 = () => setExpanded14(!expanded14);
+  const [expanded15, setExpanded15] = React.useState(true);
+  const handlePress15 = () => setExpanded15(!expanded15);
+  const [expanded16, setExpanded16] = React.useState(true);
+  const handlePress16 = () => setExpanded16(!expanded16);
+  const [expanded17, setExpanded17] = React.useState(true);
+  const handlePress17 = () => setExpanded17(!expanded17);
+  const [expanded18, setExpanded18] = React.useState(true);
+  const handlePress18 = () => setExpanded18(!expanded18);
 
 
-  const handleLogin = async () => {
-    setLoading(false)
-    if (!ids) {
-      setTimeout(() => {
-        setLoading(true)
-        setids(true)
-      }, 2000);
 
-    }
 
-  }
+
 
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.text}>{name}</Text>
+    <View style={styles.container} lightColor="#f9fafd">
+      <ScrollView style={{ padding: 20, }}>
+        <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false}>
+          <Text style={styles.text}>{name}</Text>
 
-      <List.Section >
-        {/* client  */}
-        <List.Accordion
-          title="Client"
-          expanded={expanded1}
-          onPress={handlePress1}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              {client}
-            </Text>
-            <TextInput
-              value={clientscomment}
-              onChangeText={setclientscomment}
-              style={styles.input}
-              placeholder={'client comment'}
-              placeholderTextColor="#1113"
-            />
+          <List.Section >
+            {/* client  */}
+            <List.Accordion
+              title="Client"
+              expanded={expanded}
+              onPress={handlePress}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Clients Name
+                </Text>
+                <TextInput
+                  value={client}
+                  style={styles.input}
+                  placeholder={'client comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setclient}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={clientscomment}
+                  onChangeText={setclientscomment}
+                  style={styles.input}
+                  placeholder={'client comment'}
+                  placeholderTextColor="#1113"
+                />
+              </View>
+            </List.Accordion>
+
+            {/* Designation  */}
+            <List.Accordion
+              title="Designation"
+              expanded={expanded1}
+              onPress={handlePress1}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Designation
+                </Text>
+                <TextInput
+                  value={designation}
+                  style={styles.input}
+                  placeholder={'Designation'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setdesignation}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={designationcomment}
+                  style={styles.input}
+                  placeholder={'Designation Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setdesignationcomment}
+                />
+              </View>
+            </List.Accordion>
+
+            {/* Search Date */}
+            <List.Accordion
+              title="Search Date"
+              expanded={expanded2}
+              onPress={handlePress2}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Search Date
+                </Text>
+              </View>
+              {/* The button that used to trigger the date picker */}
+              <View style={styles.signupinputmain}>
+                {/* Display the selected date */}
+                {/* <Text style={styles.KYCClientInputText}>Date of Birth</Text> */}
+                <View style={styles.pickedContainer}>
+                  <View style={styles.pickedDateContainer}>
+                    <Text style={styles.pickedDate}>{date.toLocaleDateString()}</Text>
+                  </View>
+
+                  {/* The button that used to trigger the date picker */}
+                  <View style={styles.btnContainer}>
+                    {!isPickerShow && (
+                      <View lightColor="#eee" darkColor="#fff">
+                        <TouchableOpacity onPress={showPicker} >
+                          <Text>
+                            <AntDesign name="calendar" size={30} color={"#fff"} style={styles.Close} />
+                          </Text>
+                        </TouchableOpacity>
+                      </View>)}
+
+                    {isPickerShow &&
+                      <View lightColor="#eee" darkColor="#fff">
+                        <TouchableOpacity onPress={handleView} style={styles.ContainerClose} >
+                          <Text style={styles.Close} >Close</Text>
+                        </TouchableOpacity>
+                      </View>}
+                  </View>
+                </View>
+
+                {/* The date picker */}
+                {isPickerShow && (
+                  <DateTimePicker
+                    value={date}
+                    mode={'date'}
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    is24Hour={true}
+                    onChange={onChange}
+                    style={styles.datePicker}
+                  />
+                )}
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={searchDatecomment}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'Search Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setsearchDatecomment}
+                />
+              </View>
+            </List.Accordion>
+
+
+            {/* fullName */}
+            <List.Accordion
+              title="FullName"
+              expanded={expanded3}
+              onPress={handlePress3}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Full Name
+                </Text>
+                <TextInput
+                  value={fullName}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'fullName'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setfullName}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={fullNamecomment}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'FullName Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setfullNamecomment}
+                />
+              </View>
+            </List.Accordion>
+
+            <List.Accordion
+              title="Residential Address"
+              expanded={expanded4}
+              onPress={handlePress4}
+            >
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Residential Address
+                </Text>
+                <TextInput
+                  value={residentialAddress}
+                  style={styles.input}
+                  placeholder={'residentialAddress'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setresidentialAddress}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={residentialAddresscomment}
+                  style={styles.input}
+                  placeholder={'Residential Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setresidentialAddresscomment}
+                />
+              </View>
+
+            </List.Accordion>
+
+            <List.Accordion
+              title="Company Name"
+              expanded={expanded14}
+              onPress={handlePress14}
+            >
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Company Name
+                </Text>
+                <TextInput
+                  value={companyName}
+                  style={styles.input}
+                  placeholder={'Company Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setcompanyName}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={companyNamecomment}
+                  style={styles.input}
+                  placeholder={'Company Name Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setcompanyNamecomment}
+                />
+              </View>
+
+            </List.Accordion>
+            <List.Accordion
+              title="Company Address"
+              expanded={expanded17}
+              onPress={handlePress17}
+            >
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Company Address
+                </Text>
+                <TextInput
+                  value={companyAddress}
+                  style={styles.input}
+                  placeholder={'Company Address'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setcompanyAddress}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={companyNamecomment}
+                  style={styles.input}
+                  placeholder={'Company Address Commnet'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setcompanyAddresscomment}
+                />
+              </View>
+
+            </List.Accordion>
+
+            {/* Phone Number */}
+            <List.Accordion
+              title="Phone Number"
+              expanded={expanded5}
+              onPress={handlePress5}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Phone Number
+                </Text>
+                <TextInput
+                  value={phoneNo}
+                  style={styles.input}
+                  placeholder={'phone Number'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setphoneNo}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={phoneNocomment}
+                  style={styles.input}
+                  placeholder={'Phone Number Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setphoneNocomment}
+                />
+              </View>
+
+            </List.Accordion>
+            {/* Spouse Name */}
+            <List.Accordion
+              title="Spouse Name"
+              expanded={expanded15}
+              onPress={handlePress15}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Spouse Name
+                </Text>
+                <TextInput
+                  value={spouseName}
+                  style={styles.input}
+                  placeholder={' Spouse Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setspouseName}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={spouseNamecomment}
+                  style={styles.input}
+                  placeholder={'Spouse Name Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setspouseNamecomment}
+                />
+              </View>
+
+            </List.Accordion>
+            {/* email */}
+            <List.Accordion
+              title="email"
+              expanded={expanded16}
+              onPress={handlePress16}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  email
+                </Text>
+                <TextInput
+                  value={email}
+                  style={styles.input}
+                  placeholder={' email'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setemail}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={emailcomment}
+                  style={styles.input}
+                  placeholder={'email Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setemailcomment}
+                />
+              </View>
+
+            </List.Accordion>
+
+            {/* Mean so fId */}
+            <List.Accordion
+              title="Means Of Identification"
+              expanded={expanded6}
+              onPress={handlePress6}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Means Of Identification
+                </Text>
+                <TextInput
+                  value={meansOfId}
+                  style={styles.input}
+                  // numberOfLines={1}
+                  placeholder={'Means Of Identification'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setmeansOfId}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={meansOfIdcomment}
+                  style={styles.input}
+                  // numberOfLines={1}
+                  placeholder={'Means Of Identification Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setmeansOfIdcomment}
+                />
+              </View>
+            </List.Accordion>
+            {/* Mean so fId */}
+            <List.Accordion
+              title="Land Lord Info"
+              expanded={expanded6}
+              onPress={handlePress6}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Land Lord Info
+                </Text>
+                <TextInput
+                  value={landlordInfo}
+                  style={styles.input}
+                  // numberOfLines={1}
+                  placeholder={'Land Lord Info'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setlandlordInfo}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={landlordInfocomment}
+                  style={styles.input}
+                  // numberOfLines={1}
+                  placeholder={'Land Lord Info Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setlandlordInfocomment}
+                />
+              </View>
+            </List.Accordion>
+
+            {/* Guarantors Name */}
+            <List.Accordion
+              title="Guarantors Name"
+              expanded={expanded7}
+              onPress={handlePress7}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Guarantors Name
+                </Text>
+                <TextInput
+                  value={guarantorsName}
+                  style={styles.input}
+                  placeholder={'Guarantors Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsName}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={guarantorsNamecomment1}
+                  style={styles.input}
+                  placeholder={'Guarantors Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsNamebcomment1}
+                />
+              </View>
+              {/* <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Guarantors Name Two
+                </Text>
+                <TextInput
+                  value={guarantorsNametwo}
+                  style={styles.input}
+                  placeholder={'Guarantors Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsNametwo}
+                />
+              </View> */}
+              {/* <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={guarantorsNamecomment2}
+                  style={styles.input}
+                  placeholder={'Guarantors Name'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsNamebcomment2}
+                />
+              </View> */}
+            </List.Accordion>
+
+
+
+            {/* Guarantors Address */}
+            <List.Accordion
+              title="Guarantors Address"
+              expanded={expanded8}
+              onPress={handlePress8} >
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Guarantors Address
+                </Text>
+                <TextInput
+                  value={guarantorsAddressone}
+                  style={styles.input}
+                  placeholder={'Guarantors Address One'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsAddressone}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={guarantorsAddresscomment1}
+                  style={styles.input}
+                  placeholder={'Guarantors Address Comment One'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsAddresscomment1}
+                />
+              </View>
+              {/* <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Guarantors Address Two
+                </Text>
+                <TextInput
+                  value={guarantorsAddresstwo}
+                  style={styles.input}
+                  placeholder={'Guarantors Address Comment Two'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsAddresstwo}
+                />
+              </View> */}
+              {/* <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment Two
+                </Text>
+                <TextInput
+                  value={guarantorsAddresscomment2}
+                  style={styles.input}
+                  placeholder={'Comment Two'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setguarantorsAddresscomment2}
+                />
+              </View> */}
+            </List.Accordion>
+
+            {/* Previous Work */}
+            <List.Accordion
+              title="Previous Work"
+              expanded={expanded9}
+              onPress={handlePress9}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Previous Work
+                </Text>
+                <TextInput
+                  value={previousWork}
+                  style={styles.input}
+                  placeholder={'previous Work'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setpreviousWork}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={previousWorkcomment}
+                  style={styles.input}
+                  placeholder={'previous Work Comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setpreviousWorkcomment}
+                />
+              </View>
+            </List.Accordion>
+
+
+            {/* Social Media Name */}
+            <List.Accordion
+              title="Social Media Name"
+              expanded={expanded10}
+              onPress={handlePress10}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Social Media Name
+                </Text>
+                <TextInput
+                  value={socialMediaName}
+                  style={styles.input}
+                  placeholder={'Social Media Name '}
+                  placeholderTextColor="#1113"
+                  onChangeText={setsocialMediaName}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={socialMediaNamecomment}
+                  style={styles.input}
+                  placeholder={'Social Media Name comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setsocialMediaNamecomment}
+                />
+              </View>
+            </List.Accordion>
+
+
+            {/* fullName */}
+            <List.Accordion
+              title="Employment Report"
+              expanded={expanded11}
+              onPress={handlePress11}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Employment Report
+                </Text>
+                <TextInput
+                  value={employmentReport}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'Employment Report  '}
+                  placeholderTextColor="#1113"
+                  onChangeText={setemploymentReport}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={employmentReportcomment}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'Employment Report comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setemploymentReportcomment}
+                />
+              </View>
+
+            </List.Accordion>
+
+
+            <List.Accordion
+              title="Observation"
+              expanded={expanded12}
+              onPress={handlePress12}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Observation
+                </Text>
+                <TextInput
+                  value={observation}
+                  style={styles.input}
+                  placeholder={'Observation'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setobservation}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={observationcomment}
+                  style={styles.input}
+                  placeholder={'Observation comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setobservationcomment}
+                />
+              </View>
+            </List.Accordion>
+
+            {/* Visuals */}
+            <List.Accordion
+              title="Visuals"
+              expanded={expanded13}
+              onPress={handlePress13}>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Visuals
+                </Text>
+                <TextInput
+                  value={visuals}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'visuals'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setvisuals}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Comment
+                </Text>
+                <TextInput
+                  value={visualscomment}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={'visuals comment'}
+                  placeholderTextColor="#1113"
+                  onChangeText={setvisualscomment}
+                />
+              </View>
+
+            </List.Accordion>
+
+
+            <List.Accordion
+              title="Visuals ImageUrl"
+              expanded={expanded13}
+              onPress={handlePress13}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.textTitle}>
+                  Visuals Image Url
+                </Text>
+                <TextInput
+                  value={visualsimageUrl}
+                  style={styles.input}
+                  numberOfLines={1}
+                  placeholder={visualsimageUrl}
+                  placeholderTextColor="#1113"
+                  onChangeText={setvisualsimageUrl}
+                />
+
+                {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Button title="	Take a photo" onPress={pickImage} />
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+       </View> */}
+              </View>
+            </List.Accordion>
+
+          </List.Section>
+          <View style={styles.Submit}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
+              {Loading ? <MaterialIndicator color='white' size={25} /> : <Text style={styles.buttonText}>Submit</Text>}
+
+            </TouchableOpacity>
           </View>
-        </List.Accordion>
-
-
-        {/* Designation  */}
-        <List.Accordion
-          title="Customer Information"
-          expanded={expanded2}
-          onPress={handlePress2}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Designation
-            </Text>
-            <TextInput
-              value={designation}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'Designation'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-        {/* Search Date */}
-        <List.Accordion
-          title="Search Date"
-          expanded={expanded3}
-          onPress={handlePress3}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              searchDate
-            </Text>
-            <TextInput
-              value={searchDate}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'Search Date'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-
-        {/* fullName */}
-        <List.Accordion
-          title="FullName"
-          expanded={expanded4}
-          onPress={handlePress4}>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              fullName
-            </Text>
-            <TextInput
-              value={fullName}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'fullName'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-        { }
-        <List.Accordion
-          title="Residential Address" >
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              residentialAddress
-            </Text>
-            <TextInput
-              value={residentialAddress}
-              style={styles.input}
-              placeholder={'residentialAddress'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-
-        </List.Accordion>
-
-        {/* meansOfId */}
-        <List.Accordion
-          title="Phone No"
-          expanded={expanded5}
-          onPress={handlePress5}>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              phoneNo
-            </Text>
-            <TextInput
-              value={phoneNo}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'phoneNo'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-
-        </List.Accordion>
-
-        {/* Mean so fId */}
-        <List.Accordion
-          title="Means Of Identification"
-          expanded={expanded6}
-          onPress={handlePress6}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              meansOfId
-            </Text>
-            <TextInput
-              value={meansOfId}
-              style={styles.input}
-              // numberOfLines={1}
-              placeholder={'meansOfId'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-        {/* Guarantors Name */}
-        <List.Accordion
-          title="Guarantors Name"
-          expanded={expanded7}
-          onPress={handlePress7}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Guarantors Name
-            </Text>
-            <TextInput
-              value={guarantorsName}
-              style={styles.input}
-              placeholder={'Guarantors Name'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-
-
-        {/* Guarantors Address */}
-        <List.Accordion
-          title="Guarantors Address"
-          expanded={expanded8}
-          onPress={handlePress8}
-        >
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Guarantors Address
-            </Text>
-            <TextInput
-              value={guarantorsAddresscomment1}
-              style={styles.input}
-              placeholder={'Guarantors Address Comment 1'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              value={guarantorsAddresscomment2}
-              style={styles.input}
-              placeholder={'Guarantors Address comment 2'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-        {/* Previous Work */}
-        <List.Accordion
-          title="Previous Work"
-          expanded={expanded9}
-          onPress={handlePress9}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Previous Work
-            </Text>
-            <TextInput
-              value={previousWorkcomment}
-              style={styles.input}
-              placeholder={'previous Work Comment'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-
-        {/* Social Media Name */}
-        <List.Accordion
-          title="Social Media Name"
-          expanded={expanded10}
-          onPress={handlePress10}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              socialMediaName
-            </Text>
-            <TextInput
-              value={socialMediaNamecomment}
-              style={styles.input}
-              placeholder={'Social Media Name comment'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-
-        {/* fullName */}
-        <List.Accordion
-          title="Employment Report"
-          expanded={expanded9}
-          onPress={handlePress9}>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              employmentReportcomment
-            </Text>
-            <TextInput
-              value={employmentReportcomment}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'Employment Report comment'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-
-        </List.Accordion>
-
-
-        <List.Accordion
-          title="Observation"
-          expanded={expanded10}
-          onPress={handlePress10}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Observation
-            </Text>
-            <TextInput
-              value={observationcomment}
-              style={styles.input}
-              placeholder={'Observation comment'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-        </List.Accordion>
-
-        {/* Visuals */}
-        <List.Accordion
-          title="Visuals"
-          expanded={expanded11}
-          onPress={handlePress11}>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.textTitle}>
-              Visuals
-            </Text>
-            <TextInput
-              value={visualscomment}
-              style={styles.input}
-              numberOfLines={1}
-              placeholder={'visuals comment'}
-              placeholderTextColor="#1113"
-            />
-          </View>
-
-        </List.Accordion>
-
-
-        <List.Accordion
-          title="Visuals ImageUrl" >
-          <View style={styles.inputContainer}>
-
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button title="	Take a photo" onPress={pickImage} />
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            </View>
-          </View>
-        </List.Accordion>
-        {/* <List.Accordion
-          title="Passpord Photograph" >
-          <View style={styles.inputContainer}>
-
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button title="	Take a photo" onPress={pickImage} />
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            </View>
-          </View>
-        </List.Accordion>
-        <List.Accordion
-          title="Capture ID Card" >
-          <View style={styles.inputContainer}>
-
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-              <Button title="Capture ID Card" onPress={pickImage1} />
-              {image1 && <Image source={{ uri: image1 }} style={{ width: 200, height: 200 }} />}
-            </View>
-          </View>
-        </List.Accordion>
-        <List.Accordion
-          title="Capture Signature" >
-
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-            <Button title="Capture Signature" onPress={pickImage12} />
-            {image2 && <Image source={{ uri: image2 }} style={{ width: 200, height: 200, }} />}
-          </View>
-        </List.Accordion> */}
-      </List.Section>
-      <View style={styles.Submit}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={handlePaymentConfirmed}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
-
-    </ScrollView>
+        </KeyboardAwareScrollView>
+      </ScrollView >
+    </View >
   );
 };
 
@@ -922,41 +1226,99 @@ export default ReportStatus;
 
 
 const styles = StyleSheet.create({
-  inputbutton: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    backgroundColor: "green",
-    right: 10,
-    top: 30,
-    borderRadius: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+  pickedDate: {
+    fontSize: 14,
+    color: 'black',
+    fontFamily: 'Poppins_300Light',
   },
-  inputbutton1: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    backgroundColor: "red",
-    right: 10,
-    top: 30,
+  pickedDateContainer: {
+    padding: 20,
+    backgroundColor: "#FBFBFB",
     borderRadius: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
+  // KYCClientInputText: {
+  //   fontSize: 12,
+  //   fontWeight: "200",
+  //   fontFamily: "Poppins_600SemiBold",
+  // },
+
+  signupinputmain: {
+    marginBottom: 20,
+
+  },
+  // This only works on iOS
+  datePicker: {
+    width: 320,
+    height: 260,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  pickedContainer: {
+    paddingRight: 10,
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: "#ccc",
+    backgroundColor: "#fff",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // marginTop: 8,
+    // padding: 10,
+    // fontSize: 16,
+    // fontFamily: 'Poppins_400Regular',
+    // color: '#333',
+
+    // height: windowHeight / 15,
+    // borderColor: '#ccc',  
+
+  },
+
+
+
+  ContainerClose: { borderRadius: 10, },
+  Close: {
+    padding: 8,
+    // backgroundColor: "#990000",
+    color: "#007AFF",
+    fontFamily: 'Poppins_500Medium',
+  },
+  btnContainer: {
+    borderRadius: 10,
+  },
+
+  datePickerStyle: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    borderWidth: 0,
+    padding: 5,
+    paddingHorizontal: 5,
+  },
+
+  signupcontainer: {
+
+    // flexDirection: "column",
+    // justifyContent: "center",
+    // marginTop: Platform.OS === "ios" ? 70 : 50,
+  },
+  loading: {
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+
 
   Submit: { marginBottom: 100, },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 20,
     width: '100%',
-    height: windowHeight / 15,
-    backgroundColor: '#012168',
+    height: windowHeight / 16,
+    backgroundColor: '#007AFF',
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 3,
+    borderRadius: 10,
   },
   buttonText: {
     fontSize: 18,
@@ -1008,15 +1370,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   container: {
-    backgroundColor: '#f9fafd',
+    // backgroundColor: '#f9fafd',
     flex: 1,
-    padding: 20,
+
   },
+
   text: {
     fontFamily: 'Poppins_400Regular',
     fontSize: 28,
     marginBottom: 10,
-    color: '#051d5f',
+    // color: '#051d5f',
   },
   navButton: {
     marginTop: 15,

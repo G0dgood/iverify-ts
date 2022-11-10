@@ -1,30 +1,35 @@
 import { TouchableOpacity, ScrollView, StyleSheet, Platform, Alert, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
-// import { MaterialIndicator, UIActivityIndicator } from 'react-native-indicators'
 import { View, Text } from '../components/Themed'
 import { useRoute } from '@react-navigation/native'
 import axios from 'axios'
 import { useAppSelector } from '../hooks/useStore'
 import { ProgressBar } from 'react-native-paper'
-// import { baseUrl } from '../shared/baseUrl'
 import * as Haptics from "expo-haptics";
 import moment from 'moment'
-const DetailsPage = () => {
+import { baseUrl } from '../shared/baseUrl'
+
+
+const DetailsPage = ({ navigation }: any) => {
 
 	const { user } = useAppSelector((state: { auth: any; }) => state.auth)
 	const route = useRoute();
 	// @ts-ignore
-	const { requestId } = route.params;
+	const { name, requestId, category, Id } = route.params;
 
 
 	const [data, setdata] = useState<any>([]);
 	const [data1, setdata1] = useState<any>([]);
 	const [data2, setdata2] = useState<any>([]);
+	const [datax, setdatax] = useState<any>([]);
 	const [isError, setisError] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [greet, setGreet] = useState("");
+	const [items1, setItems1] = useState([]);
+	const [items2, setItems2] = useState([]);
+	const [items3, setItems3] = useState([]);
 	const [messages, setMessages] = useState("");
-	const [id, setid] = useState("");
+	const [requestItemId, setrequestItemId] = useState("");
+
 
 	React.useEffect(() => {
 		const config = {
@@ -36,7 +41,7 @@ const DetailsPage = () => {
 
 		setLoading(true);
 		axios
-			.get(`https://api-test.iverify.ng/api/requests/details/${requestId}`, config)
+			.get(baseUrl + `/requests/details/${Id}`, config)
 			.then((res) => {
 				setdata(res?.data);
 				// console.log("DetailsPage", res.data);
@@ -50,7 +55,6 @@ const DetailsPage = () => {
 			});
 	}, [user?.idToken]);
 
-	const [datax, setdatax] = useState<any>([]);
 
 
 
@@ -100,6 +104,31 @@ const DetailsPage = () => {
 		}
 	}, [data]);
 
+	useEffect(() => {
+		if (datax) {
+			try {
+				setItems1(datax);
+				setrequestItemId(datax[0]?.id);
+			} catch (err) {
+				console.log(err);
+			}
+		} else if (data1) {
+			try {
+				setItems2(data1);
+				setrequestItemId(data1[0]?.id);
+			} catch (err) {
+				console.log(err);
+			}
+		} else if (data2) {
+			try {
+				setItems3(data2);
+				setrequestItemId(data2[0]?.id);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+	}, [datax, data1, data2]);
+
 
 
 	const Card = ({ value, index }: any) => {
@@ -121,7 +150,7 @@ const DetailsPage = () => {
 						<View>
 							<View style={styles.modalTextInputCOl}>
 								<View style={styles.modalTextInputMargin}>
-									<Text style={styles.infoInputColor}>Service:</Text>
+									<Text style={styles.infoInputColorheader}>Service:</Text>
 								</View>
 								<View>
 									<Text style={styles.infoInputColor}>
@@ -134,7 +163,7 @@ const DetailsPage = () => {
 								</View>
 								<View>
 									<Text style={styles.infoInputColor}>
-										gggg
+										NGN {data?.payment?.amount}
 									</Text>
 								</View>
 							</View>
@@ -144,7 +173,7 @@ const DetailsPage = () => {
 								</View>
 								<View>
 									<Text style={styles.infoInputColor}>
-										ffff
+										N/A
 									</Text>
 								</View>
 							</View>
@@ -154,8 +183,8 @@ const DetailsPage = () => {
 							<View>
 								<Text style={styles.infoInputColor}>Status:</Text>
 							</View>
-							<View>
-								<Text style={styles.infoInputColor}>
+							<View style={styles.infoInputColorbg}>
+								<Text style={styles.infoInputColorbc}>
 									{value?.status}
 								</Text>
 							</View>
@@ -184,13 +213,8 @@ const DetailsPage = () => {
 					<View>
 						<View style={styles.modalTextInputCOl}>
 							<View style={styles.modalTextInputMargin}>
-								<Text style={styles.infoInputColor}>BIODATA:</Text>
+								<Text style={styles.infoInputColorheader}>BIODATA:</Text>
 							</View>
-							{/* <View>
-												<Text style={styles.infoInputColor}>
-													ffff
-												</Text>
-											</View> */}
 						</View>
 						<View style={styles.modalTextInputCOl}>
 							<View><Text style={styles.infoInputColor}>Full Name:</Text>
@@ -220,7 +244,7 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								gggg
+								{value?.idType === null ? "N/A" : value?.idType}
 							</Text>
 						</View>
 					</View>
@@ -230,19 +254,14 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								ggg
+								{value?.residentialAddress === null ? "N/A" : value?.residentialAddress}
 							</Text>
 						</View>
 					</View>
 					<View style={styles.modalTextInputCOl}>
 						<View style={styles.modalTextInputMargin}>
-							<Text style={styles.infoInputColor}>WORK HISTORY</Text>
+							<Text style={styles.infoInputColorheader}>WORK HISTORY</Text>
 						</View>
-						{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
 					</View>
 					<View style={styles.modalTextInputCOl}>
 						<View style={styles.modalTextInputMargin}>
@@ -250,19 +269,14 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								ggg
+								{value?.workAddress === null ? "N/A" : value?.workAddress}
 							</Text>
 						</View>
 					</View>
 					<View style={styles.modalTextInputCOl}>
 						<View style={styles.modalTextInputMargin}>
-							<Text style={styles.infoInputColor}>WORK HISTORY:</Text>
+							<Text style={styles.infoInputColorheader}>WORK HISTORY:</Text>
 						</View>
-						{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
 					</View>
 					<View style={styles.modalTextInputCOl}>
 						<View style={styles.modalTextInputMargin}>
@@ -270,7 +284,7 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								ggg
+								N//A
 							</Text>
 						</View>
 					</View>
@@ -286,32 +300,7 @@ const DetailsPage = () => {
 					</View>
 					<View style={styles.modalTextInputCOl}>
 						<View style={styles.modalTextInputMargin}>
-							<Text style={styles.infoInputColor}>GUARANTOR - 1:</Text>
-						</View>
-						{/* <View>
-											<Text style={styles.infoInputColor}>
-												ggg
-											</Text>
-										</View> */}
-					</View>
-					<View style={styles.modalTextInputCOl}>
-						<View style={styles.modalTextInputMargin}>
-							<Text style={styles.infoInputColor}>Full Name:</Text>
-						</View>
-						<View>
-							<Text style={styles.infoInputColor}>
-								ggg
-							</Text>
-						</View>
-					</View>
-					<View style={styles.modalTextInputCOl}>
-						<View style={styles.modalTextInputMargin}>
-							<Text style={styles.infoInputColor}>Full Name:</Text>
-						</View>
-						<View>
-							<Text style={styles.infoInputColor}>
-								ggg
-							</Text>
+							<Text style={styles.infoInputColorheader}>GUARANTOR - 1:</Text>
 						</View>
 					</View>
 					<View style={styles.modalTextInputCOl}>
@@ -320,7 +309,7 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								ggg
+								{value?.guarantors?.address === null ? 'N/A' : value?.guarantors?.address}
 							</Text>
 						</View>
 					</View>
@@ -330,7 +319,7 @@ const DetailsPage = () => {
 						</View>
 						<View>
 							<Text style={styles.infoInputColor}>
-								{value?.dob === null ? 'N/A' : value?.dob}
+								{value?.guarantors?.dob === null ? 'N/A' : value?.guarantors?.dob}
 							</Text>
 						</View>
 					</View>
@@ -338,116 +327,7 @@ const DetailsPage = () => {
 			</View>
 		);
 	};
-	const Card2 = ({ value, index }: any) => {
-		return (
-			<View style={styles.PersonalInformationView} key={index}>
-				<View style={{ borderRadius: 5 }}>
-					<View style={styles.modalTextInput}>
-						<View style={styles.modalTextInputCOl}>
-							<View style={styles.modalTextInputMargin}>
-								<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
-							</View>
-						</View>
-						{/* <View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View>
-									</View> */}
 
-						<View>
-							<View style={styles.modalTextInputCOl}>
-								<View style={styles.modalTextInputMargin}>
-									<Text style={styles.infoInputColor}>First Name:</Text>
-								</View>
-								<View>
-									<Text style={styles.infoInputColor}>
-										gggg
-									</Text>
-								</View>
-							</View>
-							<View style={styles.modalTextInputCOl}>
-								<View><Text style={styles.infoInputColor}>Last Name:</Text>
-								</View>
-								<View>
-									<Text style={styles.infoInputColor}>
-										gggg
-									</Text>
-								</View>
-							</View>
-							<View style={styles.modalTextInputCOl}>
-								<View>
-									<Text style={styles.infoInputColor}>Email:</Text>
-								</View>
-								<View>
-									<Text style={styles.infoInputColor}>
-										ffff
-									</Text>
-								</View>
-							</View>
-						</View>
-
-						<View style={styles.modalTextInputCOl}>
-							<View>
-								<Text style={styles.infoInputColor}>Date Joined:</Text>
-							</View>
-							<View>
-								<Text style={styles.infoInputColor}>
-									fff
-								</Text>
-							</View>
-						</View>
-						<View style={styles.modalTextInputCOl}>
-							<View>
-								<Text style={styles.infoInputColor}>WORKSPACE INFORMATION:</Text>
-							</View>
-							{/* <View>
-											<Text style={styles.infoInputColor}>
-												ffff
-											</Text>
-										</View> */}
-						</View>
-						<View style={styles.modalTextInputCOl}>
-							<View style={styles.modalTextInputMargin}>
-								<Text style={styles.infoInputColor}>Name:</Text>
-							</View>
-							<View>
-								<Text style={styles.infoInputColor}>
-									gggg
-								</Text>
-							</View>
-						</View>
-						<View style={styles.modalTextInputCOl}>
-							<View style={styles.modalTextInputMargin}>
-								<Text style={styles.infoInputColor}>Domain:</Text>
-							</View>
-							<View>
-								<Text style={styles.infoInputColor}>
-									gggg
-								</Text>
-							</View>
-						</View>
-						<View style={styles.modalTextInputCOl}>
-							<View style={styles.modalTextInputMargin}>
-								<Text style={styles.infoInputColor}>Type:</Text>
-							</View>
-							<View>
-								<Text style={styles.infoInputColor}>
-									gggg
-								</Text>
-							</View>
-						</View>
-					</View>
-				</View>
-				<View style={styles.buttom}>
-				</View>
-			</View>
-		);
-	};
 
 	return (
 		<View style={styles.container}>
@@ -457,8 +337,6 @@ const DetailsPage = () => {
 				<View style={styles.generaldetailsContainer}>
 
 					<View style={styles.generaldetail}  >
-
-
 						{!datax ? '' : datax?.map((item: any, index: any) => (
 							<View key={index}>
 								<Text style={styles.pldetailsTitle}>{item?.fullName}</Text>
@@ -476,20 +354,20 @@ const DetailsPage = () => {
 						))}
 
 
-						{/* <View style={styles.pldetailsTitleSub}>
-							<View>
-								<Text style={styles.TitleSub}>  </Text>
-								<Text >  SQM </Text>
-							</View>
-							<View>
-								<Text style={styles.vertical} />
-							</View>
-							<View>
-								<Text style={[styles.TitleSub, { color: "green" }]}> ffff</Text>
-								<Text style={{}} > ffff </Text>
-							</View>
-						</View> */}
-
+						{/* <TouchableOpacity style={styles.pldetailsTitleSub} onPress={() =>
+							navigation.navigate("ReportStatus", {
+								screen: "ReportStatus",
+								name: name,
+								requestId: requestId,
+								category: category,
+								requestItemId: requestItemId,
+								Employee: items1,
+								Certificate: items3,
+								Tenant: items2,
+							})
+						}>
+							<Text style={styles.pldetailsTitlestyle} >Verify</Text>
+						</TouchableOpacity> */}
 					</View>
 				</View>
 				<ScrollView
@@ -528,7 +406,7 @@ const DetailsPage = () => {
 						</View>
 
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
-							<Text style={styles.containerTitle} >Requester</Text>
+							<Text style={styles.containerTitle} >REQUESTER</Text>
 						</View>
 						{/* {datax?.map((item: any, index: any) => (
 						
@@ -542,6 +420,8 @@ const DetailsPage = () => {
 						{!data2 ? '' : data2?.map((item: any, index: any) => (
 							<Card1 key={index} value={item} />
 						))}
+						<View style={styles.buttom}   >
+						</View>
 						<View style={styles.containerAccount} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" >
 							<Text style={styles.containerTitle} >PAYMENT</Text>
 						</View>
@@ -551,19 +431,9 @@ const DetailsPage = () => {
 								<View style={styles.modalTextInput}>
 									<View style={styles.modalTextInputCOl}>
 										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
+											<Text style={styles.infoInputColorheader}>CUSTOMER INFORMATION:</Text>
 										</View>
 									</View>
-									{/* <View style={styles.modalTextInputCOl}>
-										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>CUSTOMER INFORMATION:</Text>
-										</View>
-										<View>
-											<Text style={styles.infoInputColor}>
-												gggg
-											</Text>
-										</View>
-									</View> */}
 
 									<View>
 										<View style={styles.modalTextInputCOl}>
@@ -609,7 +479,7 @@ const DetailsPage = () => {
 									</View>
 									<View style={styles.modalTextInputCOl}>
 										<View>
-											<Text style={styles.infoInputColor}>Quantity:</Text>
+											<Text style={styles.infoInputColorheader}>Quantity:</Text>
 										</View>
 										{/* <View>
 											<Text style={styles.infoInputColor}>
@@ -629,7 +499,7 @@ const DetailsPage = () => {
 									</View>
 									<View style={styles.modalTextInputCOl}>
 										<View style={styles.modalTextInputMargin}>
-											<Text style={styles.infoInputColor}>OTHER INFORMATION:</Text>
+											<Text style={styles.infoInputColorheader}>OTHER INFORMATION:</Text>
 										</View>
 										{/* <View>
 											<Text style={styles.infoInputColor}>
@@ -682,16 +552,27 @@ const DetailsPage = () => {
 											<Text style={styles.infoInputColor}>Comments</Text>
 										</View>
 									</View>
-									<TextInput
+									{/* <TextInput
 										placeholder="Comments"
 										placeholderTextColor="#B9B7B7"
 										style={styles.signupinput}
 									// value={values.email}
 									// onChangeText={handleChange('email')}
-									/>
-									<TouchableOpacity style={[styles.introNextTouch]}  	 >
+									/> */}
+									<TouchableOpacity style={[styles.introNextTouch]} onPress={() =>
+										navigation.navigate("ReportStatus", {
+											screen: "ReportStatus",
+											name: name,
+											requestId: requestId,
+											category: category,
+											requestItemId: requestItemId,
+											Employee: items1,
+											Certificate: items3,
+											Tenant: items2,
+										})
+									}	 >
 
-										<Text style={styles.introNext}>Sign In</Text>
+										<Text style={styles.introNext}>Add Comment</Text>
 									</TouchableOpacity>
 									{/* <View style={styles.modalTextInputCOl}>
 										<View style={styles.modalTextInputMargin}>
@@ -753,14 +634,11 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		alignSelf: "center",
 	},
-	vertical: {
-		height: '100%',
-		width: 1,
-		backgroundColor: '#909090',
-	},
-	TitleSub: {
-		fontWeight: 'bold',
-	},
+	// vertical: {
+	// 	height: '100%',
+	// 	width: 1,
+	// 	backgroundColor: '#909090',
+	// },
 
 	container: {
 		flex: 1,
@@ -803,6 +681,24 @@ const styles = StyleSheet.create({
 	infoInputColor: {
 		fontSize: 14,
 		fontFamily: 'Poppins_400Regular',
+	},
+	infoInputColorbg: {
+		fontSize: 14,
+		fontFamily: 'Poppins_400Regular',
+		backgroundColor: "rgb(243, 240, 255)",
+		padding: 5,
+	},
+	infoInputColorbc: {
+		fontSize: 14,
+		fontFamily: 'Poppins_600SemiBold',
+		color: 'rgb(132, 94, 247)',
+		fontWeight: "bold"
+	},
+	infoInputColorheader: {
+		fontSize: 14,
+		fontFamily: 'Poppins_600SemiBold',
+		color: "#007AFF",
+
 	},
 	AccountDetailsflex: {
 		flexDirection: "row",
@@ -871,11 +767,19 @@ const styles = StyleSheet.create({
 		fontFamily: "Poppins_700Bold"
 	},
 	pldetailsTitleSub: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
+		flexDirection: 'column',
+		justifyContent: 'center',
 		width: 150,
-		borderRadius: 50,
+		height: 40,
+		borderRadius: 5,
 		alignItems: 'center',
+		backgroundColor: '#007AFF'
+	},
+
+	pldetailsTitlestyle: {
+		color: "#fff",
+		fontWeight: 'bold',
+		fontFamily: "Poppins_600SemiBold",
 	},
 
 	generaldetailsContainer: {
